@@ -1,0 +1,32 @@
+import { Component } from '@angular/core';
+
+import { Scene} from '../Model/scene'
+import { Node } from '../Model/node'
+import { NodeEventService } from '../Common/node-event.service';
+
+@Component({
+  selector: 'my-assets',
+  templateUrl: 'app/AssetsComponent/assets.component.html',
+  styleUrls: ['app/AssetsComponent/assets.component.css'],
+})
+
+export class AssetsComponent 
+{
+  constructor(
+    public scene: Scene,
+    private nodeEventService: NodeEventService)
+  { }
+
+  nodes = this.scene.nodes;
+
+  selectNode(node: Node): void
+  {
+    this.scene.selectNode(node);
+  }
+
+  addNewNode(): void
+  {
+    //TODO: add a name validation
+    this.nodeEventService.requestNewNode.emit("NewName");
+  }
+}

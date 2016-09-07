@@ -1,0 +1,11 @@
+<div class="assets panel panel-default">
+  <div class="panel-heading">Nodes</div>
+  <div class="panel-body">
+    <ul class="nodeList nav nav-pills btn-group-vertical">
+      <li *ngFor="let node of nodes" class="btn btn-default btn-sm btn-block" [class.btn-danger]="node === scene.selectedNode" (click)="selectNode(node)">
+        {{node.name}}
+      </li>
+      <button type="button" class="btn btn-primary" (click)="addNewNode()">+ Node</button>
+    </ul>
+  </div>
+</div>
