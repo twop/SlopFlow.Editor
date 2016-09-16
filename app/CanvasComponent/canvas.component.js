@@ -43,7 +43,7 @@ var CanvasComponent = (function () {
         this.update();
     };
     CanvasComponent.prototype.update = function () {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.clearRect(0, 0, this.canvas.scrollWidth, this.canvas.scrollHeight);
         if (this.nodeView) {
             this.nodeView.Invalidate();
             this.context.save();

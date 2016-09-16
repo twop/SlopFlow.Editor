@@ -6,11 +6,12 @@ import { AppComponent }  from './app.component';
 
 import {CanvasComponent} from  './CanvasComponent/canvas.component'
 import {AssetsComponent} from  './AssetsComponent/assets.component'
+import {LogComponent} from  './LogComponent/log.component'
 import {NodeFormComponent} from  './Forms/node-form.component'
 import {PortFormComponent} from  './Forms/port-form.component'
 
 import {Scene} from  './Model/scene'
-import {Logger} from  './Model/logger'
+import {Log} from  './Model/log'
 import {Theme} from "./CanvasComponent/theme";
 
 
@@ -25,9 +26,10 @@ import {Theme} from "./CanvasComponent/theme";
     AssetsComponent,
     NodeFormComponent,
     PortFormComponent,
+    LogComponent
   ],
   bootstrap: [AppComponent],
-  providers: [Scene, Logger, Theme],
+  providers: [Scene, Log, Theme],
 })
 
 export class AppModule { }

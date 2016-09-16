@@ -14,10 +14,11 @@ var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
 var canvas_component_1 = require('./CanvasComponent/canvas.component');
 var assets_component_1 = require('./AssetsComponent/assets.component');
+var log_component_1 = require('./LogComponent/log.component');
 var node_form_component_1 = require('./Forms/node-form.component');
 var port_form_component_1 = require('./Forms/port-form.component');
 var scene_1 = require('./Model/scene');
-var logger_1 = require('./Model/logger');
+var log_1 = require('./Model/log');
 var theme_1 = require("./CanvasComponent/theme");
 var AppModule = (function () {
     function AppModule() {
@@ -34,9 +35,10 @@ var AppModule = (function () {
                 assets_component_1.AssetsComponent,
                 node_form_component_1.NodeFormComponent,
                 port_form_component_1.PortFormComponent,
+                log_component_1.LogComponent
             ],
             bootstrap: [app_component_1.AppComponent],
-            providers: [scene_1.Scene, logger_1.Logger, theme_1.Theme],
+            providers: [scene_1.Scene, log_1.Log, theme_1.Theme],
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

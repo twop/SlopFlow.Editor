@@ -1,8 +1,10 @@
-import {Injectable} from '@angular/core'
+import {Injectable, EventEmitter} from '@angular/core'
 
 @Injectable()
-export class Logger
+export class Log
 {
+  entryAdded = new EventEmitter<LogEntry>();
+
   entries: LogEntry[] = [];
 
   error(error: string): void
@@ -24,6 +26,7 @@ export class Logger
   private addEntry(entry: LogEntry): void
   {
     this.entries.push(entry);
+    this.entryAdded.emit(entry);
   }
 }
 
@@ -33,7 +36,7 @@ export class LogEntry
   { }
 }
 
-enum LogLevel
+export enum LogLevel
 {
   Debug,
   Warning,

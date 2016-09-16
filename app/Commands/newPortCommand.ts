@@ -2,7 +2,7 @@ import {ICommand} from "./command"
 
 import {Node} from "../Model/node"
 import {Port} from "../Model/port"
-import {Logger} from "../Model/logger"
+import {Log} from "../Model/log"
 import {Scene} from "../Model/scene"
 
 
@@ -13,7 +13,7 @@ export class NewPortCommand implements ICommand
     
   }
 
-  Execute(scene:Scene, logger:Logger):void
+  Execute(scene:Scene, logger:Log):void
   {
     if (!scene.selectedNode)
       throw "scene.selectedNode is null";
@@ -22,7 +22,7 @@ export class NewPortCommand implements ICommand
       logger.debug('execute NewPortCommand portName = ' + this.port.name);
   }
 
-  Revert(scene:Scene, logger:Logger):void
+  Revert(scene:Scene, logger:Log):void
   {
   }
 

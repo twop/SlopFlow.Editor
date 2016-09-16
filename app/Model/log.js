@@ -9,30 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var Logger = (function () {
-    function Logger() {
+var Log = (function () {
+    function Log() {
+        this.entryAdded = new core_1.EventEmitter();
         this.entries = [];
     }
-    Logger.prototype.error = function (error) {
+    Log.prototype.error = function (error) {
         this.addEntry(new LogEntry(error, LogLevel.Error));
     };
-    Logger.prototype.warning = function (warning) {
+    Log.prototype.warning = function (warning) {
         this.addEntry(new LogEntry(warning, LogLevel.Warning));
     };
-    Logger.prototype.debug = function (debugInfo) {
+    Log.prototype.debug = function (debugInfo) {
         this.addEntry(new LogEntry(debugInfo, LogLevel.Debug));
         console.debug(debugInfo);
     };
-    Logger.prototype.addEntry = function (entry) {
+    Log.prototype.addEntry = function (entry) {
         this.entries.push(entry);
+        this.entryAdded.emit(entry);
     };
-    Logger = __decorate([
+    Log = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])
-    ], Logger);
-    return Logger;
+    ], Log);
+    return Log;
 }());
-exports.Logger = Logger;
+exports.Log = Log;
 var LogEntry = (function () {
     function LogEntry(text, logLevel) {
         var params = [];
@@ -45,10 +47,10 @@ var LogEntry = (function () {
     return LogEntry;
 }());
 exports.LogEntry = LogEntry;
-var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["Debug"] = 0] = "Debug";
     LogLevel[LogLevel["Warning"] = 1] = "Warning";
     LogLevel[LogLevel["Error"] = 2] = "Error";
-})(LogLevel || (LogLevel = {}));
-//# sourceMappingURL=logger.js.map
+})(exports.LogLevel || (exports.LogLevel = {}));
+var LogLevel = exports.LogLevel;
+//# sourceMappingURL=log.js.map

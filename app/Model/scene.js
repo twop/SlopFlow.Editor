@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var node_1 = require('./node');
 var port_1 = require('./port');
-var logger_1 = require('./logger');
+var log_1 = require('./log');
 var Scene = (function () {
-    function Scene(logger) {
-        this.logger = logger;
+    function Scene(log) {
+        this.log = log;
         this.nodes = [];
         this.selectedNodeChanged = new core_1.EventEmitter();
         this.selectedNode = null;
@@ -32,11 +32,11 @@ var Scene = (function () {
         this.selectedNodeChanged.emit(node);
     };
     Scene.prototype.executeCommand = function (command) {
-        command.Execute(this, this.logger);
+        command.Execute(this, this.log);
     };
     Scene = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [logger_1.Logger])
+        __metadata('design:paramtypes', [log_1.Log])
     ], Scene);
     return Scene;
 }());

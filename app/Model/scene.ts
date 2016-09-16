@@ -2,7 +2,7 @@ import {Injectable, EventEmitter} from '@angular/core'
 
 import {Node} from './node'
 import {Port} from './port'
-import {Logger} from './logger'
+import {Log} from './log'
 
 import {ICommand} from '../Commands/command'
 
@@ -11,7 +11,7 @@ export class Scene
 {
   public nodes: Node[] = [];
 
-  constructor(private logger:Logger)
+  constructor(private log:Log)
   {
     var sum = new Node("Sum");
     sum.addInput(new Port("input1", "int"))
@@ -36,6 +36,6 @@ export class Scene
 
   executeCommand(command:ICommand):void
   {
-    command.Execute(this, this.logger);
+    command.Execute(this, this.log);
   }
 }
