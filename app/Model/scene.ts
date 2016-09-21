@@ -5,36 +5,60 @@ import {Port} from './port'
 import {Log} from './log'
 
 import {ICommand} from '../Commands/command'
+import {DataAccessService} from '../DataAccess/dataAccess.service'
+
+import {Theme} from "../CanvasComponent/theme";
 
 @Injectable()
 export class Scene
 {
-  public nodes: Node[] = [];
-
-  constructor(private log:Log)
+  constructor(private log:Log, private dataService:DataAccessService, private theme: Theme)
   {
-    var sum = new Node("Sum");
-    sum.addInput(new Port("input1", "int"))
-    sum.addInput(new Port("input2", "int"))
-    sum.addOutput(new Port("output", "int"))
-
-    var greaterNode = new Node("Greater");
-    greaterNode.addInput(new Port("input", "int"))
-    greaterNode.addOutput(new Port("output", "int"))
-
-    this.nodes.push(sum, greaterNode);
+    this.dataService = dataService;
+    this.dataService.getNodes().then(nodes => 
+    {
+      this.nodes = nodes;
+      this.nodes.forEach(node=>node.recalculateSize(theme.sizes))
+    });
   }
 
-  selectedNodeChanged = new EventEmitter<Node>();
-  selectedNode: Node = null;
+  public updated = new EventEmitter<any>();
+  public selectedNode: Node = null;
+  public isInNodeEditMode = true;
 
-  selectNode(node: Node): void
+  private nodes: Node[] = [];
+  
+  public getNodes():Node[] 
+  {
+    return this.nodes;
+  }
+
+  public addNewNode(node: Node)
+  {
+    this.nodes.push(node);
+    this.selectNode(node);
+    node.recalculateSize(this.theme.sizes);
+
+    this.updated.emit();
+  }
+  
+  public selectNode(node: Node): void
   {
     this.selectedNode = node;
-    this.selectedNodeChanged.emit(node);
+
+    this.updated.emit();
   }
 
-  executeCommand(command:ICommand):void
+  public addPortToNode(node:Node, port:Port, isInput:boolean)
+  {
+    var ports = isInput ? node.inputs : node.outputs;
+    ports.push(port);
+    node.recalculateSize(this.theme.sizes);
+
+    this.updated.emit();
+  }
+
+  public executeCommand(command:ICommand):void
   {
     command.Execute(this, this.log);
   }

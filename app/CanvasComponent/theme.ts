@@ -3,8 +3,12 @@ import {Injectable} from '@angular/core'
 @Injectable()
 export class Theme
 {
-  colors = new Colors();
+  public colors = new Colors();
+  public sizes = new Sizes();
+}
 
+export class Sizes
+{
   portFont: "12px Arial";
   portSize: number = 15;
   portInterval: number = 20;

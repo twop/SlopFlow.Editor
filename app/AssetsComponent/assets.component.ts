@@ -16,15 +16,13 @@ export class AssetsComponent
     public scene: Scene,
     private nodeEventService: NodeEventService)
   { }
-
-  nodes = this.scene.nodes;
-
+  
   selectNode(node: Node): void
   {
     this.scene.selectNode(node);
   }
 
-  addNewNode(): void
+  requestNewNode(): void
   {
     //TODO: add a name validation
     this.nodeEventService.requestNewNode.emit("NewName");

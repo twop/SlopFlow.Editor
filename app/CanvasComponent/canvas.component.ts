@@ -6,7 +6,7 @@ import {Node} from "../Model/node";
 import {Port} from "../Model/port";
 
 import {Theme} from "./theme";
-import {NodeView} from "./nodeView";
+import {SceneView} from './sceneView'
 
 import { NodeEventService } from '../Common/node-event.service';
 
@@ -15,63 +15,38 @@ import { NodeEventService } from '../Common/node-event.service';
   selector: `my-canvas`,
   styleUrls: ['app/CanvasComponent/canvas.component.css'],
   templateUrl: 'app/CanvasComponent/canvas.component.html',
+  providers:[SceneView]
 })
 
 export class CanvasComponent implements AfterViewInit
 {
-  context: CanvasRenderingContext2D;
   @ViewChild("myCanvas") myCanvas;
 
-  private canvas: any = null;
-  private nodeView: NodeView = null;
+  private canvas: HTMLCanvasElement = null;
 
-  constructor(
-    private scene: Scene,
-    private theme: Theme,
-    private eventService: NodeEventService)
-  {
-    var canvasComponent = this;
-    scene.selectedNodeChanged.subscribe(function (n) { canvasComponent.onSelectedNodeChanged(n); });
-  }
+  constructor(private scene:Scene, private sceneView: SceneView, private eventService: NodeEventService)
+  { }
 
   ngAfterViewInit()
   {
     this.canvas = this.myCanvas.nativeElement;
-    this.context = this.canvas.getContext("2d");
 
-    //this.tick();
+    this.canvas.width = this.canvas.clientWidth * this.devicePixelRatio;
+    this.canvas.height = this.canvas.clientHeight * this.devicePixelRatio;
+
+    var context = this.canvas.getContext("2d");
+    context.scale(this.devicePixelRatio, this.devicePixelRatio);
+
+    this.sceneView.setCanvas(context, this.canvas);
   }
 
-  addPort(): void
+  requestNewPort(): void
   {
     this.eventService.requestNewPort.emit("new port");
-    this.update();
   }
 
-  private onSelectedNodeChanged(node: Node): void
+  public get devicePixelRatio(): number 
   {
-    if (node)
-    {
-      this.nodeView = new NodeView(new Point(100, 100), this.theme, node);
-    }
-    else
-    {
-      this.nodeView = null;
-    }
-
-    this.update();
-  }
-
-  update()
-  {
-    this.context.clearRect(0, 0, this.canvas.scrollWidth, this.canvas.scrollHeight);
-
-    if (this.nodeView)
-    {
-      this.nodeView.Invalidate();
-      this.context.save();
-      this.nodeView.paint(this.context);
-      this.context.restore();
-    }
+    return (('devicePixelRatio' in window) && (window.devicePixelRatio > 1)) ? window.devicePixelRatio : 1;
   }
 }

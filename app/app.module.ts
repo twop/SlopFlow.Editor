@@ -13,7 +13,8 @@ import {PortFormComponent} from  './Forms/port-form.component'
 import {Scene} from  './Model/scene'
 import {Log} from  './Model/log'
 import {Theme} from "./CanvasComponent/theme";
-
+//import {SceneView} from "./CanvasComponent/sceneView";
+import {DataAccessService} from './DataAccess/dataAccess.service'
 
 @NgModule({
   imports: [
@@ -26,10 +27,10 @@ import {Theme} from "./CanvasComponent/theme";
     AssetsComponent,
     NodeFormComponent,
     PortFormComponent,
-    LogComponent
+    LogComponent,
   ],
   bootstrap: [AppComponent],
-  providers: [Scene, Log, Theme],
+  providers: [Scene, Log, Theme, DataAccessService],
 })
 
 export class AppModule { }

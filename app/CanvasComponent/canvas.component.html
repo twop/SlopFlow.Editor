@@ -1,9 +1,13 @@
 <div class="canvasComponent">
   <div class="row">
-    <canvas #myCanvas class='img-responsive' height="300px"></canvas>
+    <div class="col-xs-6">
+      <canvas #myCanvas class='img-responsive' height="300px"></canvas>
+    </div>
   </div>
-  <div *ngIf="scene.selectedNode" class="row">
-    <!--<span>{{scene.selectedNode.name   }} </span>-->
-    <button class="btn btn-default btn-sm" (click)="addPort()">Add Port</button>
+  <div class="row" *ngIf="scene.selectedNode" class="row">
+    <div class="col-xs-6">
+      <!--<span>{{scene.selectedNode.name   }} </span>-->
+      <button class="btn btn-default btn-sm" (click)="requestNewPort()">Add Port</button>
+    </div>
   </div>
 </div>

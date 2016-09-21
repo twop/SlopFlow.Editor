@@ -16,8 +16,7 @@ export class NewNodeCommand implements ICommand
   Execute(scene: Scene, logger: Log): void
   {
     var newNode = new Node(this.nodeModel.name);
-    scene.nodes.push(newNode);
-    scene.selectNode(newNode);
+    scene.addNewNode(newNode);
 
     logger.debug("execute NewNodeCommand name = " + this.nodeModel.name);
   }

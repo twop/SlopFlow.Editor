@@ -28,6 +28,12 @@ export class Rectangle
     this.height += dy + dy + 1;
   }
 
+  public moveBy(deltaX: number, deltaY: number)
+  {
+     this.x += deltaX;
+     this.y += deltaY;
+  }
+
   public union(rectangle: Rectangle)
   {
     var x1 = (this.x < rectangle.x) ? this.x : rectangle.x;
@@ -42,6 +48,10 @@ export class Rectangle
     return new Point(this.x, this.y);
   }
 
+  public get center(): Point
+  {
+    return new Point((this.x + this.width)/2, (this.y + this.height)/2);
+  }
   public get right(): number
   {
     return this.x + this.width;

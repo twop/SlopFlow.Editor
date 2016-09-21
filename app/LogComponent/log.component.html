@@ -1,16 +1,10 @@
 <div class="assets panel panel-default">
   <div class="panel-heading">Log</div>
   <div class="panel-body">
-    <div class="row">
-      <div *ngFor="let entry of entries">
-        <div ng-switch="entry.logLevel">
-          <!--TODO use enum names-->
-          <span class="label" 
-          [class.label-warning]="entry.logLevel===1" 
-          [class.label-danger]="entry.logLevel===2"
-          [class.label-info]="entry.logLevel===0">-</span>
-        </div>
-        {{entry.text}}
+    <div *ngFor="let entry of entries">
+      <div ng-switch="entry.logLevel">
+        <!--TODO use enum names-->
+        <p class="text" [class.text-warning]="entry.logLevel===1" [class.text-danger]="entry.logLevel===2" [class.text-info]="entry.logLevel===0">{{entry.text}}</p>
       </div>
     </div>
   </div>

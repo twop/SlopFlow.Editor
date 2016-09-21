@@ -2,10 +2,10 @@
   <div class="panel-heading">Nodes</div>
   <div class="panel-body">
     <ul class="nodeList nav nav-pills btn-group-vertical">
-      <li *ngFor="let node of nodes" class="btn btn-default btn-sm btn-block" [class.btn-danger]="node === scene.selectedNode" (click)="selectNode(node)">
+      <li *ngFor="let node of scene.getNodes()" class="btn btn-default btn-sm btn-block" [class.btn-danger]="node === scene.selectedNode" (click)="selectNode(node)">
         {{node.name}}
       </li>
-      <button type="button" class="btn btn-primary" (click)="addNewNode()">+ Node</button>
+      <button type="button" class="btn btn-primary" (click)="requestNewNode()">+ Node</button>
     </ul>
   </div>
 </div>
