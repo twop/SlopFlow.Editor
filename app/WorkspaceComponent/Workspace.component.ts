@@ -7,13 +7,13 @@ import { NodeEventService } from '../Common/node-event.service';
 
 
 @Component({
-  selector: `my-canvas`,
-  styleUrls: ['app/CanvasComponent/canvas.component.css'],
-  templateUrl: 'app/CanvasComponent/canvas.component.html',
+  selector: `my-workspace`,
+  styleUrls: ['app/WorkspaceComponent/workspace.component.css'],
+  templateUrl: 'app/WorkspaceComponent/workspace.component.html',
   providers:[SceneView]
 })
 
-export class CanvasComponent implements AfterViewInit
+export class WorkspaceComponent implements AfterViewInit
 {
   @ViewChild("myCanvas") myCanvas;
 

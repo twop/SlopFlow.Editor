@@ -4,7 +4,7 @@ import { FormsModule }   from '@angular/forms';
 
 import { AppComponent }  from './app.component';
 
-import {CanvasComponent} from  './CanvasComponent/canvas.component'
+import {WorkspaceComponent} from  './WorkspaceComponent/Workspace.component'
 import {AssetsComponent} from  './AssetsComponent/assets.component'
 import {LogComponent} from  './LogComponent/log.component'
 import {NodeFormComponent} from  './Forms/node-form.component'
@@ -12,8 +12,8 @@ import {PortFormComponent} from  './Forms/port-form.component'
 
 import {Scene} from  './Scene/scene'
 import {Log} from  './LogComponent/log'
-import {Theme} from "./CanvasComponent/theme";
-//import {SceneView} from "./CanvasComponent/sceneView";
+import {Theme} from "./WorkspaceComponent/theme";
+//import {SceneView} from "./WorkspaceComponent/sceneView";
 import {DataAccessService} from './DataAccess/dataAccess.service'
 
 @NgModule({
@@ -23,7 +23,7 @@ import {DataAccessService} from './DataAccess/dataAccess.service'
   ],
   declarations: [
     AppComponent,
-    CanvasComponent,
+    WorkspaceComponent,
     AssetsComponent,
     NodeFormComponent,
     PortFormComponent,

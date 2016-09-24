@@ -1,6 +1,6 @@
 import {Port} from './port'
 import {Rectangle} from '../Geometry/rectangle'
-import {Sizes} from '../CanvasComponent/theme'
+import {Sizes} from '../WorkspaceComponent/theme'
 
 export class Node
 {
