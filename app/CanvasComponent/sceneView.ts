@@ -1,10 +1,9 @@
-import {Injectable, EventEmitter} from '@angular/core'
+import {Injectable} from '@angular/core'
 
-import {Rectangle} from '../Model/rectangle'
-import {Point} from '../Model/point'
-import {Node} from '../Model/node'
-import {Port} from '../Model/port'
-import {Scene} from '../Model/scene'
+import {Point} from '../Geometry/point'
+import {Node} from '../Scene/node'
+import {Port} from '../Scene/port'
+import {Scene} from '../Scene/scene'
 
 import {Theme} from "./theme";
 import {Drawer} from "./drawer";
@@ -18,7 +17,7 @@ export class SceneView
     this.scene.updated.subscribe(() => drawer.drawScene());
   }
 
-  private canvas: HTMLCanvasElement
+  private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
   public setCanvas(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement)
@@ -76,7 +75,7 @@ export class SceneView
   private paintPorts(context: CanvasRenderingContext2D, ports: Port[])
   {
     var colors = this.theme.colors;
-    var sizes = this.theme.sizes;sizes
+    var sizes = this.theme.sizes;
 
     ports.forEach(port => 
     {

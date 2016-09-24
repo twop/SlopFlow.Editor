@@ -2,9 +2,9 @@ import {Injectable, EventEmitter} from '@angular/core'
 
 import {Node} from './node'
 import {Port} from './port'
-import {Log} from './log'
+import {Log} from '../LogComponent/log'
 
-import {ICommand} from '../Commands/command'
+import {ICommand} from './Commands/command'
 import {DataAccessService} from '../DataAccess/dataAccess.service'
 
 import {Theme} from "../CanvasComponent/theme";

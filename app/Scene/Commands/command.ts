@@ -1,5 +1,5 @@
-import {Log} from "../Model/log"
-import {Scene} from "../Model/scene"
+import {Log} from "../../LogComponent/log"
+import {Scene} from "../scene"
 
 export interface ICommand
 {

@@ -1,6 +1,5 @@
 import {Port} from './port'
-import {Point} from './point'
-import {Rectangle} from './rectangle'
+import {Rectangle} from '../Geometry/rectangle'
 import {Sizes} from '../CanvasComponent/theme'
 
 export class Node
@@ -40,7 +39,7 @@ export class Node
     this.rectangle.height += sizes.portSize * portsCount;
     this.rectangle.height += sizes.portInterval * (portsCount - 1);
 
-    this.alignPorts(this.inputs, this.rectangle.x, sizes)
+    this.alignPorts(this.inputs, this.rectangle.x, sizes);
     this.alignPorts(this.outputs, this.rectangle.right, sizes)
   }
 

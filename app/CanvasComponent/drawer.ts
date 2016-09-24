@@ -1,5 +1,5 @@
-import {Rectangle} from '../Model/rectangle'
-import {Point} from '../Model/point'
+import {Rectangle} from '../Geometry/rectangle'
+import {Point} from '../Geometry/point'
 
 export class Drawer
 {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { Scene} from '../Model/scene'
-import { Node } from '../Model/node'
+import { Scene} from '../Scene/scene'
+import { Node } from '../Scene/node'
 import { NodeEventService } from '../Common/node-event.service';
 
 @Component({

@@ -1,11 +1,6 @@
-import {AfterViewInit, Component, ViewChild, EventEmitter} from "@angular/core";
+import {AfterViewInit, Component, ViewChild} from "@angular/core";
 
-import {Scene} from "../Model/scene";
-import {Point} from "../Model/point";
-import {Node} from "../Model/node";
-import {Port} from "../Model/port";
-
-import {Theme} from "./theme";
+import {Scene} from "../Scene/scene";
 import {SceneView} from './sceneView'
 
 import { NodeEventService } from '../Common/node-event.service';
@@ -45,7 +40,7 @@ export class CanvasComponent implements AfterViewInit
     this.eventService.requestNewPort.emit("new port");
   }
 
-  public get devicePixelRatio(): number 
+  public get devicePixelRatio(): number
   {
     return (('devicePixelRatio' in window) && (window.devicePixelRatio > 1)) ? window.devicePixelRatio : 1;
   }

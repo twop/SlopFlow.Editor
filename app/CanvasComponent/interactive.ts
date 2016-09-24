@@ -1,5 +1,5 @@
 import {ICanvasElement} from './canvasElement'
-import {Point} from '../Model/point'
+import {Point} from '../Geometry/point'
 
 export interface IInteractive extends ICanvasElement
 {

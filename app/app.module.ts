@@ -10,8 +10,8 @@ import {LogComponent} from  './LogComponent/log.component'
 import {NodeFormComponent} from  './Forms/node-form.component'
 import {PortFormComponent} from  './Forms/port-form.component'
 
-import {Scene} from  './Model/scene'
-import {Log} from  './Model/log'
+import {Scene} from  './Scene/scene'
+import {Log} from  './LogComponent/log'
 import {Theme} from "./CanvasComponent/theme";
 //import {SceneView} from "./CanvasComponent/sceneView";
 import {DataAccessService} from './DataAccess/dataAccess.service'

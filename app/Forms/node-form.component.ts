@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { NodeModel }    from './node-model';
 
 import { NodeEventService } from '../Common/node-event.service';
-import { Scene } from '../Model/scene';
-import { NewNodeCommand } from '../Commands/newNodeCommand';
+import { Scene } from '../Scene/scene';
+import { NewNodeCommand } from '../Scene/Commands/newNodeCommand';
 
 
 @Component({

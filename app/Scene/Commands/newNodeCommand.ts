@@ -1,10 +1,9 @@
 import {ICommand} from "./command"
 
-import {Node} from "../Model/node"
-import {Port} from "../Model/port"
-import {Log} from "../Model/log"
-import {Scene} from "../Model/scene"
-import {NodeModel} from "../Forms/node-model"
+import {Node} from "../node"
+import {Log} from "../../LogComponent/log"
+import {Scene} from "../scene"
+import {NodeModel} from "../../Forms/node-model"
 
 export class NewNodeCommand implements ICommand
 {
