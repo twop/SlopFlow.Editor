@@ -16,6 +16,7 @@ export class NodeFormComponent
   constructor(private scene: Scene, nodeEventService: NodeEventService)
   {
     var formComponent = this;
+    scene.activeWorkspaceChanged.subscribe(()=> this.onCancel());
     nodeEventService.requestNewNode.subscribe((name) => { formComponent.showCreateNodeForm(name); });
   }
 

@@ -39,7 +39,7 @@ export class Node
 
   private alignPorts(ports: Port[], xpos: number, sizes: Sizes)
   {
-    var y = sizes.nodeDefaultHeight / 2;
+    var y = sizes.nodeDefaultHeight / 2 + sizes.portSize/2;
 
     ports.forEach(port => 
     {

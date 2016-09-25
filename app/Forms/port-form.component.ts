@@ -6,6 +6,8 @@ import { NewPortCommand } from '../Scene/Commands/newPortCommand';
 
 import { Scene } from '../Scene/scene';
 import { Port } from '../Scene/port';
+import {Workspace} from '../Scene/workspace';
+import {NewPortRequest} from '../Common/newPortEvent';
 
 
 @Component({
@@ -18,30 +20,40 @@ export class PortFormComponent
   constructor(private scene: Scene, nodeEventService: NodeEventService)
   {
     var formComponent = this;
-    nodeEventService.requestNewPort.subscribe((name) => { formComponent.showCreatePortForm(name); });
+
+    scene.activeWorkspaceChanged.subscribe(()=> this.onCancel());
+
+    nodeEventService.requestNewPort.subscribe(( request: NewPortRequest) =>
+    {
+      formComponent.workspace = request.workspace;
+      formComponent.showCreatePortForm(request.name);
+    });
   }
 
-  model: PortModel = null;
+  public model: PortModel = null;
 
-  onSubmit(): void
+  private workspace:Workspace = null;
+
+  public onSubmit(): void
   {
     var port = new Port(this.model.name, "new type");
-    this.scene.executeCommand(new NewPortCommand(port, true));
+    this.workspace.executeCommand(new NewPortCommand(port, true));
     this.model = null;
   }
 
-  onCancel(): void
+  public onCancel(): void
   {
     this.model = null;
+    this.workspace = null;
+  }
+
+  public get hasModel(): boolean
+  {
+    return this.model != null;
   }
 
   private showCreatePortForm(nodeName: string): void
   {
     this.model = new PortModel(nodeName);
-  }
-
-  get hasModel(): boolean 
-  {
-    return this.model != null;
   }
 }

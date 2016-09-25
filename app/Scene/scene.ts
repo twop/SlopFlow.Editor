@@ -1,10 +1,9 @@
 import {Injectable, EventEmitter} from '@angular/core'
 
 import {Node} from './node'
-import {Port} from './port'
 import {Log} from '../LogComponent/log'
 
-import {ICommand} from './Commands/command'
+import {ISceneCommand} from './Commands/sceneCommand'
 import {DataAccessService} from '../DataAccess/dataAccess.service'
 
 import {Theme} from "../WorkspaceComponent/theme";
@@ -40,7 +39,7 @@ export class Scene
     this.nodes.forEach(node=>
     {
       node.recalculateSize(theme.sizes);
-      this.workspaces.push(new Workspace(node));
+      this.addWorkspaceFor(node);
     })
   }
 
@@ -49,28 +48,26 @@ export class Scene
     this.nodes.push(node);
     node.recalculateSize(this.theme.sizes);
 
-    var workspace = new Workspace(node);
-    this.workspaces.push(workspace)
-
+    var workspace = this.addWorkspaceFor(node);
     this.activateWorkspace(workspace);
+  }
+
+  private addWorkspaceFor(node: Node):Workspace
+  {
+    var workspace =  new Workspace(node, this.theme.sizes, this.log);
+    this.workspaces.push(workspace);
+    var scene = this;
+    workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
+    return workspace;
   }
   
   public activateWorkspace(workspace: Workspace): void
   {
     this.activeWorkspace = workspace;
-    this.activeWorkspaceChanged.emit();
+    this.activeWorkspaceChanged.emit(workspace);
   }
 
-  public addPortToNode(node:Node, port:Port, isInput:boolean)
-  {
-    var ports = isInput ? node.inputs : node.outputs;
-    ports.push(port);
-    node.recalculateSize(this.theme.sizes);
-
-    this.workspaceModified.emit();
-  }
-
-  public executeCommand(command:ICommand):void
+  public executeCommand(command:ISceneCommand):void
   {
     command.Execute(this, this.log);
   }

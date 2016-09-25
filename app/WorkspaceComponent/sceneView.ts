@@ -16,7 +16,8 @@ export class SceneView
   constructor(private scene: Scene, private theme: Theme) 
   {
     var sceneView = this;
-    this.scene.activeWorkspaceChanged.subscribe(() => sceneView.drawScene());
+    this.scene.activeWorkspaceChanged.subscribe((workspace) => sceneView.drawScene());
+    this.scene.workspaceModified.subscribe((workspace) => sceneView.drawScene());
   }
 
   private drawer:Drawer = new Drawer();

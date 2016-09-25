@@ -1,15 +1,14 @@
-import {ICommand} from "./command"
+import {ISceneCommand} from "./sceneCommand"
 
 import {Node} from "../node"
 import {Log} from "../../LogComponent/log"
 import {Scene} from "../scene"
 import {NodeModel} from "../../Forms/node-model"
 
-export class NewNodeCommand implements ICommand
+export class NewNodeCommand implements ISceneCommand
 {
   constructor(private nodeModel: NodeModel) 
   {
-
   }
 
   Execute(scene: Scene, logger: Log): void
@@ -17,11 +16,6 @@ export class NewNodeCommand implements ICommand
     var newNode = new Node(this.nodeModel.name);
     scene.addNewNode(newNode);
 
-    logger.debug("execute NewNodeCommand name = " + this.nodeModel.name);
-  }
-
-  Revert(scene: Scene, logger: Log): void
-  {
-
+    logger.debug(`added node: ${this.nodeModel.name}`);
   }
 }

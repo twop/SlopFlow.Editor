@@ -1,7 +1,7 @@
-<div *ngIf="hasModel">
+<div [hidden]="!hasModel">
   <!--<div *ngIf="hasModel" [hidden]="!hasModel">-->
-  <h4>Create new Port</h4>
-  <form (ngSubmit)="onSubmit()" #nodeForm="ngForm">
+  <h4>Create Port</h4>
+  <form *ngIf="hasModel" (ngSubmit)="onSubmit()" #nodeForm="ngForm">
     <div class="form-group">
       <label for="name">Name</label>
       <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">

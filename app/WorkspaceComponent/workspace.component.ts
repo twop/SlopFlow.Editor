@@ -4,6 +4,8 @@ import {Scene} from "../Scene/scene";
 import {SceneView} from './sceneView'
 
 import { NodeEventService } from '../Common/node-event.service';
+import {Workspace} from '../Scene/workspace';
+import {NewPortRequest} from '../Common/newPortEvent';
 
 
 @Component({
@@ -20,7 +22,9 @@ export class WorkspaceComponent implements AfterViewInit
   private canvas: HTMLCanvasElement = null;
 
   constructor(private scene:Scene, private sceneView: SceneView, private eventService: NodeEventService)
-  { }
+  {
+    //this.scene.activeWorkspaceChanged.subscribe(() => sceneView.drawScene());
+  }
 
   ngAfterViewInit()
   {
@@ -35,15 +39,27 @@ export class WorkspaceComponent implements AfterViewInit
     this.sceneView.setCanvas(context, this.canvas);
   }
 
-  public requestNewPort(): void
+  public get workspace():Workspace
   {
-    this.eventService.requestNewPort.emit("new port");
+    return this.scene.activeWorkspace;
   }
 
-  public undo():void {}
-  public redo():void {}
+  public requestNewPort(): void
+  {
+    this.eventService.requestNewPort.emit( new NewPortRequest("new port", this.workspace));
+  }
 
-  public get devicePixelRatio(): number
+  public undo():void
+  {
+    this.workspace && this.workspace.undo();
+  }
+
+  public redo():void
+  {
+    this.workspace && this.workspace.redo();
+  }
+
+  private get devicePixelRatio(): number
   {
     return (('devicePixelRatio' in window) && (window.devicePixelRatio > 1)) ? window.devicePixelRatio : 1;
   }
