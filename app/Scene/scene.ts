@@ -52,6 +52,13 @@ export class Scene
     this.activateWorkspace(workspace);
   }
 
+  public renameNodeInWorkspace(workspace: Workspace, newName:string)
+  {
+    workspace.name = newName;
+    workspace.node.name = newName;
+    this.workspaceModified.emit(workspace);
+  }
+
   private addWorkspaceFor(node: Node):Workspace
   {
     var workspace =  new Workspace(node, this.theme.sizes, this.log);

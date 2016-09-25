@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { NodeModel }    from './node-model';
+import { NodeModel }  from './node-model';
 
 import { NodeEventService } from '../Common/node-event.service';
 import { Scene } from '../Scene/scene';
 import { NewNodeCommand } from '../Scene/Commands/newNodeCommand';
-
+import { Node } from '../Scene/node';
+import {EditNodeCommand} from '../Scene/Commands/editNodeCommand';
+import {Workspace} from '../Scene/workspace';
 
 @Component({
   selector: 'node-form',
@@ -16,30 +18,48 @@ export class NodeFormComponent
   constructor(private scene: Scene, nodeEventService: NodeEventService)
   {
     var formComponent = this;
-    scene.activeWorkspaceChanged.subscribe(()=> this.onCancel());
-    nodeEventService.requestNewNode.subscribe((name) => { formComponent.showCreateNodeForm(name); });
+    scene.activeWorkspaceChanged.subscribe(()=> formComponent.onCancel());
+    nodeEventService.requestNewNode.subscribe((name) => formComponent.showCreateNodeForm(name));
+    nodeEventService.requestEditNode.subscribe((workspace) => formComponent.showEditNodeForm(workspace));
   }
 
-  model: NodeModel = null;
+  public model: NodeModel = null;
+  public workspace:Workspace;
 
-  onSubmit(): void
+  public get hasModel(): boolean
   {
-    this.scene.executeCommand(new NewNodeCommand(this.model));
-    this.model = null;
+    return this.model != null;
   }
 
-  onCancel(): void
+  public onSubmit(): void
+  {
+    if (this.model.isEditMode)
+      this.scene.executeCommand(new EditNodeCommand(this.workspace, this.model));
+    else
+      this.scene.executeCommand(new NewNodeCommand(this.model));
+
+    this.resetModel();
+  }
+
+  public onCancel(): void
+  {
+    this.resetModel();
+  }
+
+  private resetModel()
   {
     this.model = null;
+    this.workspace = null;
   }
 
   private showCreateNodeForm(nodeName: string): void
   {
-    this.model = new NodeModel(nodeName);
+    this.model = new NodeModel(nodeName, false);
   }
 
-  get hasModel(): boolean 
+  private showEditNodeForm(workspace:Workspace): void
   {
-    return this.model != null;
+    this.workspace = workspace;
+    this.model = new NodeModel(workspace.node.name, true);
   }
 }

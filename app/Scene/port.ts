@@ -2,7 +2,7 @@ import {Rectangle} from '../Geometry/rectangle'
 
 export class Port
 {
-  constructor(public name: string, public type: string)
+  constructor(public name: string, public type: string, public isInput:boolean)
   { }
 
   public rectangle: Rectangle = new Rectangle(0, 0, 0, 0);

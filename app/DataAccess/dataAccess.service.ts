@@ -11,13 +11,13 @@ export class DataAccessService
   public getNodes(): Promise<Node[]>
   {
     var sum = new Node("Sum");
-    sum.addInput(new Port("input1", "int"));
-    sum.addInput(new Port("input2", "int"));
-    sum.addOutput(new Port("output", "int"));
+    sum.add(new Port("input1", "int", true));
+    sum.add(new Port("input2", "int", true));
+    sum.add(new Port("output", "int", false));
 
     var greaterNode = new Node("Greater");
-    greaterNode.addInput(new Port("input", "int"));
-    greaterNode.addOutput(new Port("output", "int"));
+    greaterNode.add(new Port("input", "int", true));
+    greaterNode.add(new Port("output", "int", false));
 
     this.nodes = [sum, greaterNode];
 

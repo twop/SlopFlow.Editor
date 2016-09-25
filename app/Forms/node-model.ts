@@ -1,5 +1,5 @@
 
 export class NodeModel
 {
-  constructor(public name: string) { }
+  constructor(public name: string, public isEditMode:boolean) { }
 }

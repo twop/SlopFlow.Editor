@@ -1,15 +1,16 @@
 <div [hidden]="!hasModel">
-  <!--<div *ngIf="hasModel" [hidden]="!hasModel">-->
-  <h4>Create Node</h4>
-  <form *ngIf="hasModel" (ngSubmit)="onSubmit()" #nodeForm="ngForm">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
-      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-        Name is required
+  <div *ngIf="hasModel">
+    <h4>{{model.isEditMode? 'Rename Node' : 'Create Node'}}</h4>
+    <form (ngSubmit)="onSubmit()" #nodeForm="ngForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+          Name is required
+        </div>
       </div>
-    </div>
-    <button type="submit" class="btn btn-primary" [disabled]="!nodeForm.form.valid">Save</button>
-    <button (click)="onCancel()" class="btn btn-default">Cancel</button>
-  </form>
+      <button type="submit" class="btn btn-primary" [disabled]="!nodeForm.form.valid">Save</button>
+      <button (click)="onCancel()" class="btn btn-default">Cancel</button>
+    </form>
+  </div>
 </div>

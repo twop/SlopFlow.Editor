@@ -6,7 +6,7 @@ import {Workspace} from '../workspace';
 
 export class NewPortCommand implements IWorkSpaceCommand
 {
-  constructor(private port: Port, private isInput: boolean)
+  constructor(private port: Port)
   {
   }
 
@@ -15,7 +15,7 @@ export class NewPortCommand implements IWorkSpaceCommand
     if (!workspace)
       throw `workspace is null`;
 
-    workspace.addPort( this.port, this.isInput );
+    workspace.addPort( this.port );
     logger.debug(`added port ${this.port.name} in ${workspace.name}`);
   }
 
@@ -24,7 +24,7 @@ export class NewPortCommand implements IWorkSpaceCommand
     if (!workspace)
       throw `workspace is null`;
 
-    workspace.removePort( this.port, this.isInput );
+    workspace.removePort( this.port);
     logger.debug(`removed port ${this.port.name} in ${workspace.name}`);
   }
 }

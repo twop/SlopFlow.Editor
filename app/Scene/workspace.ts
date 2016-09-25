@@ -48,15 +48,15 @@ export class Workspace
     this.undoCommands.push(command);
   }
 
-  public addPort(port: Port, isInput: boolean): void
+  public addPort(port: Port): void
   {
-    this.getNodes(isInput).push(port);
+    this.getNodes(port.isInput).push(port);
     this.node.recalculateSize(this.sizes);
   }
 
-  public removePort(port: Port, isInput: boolean): void
+  public removePort(port: Port): void
   {
-    var ports = this.getNodes(isInput);
+    var ports = this.getNodes(port.isInput);
 
     var index = ports.indexOf(port, 0);
     if (index > -1)
@@ -64,6 +64,11 @@ export class Workspace
       ports.splice(index, 1);
     }
     this.node.recalculateSize(this.sizes);
+  }
+
+  public renamePort(port: Port, newName:string): void
+  {
+    port.name = newName;
   }
 
   public executeCommand(command: IWorkSpaceCommand): void

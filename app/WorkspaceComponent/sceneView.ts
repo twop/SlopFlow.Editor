@@ -9,17 +9,21 @@ import {Drawer} from "./drawer";
 import {Workspace} from '../Scene/workspace';
 import {Rectangle} from '../Geometry/rectangle';
 import {Point} from '../Geometry/point';
+import {NodeEventService} from '../Common/node-event.service';
+import {NodeEditing} from './Behaviors/nodeEditing';
 
 @Injectable()
 export class SceneView
 {
-  constructor(private scene: Scene, private theme: Theme) 
+  constructor(private scene: Scene, private theme: Theme, private eventService: NodeEventService)
   {
     var sceneView = this;
-    this.scene.activeWorkspaceChanged.subscribe((workspace) => sceneView.drawScene());
+    this.scene.activeWorkspaceChanged.subscribe((workspace) => sceneView.onWorkspaceChanged(workspace));
     this.scene.workspaceModified.subscribe((workspace) => sceneView.drawScene());
   }
 
+  private workspace:Workspace = null;
+  private nodeEditing:NodeEditing;
   private drawer:Drawer = new Drawer();
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
@@ -40,6 +44,17 @@ export class SceneView
     canvas.addEventListener("keydown", (e: KeyboardEvent) => {this.keyDown(e)}, false);
     canvas.addEventListener("keypress", (e: KeyboardEvent) => {this.keyPress(e)}, false);
     canvas.addEventListener("keyup", (e: KeyboardEvent) => {this.keyUp(e)}, false);
+
+    this.drawScene();
+  }
+
+  private onWorkspaceChanged(workspace:Workspace)
+  {
+    this.workspace = workspace;
+    if (workspace)
+      this.nodeEditing = new NodeEditing(workspace, this.eventService);
+    else
+      this.nodeEditing = null;
 
     this.drawScene();
   }
@@ -92,17 +107,26 @@ export class SceneView
     this.context.restore();
   }
 
-  private mouseDown(e: MouseEvent) {}
+  private mouseDown(e: MouseEvent)
+  {
+    if (!this.workspace)
+      return;
+
+    this.hoverElement = this.workspace.viewNode.hitTest(this.getMousePosition(e));
+    if (this.hoverElement && this.nodeEditing)
+      this.nodeEditing.mouseDownOn(this.hoverElement);
+
+    this.drawScene();
+  }
 
   private mouseUp(e: MouseEvent) {}
 
   private mouseMove(e: MouseEvent): void
   {
-    var workspace = this.scene.activeWorkspace;
-    if (!workspace)
+    if (!this.workspace)
       return;
 
-    this.hoverElement = workspace.viewNode.hitTest(this.getMousePosition(e));
+    this.hoverElement = this.workspace.viewNode.hitTest(this.getMousePosition(e));
     this.drawScene();
   }
 

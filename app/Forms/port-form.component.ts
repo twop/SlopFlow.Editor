@@ -7,7 +7,8 @@ import { NewPortCommand } from '../Scene/Commands/newPortCommand';
 import { Scene } from '../Scene/scene';
 import { Port } from '../Scene/port';
 import {Workspace} from '../Scene/workspace';
-import {NewPortRequest} from '../Common/newPortEvent';
+import {NewPortRequest, EditPortRequest} from '../Common/portEvents';
+import {EditPortCommand} from '../Scene/Commands/editPortCommand';
 
 
 @Component({
@@ -28,23 +29,44 @@ export class PortFormComponent
       formComponent.workspace = request.workspace;
       formComponent.showCreatePortForm(request.name);
     });
+
+    nodeEventService.requestEditPort.subscribe(( request: EditPortRequest) =>
+    {
+      formComponent.workspace = request.workspace;
+      formComponent.showEditPortForm(request.port);
+    });
   }
 
   public model: PortModel = null;
 
   private workspace:Workspace = null;
+  private port:Port = null;
 
   public onSubmit(): void
   {
-    var port = new Port(this.model.name, "new type");
-    this.workspace.executeCommand(new NewPortCommand(port, true));
-    this.model = null;
+    if (this.model.isEditMode)
+    {
+      this.workspace.executeCommand(new EditPortCommand(this.port, this.model.name));
+    }
+    else
+    {
+      var port = new Port(this.model.name, "new type", this.model.isInput);
+      this.workspace.executeCommand(new NewPortCommand(port));
+    }
+
+    this.resetModel();
   }
 
   public onCancel(): void
   {
+    this.resetModel();
+  }
+
+  private resetModel()
+  {
     this.model = null;
     this.workspace = null;
+    this.port = null;
   }
 
   public get hasModel(): boolean
@@ -54,6 +76,12 @@ export class PortFormComponent
 
   private showCreatePortForm(nodeName: string): void
   {
-    this.model = new PortModel(nodeName);
+    this.model = new PortModel(nodeName, false, true);
+  }
+
+  private showEditPortForm(port:Port): void
+  {
+    this.port = port;
+    this.model = new PortModel(port.name, true, port.isInput);
   }
 }

@@ -5,7 +5,7 @@ import {SceneView} from './sceneView'
 
 import { NodeEventService } from '../Common/node-event.service';
 import {Workspace} from '../Scene/workspace';
-import {NewPortRequest} from '../Common/newPortEvent';
+import {NewPortRequest} from '../Common/portEvents';
 
 
 @Component({
@@ -46,7 +46,12 @@ export class WorkspaceComponent implements AfterViewInit
 
   public requestNewPort(): void
   {
-    this.eventService.requestNewPort.emit( new NewPortRequest("new port", this.workspace));
+    this.eventService.requestNewPort.emit(new NewPortRequest("new port", this.workspace));
+  }
+
+  public renameNode(): void
+  {
+    this.eventService.requestEditNode.emit(this.workspace);
   }
 
   public undo():void

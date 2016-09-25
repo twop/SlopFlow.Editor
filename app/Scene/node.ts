@@ -13,16 +13,13 @@ export class Node
 
   public size: Size = new Size(0, 0);
 
-  addInput(port: Port): void
+  add(port: Port): void
   {
-    this.inputs.push(port);
+    if (port.isInput)
+      this.inputs.push(port);
+    else
+      this.outputs.push(port);
   }
-
-  addOutput(port: Port): void
-  {
-    this.outputs.push(port);
-  }
-
 
   public recalculateSize(sizes: Sizes): void
   {
