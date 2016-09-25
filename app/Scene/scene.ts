@@ -6,7 +6,7 @@ import {Log} from '../LogComponent/log'
 import {ISceneCommand} from './Commands/sceneCommand'
 import {DataAccessService} from '../DataAccess/dataAccess.service'
 
-import {Theme} from "../WorkspaceComponent/theme";
+import {Theme} from "../Common/theme";
 import {Workspace} from './workspace';
 
 @Injectable()

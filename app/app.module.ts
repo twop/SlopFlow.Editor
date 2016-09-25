@@ -12,7 +12,7 @@ import {PortFormComponent} from  './Forms/port-form.component'
 
 import {Scene} from  './Scene/scene'
 import {Log} from  './LogComponent/log'
-import {Theme} from "./WorkspaceComponent/theme";
+import {Theme} from "./Common/theme";
 //import {SceneView} from "./WorkspaceComponent/sceneView";
 import {DataAccessService} from './DataAccess/dataAccess.service'
 

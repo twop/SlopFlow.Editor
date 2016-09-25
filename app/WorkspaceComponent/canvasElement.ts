@@ -1,4 +1,4 @@
-import {Theme} from './theme'
+import {Theme} from '../Common/theme'
 
 export interface ICanvasElement
 {
