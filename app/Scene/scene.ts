@@ -8,6 +8,7 @@ import {ICommand} from './Commands/command'
 import {DataAccessService} from '../DataAccess/dataAccess.service'
 
 import {Theme} from "../WorkspaceComponent/theme";
+import {Workspace} from './workspace';
 
 @Injectable()
 export class Scene
@@ -17,36 +18,47 @@ export class Scene
     this.dataService = dataService;
     this.dataService.getNodes().then(nodes => 
     {
-      this.nodes = nodes;
-      this.nodes.forEach(node=>node.recalculateSize(theme.sizes))
+      this.loadNodes(nodes, theme);
     });
   }
 
-  public updated = new EventEmitter<any>();
-  public selectedNode: Node = null;
-  public isInNodeEditMode = true;
+  public activeWorkspaceChanged = new EventEmitter<Workspace>();
+  public workspaceModified = new EventEmitter<Workspace>();
+  public activeWorkspace: Workspace = null;
 
   private nodes: Node[] = [];
+  private workspaces: Workspace[] = [];
   
-  public getNodes():Node[] 
+  public getWorkspaces():Workspace[]
   {
-    return this.nodes;
+    return this.workspaces;
+  }
+
+  private loadNodes(nodes, theme: Theme)
+  {
+    this.nodes = nodes;
+    this.nodes.forEach(node=>
+    {
+      node.recalculateSize(theme.sizes);
+      this.workspaces.push(new Workspace(node));
+    })
   }
 
   public addNewNode(node: Node)
   {
     this.nodes.push(node);
-    this.selectNode(node);
     node.recalculateSize(this.theme.sizes);
 
-    this.updated.emit();
+    var workspace = new Workspace(node);
+    this.workspaces.push(workspace)
+
+    this.activateWorkspace(workspace);
   }
   
-  public selectNode(node: Node): void
+  public activateWorkspace(workspace: Workspace): void
   {
-    this.selectedNode = node;
-
-    this.updated.emit();
+    this.activeWorkspace = workspace;
+    this.activeWorkspaceChanged.emit();
   }
 
   public addPortToNode(node:Node, port:Port, isInput:boolean)
@@ -55,7 +67,7 @@ export class Scene
     ports.push(port);
     node.recalculateSize(this.theme.sizes);
 
-    this.updated.emit();
+    this.workspaceModified.emit();
   }
 
   public executeCommand(command:ICommand):void

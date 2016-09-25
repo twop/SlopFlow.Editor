@@ -13,10 +13,10 @@ export class NewPortCommand implements ICommand
 
   Execute(scene: Scene, logger: Log): void
   {
-    if (!scene.selectedNode)
-      throw "scene.selectedNode is null";
+    if (!scene.activeWorkspace)
+      throw "scene.activeWorkspace is null";
 
-    scene.addPortToNode( scene.selectedNode, this.port, this.isInput );
+    scene.addPortToNode( scene.activeWorkspace.node, this.port, this.isInput );
     logger.debug('execute NewPortCommand portName = ' + this.port.name);
   }
 

@@ -7,20 +7,23 @@ import {Scene} from '../Scene/scene'
 
 import {Theme} from "./theme";
 import {Drawer} from "./drawer";
+import {Workspace} from '../Scene/workspace';
+import {Rectangle} from '../Geometry/rectangle';
 
 @Injectable()
 export class SceneView
 {
   constructor(private scene: Scene, private theme: Theme) 
   {
-    var drawer = this;
-    this.scene.updated.subscribe(() => drawer.drawScene());
+    var sceneView = this;
+    this.scene.activeWorkspaceChanged.subscribe(() => sceneView.drawScene());
   }
 
+  private drawer:Drawer = new Drawer();
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
-  public setCanvas(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement)
+  public setCanvas(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement):void
   {
     this.canvas = canvas;
     this.context = context;
@@ -31,48 +34,27 @@ export class SceneView
   private drawScene(): void
   {
     this.context.clearRect(0, 0, this.canvas.scrollWidth, this.canvas.scrollHeight);
-
-    if (this.scene.isInNodeEditMode)
-    {
-      this.drawNodeEditing();
-    }
+    this.drawWorkspace(this.scene.activeWorkspace);
   }
 
-  private drawNodeEditing(): void
-  {
-    var node = this.scene.selectedNode;
-    if (node)
-    {
-      this.context.save();
-
-      //TODO this is a hack. do it properly      
-      node.rectangle.x = 20;
-      node.rectangle.y = 20;
-      node.recalculateSize(this.theme.sizes);
-
-      this.drawNode(node);
-      this.context.restore();
-    }
-  }
-
-  public drawNode(node:Node, atPosition:Point = null): void
+  public drawNode(node:Node): void
   {
     var colors = this.theme.colors;
 
     var isHover = false;
 
     var strokeStyle = isHover ? colors.nodeBorderHover : colors.nodeBorder;
-    Drawer.paintRect(this.context, node.rectangle, strokeStyle);
+    this.drawer.paintRect(this.context, Rectangle.fromSize(node.size), strokeStyle);
 
     this.paintPorts(this.context, node.inputs);
     this.paintPorts(this.context, node.outputs);
 
-    var headerX = node.rectangle.x + 5;
-    var headerY = node.rectangle.y - 5;
-    Drawer.paintText(this.context, node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.portText);
+    var headerX = 5;
+    var headerY = - 5;
+    this.drawer.paintText(this.context, node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.portText);
   }
 
-  private paintPorts(context: CanvasRenderingContext2D, ports: Port[])
+  private paintPorts(context: CanvasRenderingContext2D, ports: Port[]):void
   {
     var colors = this.theme.colors;
     var sizes = this.theme.sizes;
@@ -81,8 +63,20 @@ export class SceneView
     {
       var portNameX = port.rectangle.x;
       var portNameY = port.rectangle.y - sizes.portSize / 2;
-      Drawer.paintText(context, port.name, portNameX, portNameY, sizes.portFont, colors.portText);
-      Drawer.paintFilledRect(context, port.rectangle, colors.portBorder, colors.port);
+      this.drawer.paintText(context, port.name, portNameX, portNameY, sizes.portFont, colors.portText);
+      this.drawer.paintFilledRect(context, port.rectangle, colors.portBorder, colors.port);
     });
+  }
+
+  private drawWorkspace(workspace: Workspace):void
+  {
+    if (!workspace)
+      return;
+
+    this.drawer.offset = workspace.viewNode.position;
+
+    this.context.save();
+    this.drawNode(workspace.node);
+    this.context.restore();
   }
 }

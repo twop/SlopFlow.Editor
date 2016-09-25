@@ -1,6 +1,5 @@
-.canvasComponent
+.workspace
 { 
-  background-color: #1E1E1E; 
-  border-width: 1px;
-  border-style: groove;
+  background-color: #1E1E1E;
+  border: 1px groove;
 }

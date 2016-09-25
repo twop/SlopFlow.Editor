@@ -1,13 +1,15 @@
-<div class="canvasComponent">
+<div class="workspace">
   <div class="row">
     <div class="col-xs-6">
       <canvas #myCanvas class='img-responsive' height="300px"></canvas>
     </div>
   </div>
-  <div class="row" *ngIf="scene.selectedNode" class="row">
+  <div class="row" *ngIf="scene.activeWorkspace" class="row">
     <div class="col-xs-6">
-      <!--<span>{{scene.selectedNode.name   }} </span>-->
+      <!--<span>{{scene.activeWorkspace.name   }} </span>-->
       <button class="btn btn-default btn-sm" (click)="requestNewPort()">Add Port</button>
+      <button class="btn btn-default btn-sm" (click)="undo()">Undo</button>
+      <button class="btn btn-default btn-sm" (click)="redo()">Redo</button>
     </div>
   </div>
 </div>

@@ -4,7 +4,7 @@ import { FormsModule }   from '@angular/forms';
 
 import { AppComponent }  from './app.component';
 
-import {WorkspaceComponent} from  './WorkspaceComponent/Workspace.component'
+import {WorkspaceComponent} from  './WorkspaceComponent/workspace.component'
 import {AssetsComponent} from  './AssetsComponent/assets.component'
 import {LogComponent} from  './LogComponent/log.component'
 import {NodeFormComponent} from  './Forms/node-form.component'

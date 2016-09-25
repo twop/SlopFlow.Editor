@@ -35,10 +35,13 @@ export class WorkspaceComponent implements AfterViewInit
     this.sceneView.setCanvas(context, this.canvas);
   }
 
-  requestNewPort(): void
+  public requestNewPort(): void
   {
     this.eventService.requestNewPort.emit("new port");
   }
+
+  public undo():void {}
+  public redo():void {}
 
   public get devicePixelRatio(): number
   {

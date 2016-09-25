@@ -1,11 +1,12 @@
-export class Point 
+export class Point
 {
-  public x: number;
-  public y: number;
-
-  constructor(x: number, y: number) 
+  constructor(public x: number, public y: number)
   {
-    this.x = x;
-    this.y = y;
+  }
+
+  public moveBy(dx: number, dy: number)
+  {
+    this.x += dx;
+    this.y += dy;
   }
 }

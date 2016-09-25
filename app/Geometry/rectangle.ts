@@ -1,21 +1,21 @@
 import {Point} from './point'
+import {Size} from './size';
 
 export class Rectangle
 {
-  public x: number;
-  public y: number;
-  public width: number;
-  public height: number;
+  constructor(
+      public x: number,
+      public y: number,
+      public width: number,
+      public height: number)
+  {}
 
-  constructor(x: number, y: number, width: number, height: number)
+  public static fromSize(size:Size):Rectangle
   {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
+    return new Rectangle(0,0, size.width, size.height);
   }
 
-  public contains(point: Point)
+  public contains(point: Point):boolean
   {
     return ((point.x >= this.x) && (point.x <= (this.x + this.width)) && (point.y >= this.y) && (point.y <= (this.y + this.height)));
   }
@@ -28,13 +28,13 @@ export class Rectangle
     this.height += dy + dy + 1;
   }
 
-  public moveBy(deltaX: number, deltaY: number)
+  public moveBy(deltaX: number, deltaY: number):void
   {
      this.x += deltaX;
      this.y += deltaY;
   }
 
-  public union(rectangle: Rectangle)
+  public union(rectangle: Rectangle):Rectangle
   {
     var x1 = (this.x < rectangle.x) ? this.x : rectangle.x;
     var y1 = (this.y < rectangle.y) ? this.y : rectangle.y;

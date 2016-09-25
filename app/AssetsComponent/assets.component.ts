@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Scene} from '../Scene/scene'
 import { Node } from '../Scene/node'
 import { NodeEventService } from '../Common/node-event.service';
+import {Workspace} from '../Scene/workspace';
 
 @Component({
   selector: 'my-assets',
@@ -17,9 +18,9 @@ export class AssetsComponent
     private nodeEventService: NodeEventService)
   { }
   
-  selectNode(node: Node): void
+  activateWorkspace(workspace: Workspace): void
   {
-    this.scene.selectNode(node);
+    this.scene.activateWorkspace(workspace);
   }
 
   requestNewNode(): void
