@@ -9,11 +9,11 @@ export class Theme
 
 export class Sizes
 {
-  portFont: "12px Arial";
+  portFont: "14px Arial";
   portSize: number = 15;
   portInterval: number = 20;
 
-  nodeFont = "14px Arial";
+  nodeFont = "16px Arial";
   nodeDefaultWidth: number = 100;
   nodeDefaultHeight: number = 50;
 }
@@ -27,5 +27,7 @@ export class Colors
   port = "#FF4C4C";
   portBorder = "#7F2626";
   portBorderHover = "white";
-  portText = "white";
+  portText = "#B5FFFD";
+  portTextHover = "white";
+  portTextType = "#4EC9B0";
 }

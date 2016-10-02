@@ -2,14 +2,14 @@ import {Port} from "../port"
 import {Log} from "../../LogComponent/log"
 import {IWorkSpaceCommand} from './workspaceCommand';
 import {Workspace} from '../workspace';
-
+import {PortModel} from '../../Forms/portModel';
 
 export class EditPortCommand implements IWorkSpaceCommand
 {
-  private oldName:string = null;
-  constructor(private port: Port, private newName:string)
+  private oldPortModel:PortModel = null;
+  constructor(private port: Port, private newPortModel: PortModel)
   {
-    this.oldName = port.name;
+    this.oldPortModel = new PortModel(port.name, port.dataType, true, port.isInput);
   }
 
   Execute(workspace: Workspace, logger: Log): void
@@ -17,8 +17,8 @@ export class EditPortCommand implements IWorkSpaceCommand
     if (!workspace)
       throw `workspace is null`;
 
-    workspace.renamePort( this.port, this.newName);
-    logger.debug(`renamed port ${this.port.name} in ${workspace.name} to ${this.newName} `);
+    workspace.editPort( this.port, this.newPortModel);
+    logger.debug(`changed port ${this.port.name} in ${workspace.name} to ${this.newPortModel.toString()}`);
   }
 
   Revert(workspace: Workspace, logger: Log): void
@@ -26,7 +26,7 @@ export class EditPortCommand implements IWorkSpaceCommand
     if (!workspace)
       throw `workspace is null`;
 
-    workspace.renamePort( this.port, this.oldName);
-    logger.debug(`renamed back port ${this.port.name} in ${workspace.name} to ${this.oldName} `);
+    workspace.editPort( this.port, this.oldPortModel);
+    logger.debug(`changed back port ${this.port.name} in ${workspace.name} to ${this.oldPortModel.toString()}`);
   }
 }

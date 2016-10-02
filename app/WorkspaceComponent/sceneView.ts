@@ -24,7 +24,7 @@ export class SceneView
 
   private workspace:Workspace = null;
   private nodeEditing:NodeEditing;
-  private drawer:Drawer = new Drawer();
+  private drawer:Drawer = null;
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   public hoverElement: Object = null;
@@ -33,6 +33,8 @@ export class SceneView
   {
     this.canvas = canvas;
     this.context = context;
+
+    this.drawer = new Drawer(context);
 
     canvas.addEventListener("mousedown", (e: MouseEvent) => {this.mouseDown(e)}, false);
     canvas.addEventListener("mouseup", (e: MouseEvent) => {this.mouseUp(e)}, false);
@@ -70,28 +72,34 @@ export class SceneView
     var colors = this.theme.colors;
 
     var strokeStyle = this.hoverElement == node ? colors.nodeBorderHover : colors.nodeBorder;
-    this.drawer.paintRect(this.context, Rectangle.fromSize(node.size), strokeStyle);
+    this.drawer.paintRect(Rectangle.fromSize(node.size), strokeStyle);
 
-    this.paintPorts(this.context, node.inputs);
-    this.paintPorts(this.context, node.outputs);
+    this.paintPorts(node.inputs);
+    this.paintPorts(node.outputs);
 
     var headerX = 5;
     var headerY = - 5;
-    this.drawer.paintText(this.context, node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.portText);
+    this.drawer.paintText(node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.portText);
   }
 
-  private paintPorts(context: CanvasRenderingContext2D, ports: Port[]):void
+  private paintPorts(ports: Port[]):void
   {
     var colors = this.theme.colors;
     var sizes = this.theme.sizes;
 
-    ports.forEach(port => 
+    ports.forEach(port =>
     {
+      var hover = this.hoverElement == port;
       var portNameX = port.rectangle.x;
       var portNameY = port.rectangle.y - sizes.portSize / 2;
-      this.drawer.paintText(context, port.name, portNameX, portNameY, sizes.portFont, colors.portText);
-      var strokeStyle = this.hoverElement == port ? colors.portBorderHover : colors.portBorder;
-      this.drawer.paintFilledRect(context, port.rectangle, strokeStyle, colors.port);
+
+      var portTextColor = !hover ? colors.portText : colors.portTextHover;
+      var textWidth = this.drawer.measureTextWidth(port.name, sizes.portFont);
+      this.drawer.paintText(port.name, portNameX, portNameY, sizes.portFont, portTextColor);
+      this.drawer.paintText(`:${port.dataType.name}`, portNameX + textWidth, portNameY, sizes.portFont, colors.portTextType);
+
+      var strokeStyle = hover ? colors.portBorderHover : colors.portBorder;
+      this.drawer.paintFilledRect(port.rectangle, strokeStyle, colors.port);
     });
   }
 

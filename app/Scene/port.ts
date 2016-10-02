@@ -1,8 +1,9 @@
 import {Rectangle} from '../Geometry/rectangle'
+import {DataType} from './dataType';
 
 export class Port
 {
-  constructor(public name: string, public type: string, public isInput:boolean)
+  constructor(public name: string, public dataType: DataType, public isInput:boolean)
   { }
 
   public rectangle: Rectangle = new Rectangle(0, 0, 0, 0);

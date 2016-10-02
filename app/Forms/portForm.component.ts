@@ -9,6 +9,7 @@ import { Port } from '../Scene/port';
 import {Workspace} from '../Scene/workspace';
 import {NewPortRequest, EditPortRequest} from '../Common/portEvents';
 import {EditPortCommand} from '../Scene/Commands/editPortCommand';
+import {DefaultTypes} from '../Scene/dataType';
 
 
 @Component({
@@ -46,11 +47,11 @@ export class PortFormComponent
   {
     if (this.model.isEditMode)
     {
-      this.workspace.executeCommand(new EditPortCommand(this.port, this.model.name));
+      this.workspace.executeCommand(new EditPortCommand(this.port, this.model));
     }
     else
     {
-      var port = new Port(this.model.name, "new type", this.model.isInput);
+      var port = new Port(this.model.name, this.model.dataType, this.model.isInput);
       this.workspace.executeCommand(new NewPortCommand(port));
     }
 
@@ -76,12 +77,12 @@ export class PortFormComponent
 
   private showCreatePortForm(nodeName: string): void
   {
-    this.model = new PortModel(nodeName, false, true);
+    this.model = new PortModel(nodeName, DefaultTypes.float, false, true);
   }
 
   private showEditPortForm(port:Port): void
   {
     this.port = port;
-    this.model = new PortModel(port.name, true, port.isInput);
+    this.model = new PortModel(port.name, port.dataType, true, port.isInput);
   }
 }

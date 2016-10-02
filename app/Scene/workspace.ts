@@ -5,6 +5,7 @@ import {Sizes} from '../Common/theme';
 import {Log} from '../LogComponent/log'
 import {IWorkSpaceCommand} from './Commands/workspaceCommand';
 import {EventEmitter} from '@angular/core';
+import {PortModel} from '../Forms/portModel';
 
 export class Workspace
 {
@@ -66,9 +67,9 @@ export class Workspace
     this.node.recalculateSize(this.sizes);
   }
 
-  public renamePort(port: Port, newName:string): void
+  public editPort(port: Port, portModel:PortModel): void
   {
-    port.name = newName;
+    port.name = portModel.name;
   }
 
   public executeCommand(command: IWorkSpaceCommand): void
