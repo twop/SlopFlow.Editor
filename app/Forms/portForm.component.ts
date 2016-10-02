@@ -9,7 +9,7 @@ import { Port } from '../Scene/port';
 import {Workspace} from '../Scene/workspace';
 import {NewPortRequest, EditPortRequest} from '../Common/portEvents';
 import {EditPortCommand} from '../Scene/Commands/editPortCommand';
-import {DefaultTypes} from '../Scene/dataType';
+import {DefaultTypes, DataType} from '../Scene/dataType';
 
 
 @Component({
@@ -42,6 +42,11 @@ export class PortFormComponent
 
   private workspace:Workspace = null;
   private port:Port = null;
+
+  public get dataTypes():DataType[]
+  {
+    return DefaultTypes.all;
+  }
 
   public onSubmit(): void
   {

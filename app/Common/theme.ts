@@ -21,13 +21,13 @@ export class Sizes
 export class Colors
 {
   background = "#1E1E1E";
-  node = "#252526";
+  node = "white";
   nodeBorder = "#9FC5F8";
   nodeBorderHover = "white";
   port = "#FF4C4C";
   portBorder = "#7F2626";
   portBorderHover = "white";
-  portText = "#B5FFFD";
+  portText = "white";
   portTextHover = "white";
   portTextType = "#4EC9B0";
 }

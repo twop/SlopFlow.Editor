@@ -17,6 +17,9 @@
             <label><input type="radio" name="isInput" [value]="false" [(ngModel)]="model.isInput">Output</label>
           </div>
         </div>
+        <select class="form-control" id="dataType" required>
+          <option *ngFor="let dtype of dataTypes" [value]="dtype">{{dtype.name}}</option>
+        </select>
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="!nodeForm.form.valid">Save</button>
       <button (click)="onCancel()" class="btn btn-default">Cancel</button>

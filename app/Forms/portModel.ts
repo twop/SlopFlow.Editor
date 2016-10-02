@@ -8,5 +8,5 @@ export class PortModel
     public isInput:boolean)
   { }
 
-  public toString = ()=> `{name=${this.name}, dataType=${this.dataType}}`;
+  public toString = ()=> `{name=${this.name}, type=${this.dataType.name}}`;
 }

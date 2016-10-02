@@ -79,7 +79,7 @@ export class SceneView
 
     var headerX = 5;
     var headerY = - 5;
-    this.drawer.paintText(node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.portText);
+    this.drawer.paintText(node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.node);
   }
 
   private paintPorts(ports: Port[]):void
