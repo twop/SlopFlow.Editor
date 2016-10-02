@@ -3,7 +3,7 @@ import {ISceneCommand} from "./sceneCommand"
 import {Node} from "../node"
 import {Log} from "../../LogComponent/log"
 import {Scene} from "../scene"
-import {NodeModel} from "../../Forms/node-model"
+import {NodeModel} from "../../Forms/nodeModel"
 
 export class NewNodeCommand implements ISceneCommand
 {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NodeModel }  from './node-model';
+import { NodeModel }  from './nodeModel';
 
-import { NodeEventService } from '../Common/node-event.service';
+import { NodeEventService } from '../Common/nodeEvent.service';
 import { Scene } from '../Scene/scene';
 import { NewNodeCommand } from '../Scene/Commands/newNodeCommand';
 import { Node } from '../Scene/node';
@@ -10,7 +10,7 @@ import {Workspace} from '../Scene/workspace';
 
 @Component({
   selector: 'node-form',
-  templateUrl: 'app/Forms/node-form.component.html'
+  templateUrl: 'app/Forms/nodeForm.component.html'
 })
 
 export class NodeFormComponent

@@ -1,6 +1,6 @@
 import {Node} from '../../Scene/node';
 import {Port} from '../../Scene/port';
-import {NodeEventService} from '../../Common/node-event.service';
+import {NodeEventService} from '../../Common/nodeEvent.service';
 import {EditPortRequest} from '../../Common/portEvents';
 import {Workspace} from '../../Scene/workspace';
 

@@ -9,7 +9,7 @@ import {Drawer} from "./drawer";
 import {Workspace} from '../Scene/workspace';
 import {Rectangle} from '../Geometry/rectangle';
 import {Point} from '../Geometry/point';
-import {NodeEventService} from '../Common/node-event.service';
+import {NodeEventService} from '../Common/nodeEvent.service';
 import {NodeEditing} from './Behaviors/nodeEditing';
 
 @Injectable()

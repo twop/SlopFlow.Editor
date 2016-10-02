@@ -3,7 +3,7 @@ import {AfterViewInit, Component, ViewChild} from "@angular/core";
 import {Scene} from "../Scene/scene";
 import {SceneView} from './sceneView'
 
-import { NodeEventService } from '../Common/node-event.service';
+import { NodeEventService } from '../Common/nodeEvent.service';
 import {Workspace} from '../Scene/workspace';
 import {NewPortRequest} from '../Common/portEvents';
 

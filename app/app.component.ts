@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NodeEventService } from './Common/node-event.service';
+import { NodeEventService } from './Common/nodeEvent.service';
 
 @Component({
   selector: 'my-app',

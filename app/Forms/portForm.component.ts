@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { PortModel }    from './port-model';
+import { PortModel }    from './portModel';
 
-import { NodeEventService } from '../Common/node-event.service';
+import { NodeEventService } from '../Common/nodeEvent.service';
 import { NewPortCommand } from '../Scene/Commands/newPortCommand';
 
 import { Scene } from '../Scene/scene';
@@ -13,7 +13,7 @@ import {EditPortCommand} from '../Scene/Commands/editPortCommand';
 
 @Component({
   selector: 'port-form',
-  templateUrl: 'app/Forms/port-form.component.html'
+  templateUrl: 'app/Forms/portForm.component.html'
 })
 
 export class PortFormComponent

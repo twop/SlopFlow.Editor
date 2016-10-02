@@ -27,6 +27,7 @@ export class Node
 
     var portsCount = Math.max(this.inputs.length, this.outputs.length);
     this.size.height = sizes.nodeDefaultHeight;
+
     this.size.height += sizes.portSize * portsCount;
     this.size.height += sizes.portInterval * (portsCount - 1);
 
