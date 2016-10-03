@@ -1,11 +1,17 @@
-<div class="assets panel panel-default">
-  <div class="panel-heading">Nodes</div>
+<div class="panel panel-default">
+  <div class="assetHeader panel-heading">
+    <span>Nodes</span>
+    <button role="button" type="button" class="btn btn-default btn-sm" (click)="requestNewNode()">
+      <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+      Add
+    </button>
+  </div>
   <div class="panel-body">
-    <ul class="nodeList nav nav-pills btn-group-vertical">
-      <li *ngFor="let workspace of scene.getWorkspaces()" class="btn btn-default btn-sm btn-block" [class.btn-danger]="workspace === scene.activeWorkspace" (click)="activateWorkspace(workspace)">
-        {{workspace.name}}
+    <ul class="nodeList">
+      <li *ngFor="let workspace of scene.getWorkspaces()" [class.selected]="workspace === scene.activeWorkspace"
+          (click)="activateWorkspace(workspace)">
+        <span class="typeMarker nodeMarker">&lt;N&gt;</span><span class="vertical-middle">{{workspace.name}}</span>
       </li>
-      <button type="button" class="btn btn-primary" (click)="requestNewNode()">+ Node</button>
     </ul>
   </div>
 </div>

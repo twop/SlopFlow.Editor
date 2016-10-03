@@ -1,4 +1,56 @@
-/*.nodeList
+.nodeList
+{
+  list-style-type: none;
+  padding-left: 0em;
+}
+
+.nodeList li
+{
+  cursor: pointer;
+  margin-left: 0;
+  border-radius: 0.2em;
+}
+
+.nodeList li:hover
+{
+  padding-left: 0.05em;
+  background-color: #343434;
+}
+
+.nodeList li.selected
+{
+  background-color: #2F5163;
+}
+
+.nodeList li.selected:hover
+{
+  padding-left: 0.05em;
+  background-color: #375F72;
+}
+
+.nodeMarker
+{
+  color: deepskyblue;
+}
+
+.typeMarker
+{
+  margin-left: 1em;
+  font-size: 0.6em;
+  margin-right: 0.2em;
+}
+
+.assetHeader span
+{
+  font-size: 1.2em;
+}
+
+/*
+.nodeList
+{
+  list-style-image: url('/assests/nodeIcon-12.png');
+}
+
 {
   display: block;
   margin: 0 0 2em 0;

@@ -4,13 +4,17 @@
       <canvas #myCanvas class='img-responsive' height="300px"></canvas>
     </div>
   </div>
-  <div class="row" *ngIf="workspace" class="row">
-    <div class="col-xs-6">
+  <div class="btn-group" *ngIf="workspace">
       <!--<span>{{scene.activeWorkspace.name   }} </span>-->
-      <button class="btn btn-default btn-sm" (click)="requestNewPort()">Add Port</button>
-      <button class="btn btn-default btn-sm" (click)="renameNode()">Rename</button>
+      <button class="btn btn-default btn-sm" (click)="requestNewPort()">
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+        Port
+      </button>
+      <button class="btn btn-default btn-sm" (click)="renameNode()">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        Rename
+      </button>
       <button class="btn btn-default btn-sm" [disabled]="!workspace.canUndo" (click)="undo()">Undo</button>
       <button class="btn btn-default btn-sm" [disabled]="!workspace.canRedo" (click)="redo()">Redo</button>
-    </div>
   </div>
 </div>

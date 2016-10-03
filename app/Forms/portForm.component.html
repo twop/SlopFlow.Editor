@@ -1,28 +1,36 @@
 <div [hidden]="!hasModel">
-  <div *ngIf="hasModel">
-    <h4>{{model.isEditMode? 'Edit Port' : 'Create Port'}}</h4>
-    <form (ngSubmit)="onSubmit()" #nodeForm="ngForm">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name"
-               #name="ngModel">
-        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-          Name is required
-        </div>
-        <div class="form-inline" [hidden]="model.isEditMode">
-          <div class="radio">
-            <label><input  type="radio" name="isInput" [value]="true" [(ngModel)]="model.isInput">Input</label>
+  <div class="panel panel-default" *ngIf="hasModel">
+    <div class="panel-heading">
+      <h4>{{model.isEditMode? 'Edit Port' : 'Create Port'}}</h4>
+    </div>
+    <div class="panel-body">
+      <form (ngSubmit)="onSubmit()" #nodeForm="ngForm">
+        <div class="form-group input-group-sm">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name"
+                   #name="ngModel">
+            <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+              Name is required
+            </div>
+          <div [hidden]="model.isEditMode">
+            <div class="radio">
+              <label><input type="radio" name="isInput" [value]="true" [(ngModel)]="model.isInput">Input</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" name="isInput" [value]="false" [(ngModel)]="model.isInput">Output</label>
+            </div>
           </div>
-          <div class="radio">
-            <label><input type="radio" name="isInput" [value]="false" [(ngModel)]="model.isInput">Output</label>
-          </div>
+          <label for="dataType">Data Type</label>
+          <select class="form-control" id="dataType" [(ngModel)]="model.dataType" name="dataType" required>
+            <option *ngFor="let dtype of dataTypes" [ngValue]="dtype">{{dtype.name}}</option>
+          </select>
         </div>
-        <select class="form-control" id="dataType" required>
-          <option *ngFor="let dtype of dataTypes" [value]="dtype">{{dtype.name}}</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!nodeForm.form.valid">Save</button>
-      <button (click)="onCancel()" class="btn btn-default">Cancel</button>
-    </form>
+        <button type="submit" class="btn btn-primary btn-sm" [disabled]="!nodeForm.form.valid">
+          <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+          Save
+        </button>
+        <button (click)="onCancel()" class="btn btn-default btn-sm">Cancel</button>
+      </form>
+    </div>
   </div>
 </div>
