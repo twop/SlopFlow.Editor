@@ -1,26 +1,33 @@
- /*Master Styles 
-h1 
+.vertical-middle
 {
-  color: #9CDCFE;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 250%;
+  vertical-align: middle;
 }
 
-h2, h3, h4 {
-  color: #9CDCFE;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: lighter;
+.standard-bottom-offset
+{
+  margin-bottom: 0.5em;
 }
 
-body 
+.standard-top-offset
 {
-  color: #9CDCFE; 
-  background-color: #252526; 
-  margin: 2em;
-  border-color: #3F3F40
+  margin-top: 0.5em;
 }
 
-* 
+.standard-offset
 {
-  font-family: Arial, Helvetica, sans-serif;
-}*/
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/*override Bootstrap panel style*/
+.panel-body
+{
+  padding: 0.5em;
+}
+
+.panel-heading
+{
+  padding: 0.1em 0.5em;
+}
+
+
