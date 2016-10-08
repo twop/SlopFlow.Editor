@@ -4,7 +4,7 @@ import { NodeModel }  from './nodeModel';
 import { NodeEventService } from '../Common/nodeEvent.service';
 import { Scene } from '../Scene/scene';
 import { NewNodeCommand } from '../Scene/Commands/newNodeCommand';
-import { Node } from '../Scene/node';
+import { Node } from '../Model/node';
 import {EditNodeCommand} from '../Scene/Commands/editNodeCommand';
 import {Workspace} from '../Scene/workspace';
 

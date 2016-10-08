@@ -1,23 +1,26 @@
-import {Node} from '../../Scene/node';
-import {Port} from '../../Scene/port';
+import {Node} from '../../Model/node';
+import {Port} from '../../Model/port';
 import {NodeEventService} from '../../Common/nodeEvent.service';
 import {EditPortRequest} from '../../Common/portEvents';
 import {Workspace} from '../../Scene/workspace';
+import {IElementInstance} from '../../Scene/elementInstance';
 
 export class NodeEditing
 {
   constructor(private workspace:Workspace, private eventService: NodeEventService)
   {}
 
-  public mouseDownOn(element:Object):void
+  public mouseDownOn(element:IElementInstance):void
   {
-    if (element instanceof Node)
+    var modelObject = element.modelObject;
+
+    if (modelObject instanceof Node)
     {
       this.eventService.requestEditNode.emit( this.workspace);
     }
-    else if (element instanceof Port)
+    else if (modelObject instanceof Port)
     {
-      this.eventService.requestEditPort.emit( new EditPortRequest(element, this.workspace));
+      this.eventService.requestEditPort.emit( new EditPortRequest(modelObject, this.workspace));
     }
   }
 }

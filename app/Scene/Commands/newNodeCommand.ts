@@ -1,6 +1,6 @@
 import {ISceneCommand} from "./sceneCommand"
 
-import {Node} from "../node"
+import {Node} from "../../Model/node"
 import {Log} from "../../LogComponent/log"
 import {Scene} from "../scene"
 import {NodeModel} from "../../Forms/nodeModel"

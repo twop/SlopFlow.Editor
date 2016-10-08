@@ -1,5 +1,5 @@
 import {Workspace} from '../Scene/workspace';
-import {Port} from '../Scene/port';
+import {Port} from '../Model/port';
 
 export class NewPortRequest
 {

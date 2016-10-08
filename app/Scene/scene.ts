@@ -1,6 +1,7 @@
+///<reference path="../../node_modules/@angular/core/src/facade/async.d.ts"/>
 import {Injectable, EventEmitter} from '@angular/core'
 
-import {Node} from './node'
+import {Node} from '../Model/node'
 import {Log} from '../LogComponent/log'
 
 import {ISceneCommand} from './Commands/sceneCommand'
@@ -17,7 +18,7 @@ export class Scene
     this.dataService = dataService;
     this.dataService.getNodes().then(nodes => 
     {
-      this.loadNodes(nodes, theme);
+      this.loadNodes(nodes);
     });
   }
 
@@ -33,12 +34,11 @@ export class Scene
     return this.workspaces;
   }
 
-  private loadNodes(nodes, theme: Theme)
+  private loadNodes(nodes)
   {
     this.nodes = nodes;
     this.nodes.forEach(node=>
     {
-      node.recalculateSize(theme.sizes);
       this.addWorkspaceFor(node);
     })
   }
@@ -46,7 +46,6 @@ export class Scene
   public addNewNode(node: Node)
   {
     this.nodes.push(node);
-    node.recalculateSize(this.theme.sizes);
 
     var workspace = this.addWorkspaceFor(node);
     this.activateWorkspace(workspace);

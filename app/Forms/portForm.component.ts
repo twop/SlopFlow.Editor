@@ -5,11 +5,11 @@ import { NodeEventService } from '../Common/nodeEvent.service';
 import { NewPortCommand } from '../Scene/Commands/newPortCommand';
 
 import { Scene } from '../Scene/scene';
-import { Port } from '../Scene/port';
+import { Port } from '../Model/port';
 import {Workspace} from '../Scene/workspace';
 import {NewPortRequest, EditPortRequest} from '../Common/portEvents';
 import {EditPortCommand} from '../Scene/Commands/editPortCommand';
-import {DefaultTypes, DataType} from '../Scene/dataType';
+import {DefaultTypes, DataType} from '../Model/dataType';
 
 
 @Component({

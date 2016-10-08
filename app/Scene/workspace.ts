@@ -1,6 +1,6 @@
-import {Node} from "./node";
-import {ViewInstance} from "./viewInstance";
-import {Port} from './port';
+import {Node} from "../Model/node";
+import {NodeInstance} from "./nodeInstance";
+import {Port} from '../Model/port';
 import {Sizes} from '../Common/theme';
 import {Log} from '../LogComponent/log'
 import {IWorkSpaceCommand} from './Commands/workspaceCommand';
@@ -9,17 +9,17 @@ import {PortModel} from '../Forms/portModel';
 
 export class Workspace
 {
-  constructor(public node: Node, private sizes: Sizes, private log: Log)
+  constructor(public node: Node, sizes: Sizes, private log: Log)
   {
     this.name = node.name;
-    this.viewNode = new ViewInstance(node);
+    this.nodeInstance = new NodeInstance(node, sizes);
 
     //TODO: calculate that dynamically?
-    this.viewNode.position.moveBy(20, 20);
+    this.nodeInstance.position.moveBy(20, 20);
   }
 
   public modified = new EventEmitter<Workspace>();
-  public viewNode: ViewInstance
+  public nodeInstance: NodeInstance
   public name: string;
 
   private undoCommands: IWorkSpaceCommand[] = [];
@@ -52,7 +52,7 @@ export class Workspace
   public addPort(port: Port): void
   {
     this.getNodes(port.isInput).push(port);
-    this.node.recalculateSize(this.sizes);
+    this.nodeInstance.refresh();
   }
 
   public removePort(port: Port): void
@@ -64,12 +64,13 @@ export class Workspace
     {
       ports.splice(index, 1);
     }
-    this.node.recalculateSize(this.sizes);
+    this.nodeInstance.refresh();
   }
 
   public editPort(port: Port, portModel:PortModel): void
   {
     port.name = portModel.name;
+    port.dataType = portModel.dataType;
   }
 
   public executeCommand(command: IWorkSpaceCommand): void

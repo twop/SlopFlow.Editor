@@ -1,4 +1,4 @@
-import {DataType} from '../Scene/dataType';
+import {DataType} from '../Model/dataType';
 export class PortModel
 {
   constructor(

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 
-import {Node} from '../Scene/node'
-import {Port} from '../Scene/port'
+import {Node} from '../Model/node'
+import {Port} from '../Model/port'
 import {Scene} from '../Scene/scene'
 
 import {Theme} from "../Common/theme";
@@ -11,6 +11,9 @@ import {Rectangle} from '../Geometry/rectangle';
 import {Point} from '../Geometry/point';
 import {NodeEventService} from '../Common/nodeEvent.service';
 import {NodeEditing} from './Behaviors/nodeEditing';
+import {NodeInstance} from '../Scene/nodeInstance';
+import {PortInstance} from '../Scene/portInstance';
+import {IElementInstance} from '../Scene/elementInstance';
 
 @Injectable()
 export class SceneView
@@ -23,11 +26,11 @@ export class SceneView
   }
 
   private workspace:Workspace = null;
-  private nodeEditing:NodeEditing;
+  private behavior:NodeEditing;
   private drawer:Drawer = null;
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
-  public hoverElement: Object = null;
+  public hoverElement: IElementInstance = null;
 
   public setCanvas(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement):void
   {
@@ -54,9 +57,9 @@ export class SceneView
   {
     this.workspace = workspace;
     if (workspace)
-      this.nodeEditing = new NodeEditing(workspace, this.eventService);
+      this.behavior = new NodeEditing(workspace, this.eventService);
     else
-      this.nodeEditing = null;
+      this.behavior = null;
 
     this.drawScene();
   }
@@ -67,39 +70,39 @@ export class SceneView
     this.drawWorkspace(this.scene.activeWorkspace);
   }
 
-  public drawNode(node:Node): void
+  public drawNode(nodeInstance:NodeInstance): void
   {
     var colors = this.theme.colors;
 
-    var strokeStyle = this.hoverElement == node ? colors.nodeBorderHover : colors.nodeBorder;
-    this.drawer.paintRect(Rectangle.fromSize(node.size), strokeStyle);
+    var strokeStyle = nodeInstance.hover ? colors.nodeBorderHover : colors.nodeBorder;
+    this.drawer.paintRect(Rectangle.fromSize(nodeInstance.size), strokeStyle);
 
-    this.paintPorts(node.inputs);
-    this.paintPorts(node.outputs);
+    this.paintPorts(nodeInstance.inputs);
+    this.paintPorts(nodeInstance.outputs);
 
     var headerX = 5;
     var headerY = - 5;
-    this.drawer.paintText(node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.node);
+    this.drawer.paintText(nodeInstance.node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.node);
   }
 
-  private paintPorts(ports: Port[]):void
+  private paintPorts(portInstances: PortInstance[]):void
   {
     var colors = this.theme.colors;
     var sizes = this.theme.sizes;
 
-    ports.forEach(port =>
+    portInstances.forEach(portInstance =>
     {
-      var hover = this.hoverElement == port;
-      var portNameX = port.rectangle.x;
-      var portNameY = port.rectangle.y - sizes.portSize / 2;
+      var portNameX = portInstance.rectangle.x;
+      var portNameY = portInstance.rectangle.y - sizes.portSize / 2;
 
-      var portTextColor = !hover ? colors.portText : colors.portTextHover;
-      var textWidth = this.drawer.measureTextWidth(port.name, sizes.portFont);
-      this.drawer.paintText(port.name, portNameX, portNameY, sizes.portFont, portTextColor);
-      this.drawer.paintText(`:${port.dataType.name}`, portNameX + textWidth, portNameY, sizes.portFont, colors.portTextType);
+      var portTextColor = !portInstance.hover ? colors.portText : colors.portTextHover;
+      var portName = portInstance.port.name;
+      var textWidth = this.drawer.measureTextWidth(portName, sizes.portFont);
+      this.drawer.paintText(portName, portNameX, portNameY, sizes.portFont, portTextColor);
+      this.drawer.paintText(`:${portInstance.port.dataType.name}`, portNameX + textWidth, portNameY, sizes.portFont, colors.portTextType);
 
-      var strokeStyle = hover ? colors.portBorderHover : colors.portBorder;
-      this.drawer.paintFilledRect(port.rectangle, strokeStyle, colors.port);
+      var strokeStyle = portInstance.hover ? colors.portBorderHover : colors.portBorder;
+      this.drawer.paintFilledRect(portInstance.rectangle, strokeStyle, colors.port);
     });
   }
 
@@ -108,10 +111,10 @@ export class SceneView
     if (!workspace)
       return;
 
-    this.drawer.offset = workspace.viewNode.position;
+    this.drawer.offset = workspace.nodeInstance.position;
 
     this.context.save();
-    this.drawNode(workspace.node);
+    this.drawNode(workspace.nodeInstance);
     this.context.restore();
   }
 
@@ -120,11 +123,24 @@ export class SceneView
     if (!this.workspace)
       return;
 
-    this.hoverElement = this.workspace.viewNode.hitTest(this.getMousePosition(e));
-    if (this.hoverElement && this.nodeEditing)
-      this.nodeEditing.mouseDownOn(this.hoverElement);
+    var newHoverElement = this.workspace.nodeInstance.hitTest(this.getMousePosition(e));
+    this.updateHoverElement(newHoverElement);
+
+    if (this.hoverElement && this.behavior)
+      this.behavior.mouseDownOn(this.hoverElement);
 
     this.drawScene();
+  }
+
+  private updateHoverElement(newHoverElement: IElementInstance)
+  {
+    if (this.hoverElement != newHoverElement)
+    {
+      this.hoverElement && (this.hoverElement.hover = false);
+      newHoverElement && (newHoverElement.hover = true);
+
+      this.hoverElement = newHoverElement;
+    }
   }
 
   private mouseUp(e: MouseEvent) {}
@@ -134,7 +150,8 @@ export class SceneView
     if (!this.workspace)
       return;
 
-    this.hoverElement = this.workspace.viewNode.hitTest(this.getMousePosition(e));
+    var newHoverElement = this.workspace.nodeInstance.hitTest(this.getMousePosition(e));
+    this.updateHoverElement(newHoverElement);
     this.drawScene();
   }
 
@@ -156,12 +173,12 @@ export class SceneView
   private getMousePosition(e: MouseEvent): Point
   {
     var pointerPosition = new Point(e.pageX, e.pageY);
-    var node: HTMLElement = this.canvas;
-    while (node !== null)
+    var htmlElement: HTMLElement = this.canvas;
+    while (htmlElement !== null)
     {
-      pointerPosition.x -= node.offsetLeft;
-      pointerPosition.y -= node.offsetTop;
-      node = <HTMLElement> node.offsetParent;
+      pointerPosition.x -= htmlElement.offsetLeft;
+      pointerPosition.y -= htmlElement.offsetTop;
+      htmlElement = <HTMLElement> htmlElement.offsetParent;
     }
 
     return pointerPosition;

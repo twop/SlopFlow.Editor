@@ -1,6 +1,6 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {NewPortRequest, EditPortRequest} from './portEvents';
-import {Node} from '../Scene/node';
+import {Node} from '../Model/node';
 import {Workspace} from '../Scene/workspace';
 
 @Injectable()

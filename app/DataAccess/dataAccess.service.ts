@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import {Node} from '../Scene/node'
-import {Port} from '../Scene/port'
-import {DefaultTypes} from '../Scene/dataType';
+import {Node} from '../Model/node'
+import {Port} from '../Model/port'
+import {DefaultTypes} from '../Model/dataType';
 
 @Injectable()
 export class DataAccessService 

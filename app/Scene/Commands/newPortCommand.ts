@@ -1,4 +1,4 @@
-import {Port} from "../port"
+import {Port} from "../../Model/port"
 import {Log} from "../../LogComponent/log"
 import {IWorkSpaceCommand} from './workspaceCommand';
 import {Workspace} from '../workspace';
