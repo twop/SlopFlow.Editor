@@ -1,10 +1,8 @@
 import {DataType} from './dataType';
 
-export class Port
+export interface IPort
 {
-  constructor(
-    public name: string,
-    public dataType: DataType,
-    public isInput:boolean)
-  { }
+  name: string;
+  dataType: DataType;
+  isInput : boolean;
 }

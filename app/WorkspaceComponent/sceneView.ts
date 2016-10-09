@@ -1,19 +1,20 @@
 import {Injectable} from '@angular/core'
 
-import {Node} from '../Model/node'
-import {Port} from '../Model/port'
-import {Scene} from '../Scene/scene'
-
 import {Theme} from "../Common/theme";
+import {NodeEventService} from '../Common/nodeEvent.service';
+
 import {Drawer} from "./drawer";
-import {Workspace} from '../Scene/workspace';
+
 import {Rectangle} from '../Geometry/rectangle';
 import {Point} from '../Geometry/point';
-import {NodeEventService} from '../Common/nodeEvent.service';
+
 import {NodeEditing} from './Behaviors/nodeEditing';
-import {NodeInstance} from '../Scene/nodeInstance';
-import {PortInstance} from '../Scene/portInstance';
-import {IElementInstance} from '../Scene/elementInstance';
+
+import {NodeSceneItem} from '../Scene/nodeSceneItem';
+import {PortSceneItem} from '../Scene/portSceneItem';
+import {ISceneItem} from '../Scene/sceneItem';
+import {Scene} from '../Scene/scene'
+import {NodeWorkspace} from '../Scene/nodeWorkspace';
 
 @Injectable()
 export class SceneView
@@ -25,12 +26,12 @@ export class SceneView
     this.scene.workspaceModified.subscribe((workspace) => sceneView.drawScene());
   }
 
-  private workspace:Workspace = null;
+  private workspace:NodeWorkspace = null;
   private behavior:NodeEditing;
   private drawer:Drawer = null;
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
-  public hoverElement: IElementInstance = null;
+  public hoverElement: ISceneItem = null;
 
   public setCanvas(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement):void
   {
@@ -53,7 +54,7 @@ export class SceneView
     this.drawScene();
   }
 
-  private onWorkspaceChanged(workspace:Workspace)
+  private onWorkspaceChanged(workspace:NodeWorkspace)
   {
     this.workspace = workspace;
     if (workspace)
@@ -70,22 +71,22 @@ export class SceneView
     this.drawWorkspace(this.scene.activeWorkspace);
   }
 
-  public drawNode(nodeInstance:NodeInstance): void
+  public drawNode(elementInstance:NodeSceneItem): void
   {
     var colors = this.theme.colors;
 
-    var strokeStyle = nodeInstance.hover ? colors.nodeBorderHover : colors.nodeBorder;
-    this.drawer.paintRect(Rectangle.fromSize(nodeInstance.size), strokeStyle);
+    var strokeStyle = elementInstance.hover ? colors.nodeBorderHover : colors.nodeBorder;
+    this.drawer.paintRect(Rectangle.fromSize(elementInstance.size), strokeStyle);
 
-    this.paintPorts(nodeInstance.inputs);
-    this.paintPorts(nodeInstance.outputs);
+    this.paintPorts(elementInstance.inputs);
+    this.paintPorts(elementInstance.outputs);
 
     var headerX = 5;
     var headerY = - 5;
-    this.drawer.paintText(nodeInstance.node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.node);
+    this.drawer.paintText(elementInstance.node.name, headerX, headerY, this.theme.sizes.nodeFont, colors.node);
   }
 
-  private paintPorts(portInstances: PortInstance[]):void
+  private paintPorts(portInstances: PortSceneItem[]):void
   {
     var colors = this.theme.colors;
     var sizes = this.theme.sizes;
@@ -106,7 +107,7 @@ export class SceneView
     });
   }
 
-  private drawWorkspace(workspace: Workspace):void
+  private drawWorkspace(workspace: NodeWorkspace):void
   {
     if (!workspace)
       return;
@@ -132,7 +133,7 @@ export class SceneView
     this.drawScene();
   }
 
-  private updateHoverElement(newHoverElement: IElementInstance)
+  private updateHoverElement(newHoverElement: ISceneItem)
   {
     if (this.hoverElement != newHoverElement)
     {

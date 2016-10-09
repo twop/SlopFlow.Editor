@@ -1,12 +1,12 @@
-import {Workspace} from '../Scene/workspace';
-import {Port} from '../Model/port';
+import {NodeWorkspace} from '../Scene/nodeWorkspace';
+import {NodePort} from '../Model/node';
 
 export class NewPortRequest
 {
-  constructor(public name:string, public workspace:Workspace) {}
+  constructor(public name:string, public workspace:NodeWorkspace) {}
 }
 
 export class EditPortRequest
 {
-  constructor(public port:Port, public workspace:Workspace) {}
+  constructor(public port:NodePort, public workspace:NodeWorkspace) {}
 }

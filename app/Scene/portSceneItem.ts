@@ -1,17 +1,16 @@
 import {Rectangle} from '../Geometry/rectangle'
-import {DataType} from '../Model/dataType';
-import {Port} from '../Model/port';
-import {IElementInstance} from './elementInstance';
+import {ISceneItem, ModelObject} from './sceneItem';
+import {IPort} from '../Model/port';
 
-export class PortInstance implements IElementInstance
+export class PortSceneItem implements ISceneItem
 {
-  constructor(public port: Port)
+  constructor(public port: IPort)
   { }
 
   public hover: boolean;
   public rectangle: Rectangle = new Rectangle(0, 0, 0, 0);
 
-  public get modelObject(): Object {return this.port;}
+  public get modelObject(): ModelObject {return this.port;}
 
   public setSizeAndCenter(centerX:number, centerY:number, size:number): void
   {

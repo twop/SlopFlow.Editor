@@ -1,18 +1,18 @@
-import {Port} from "../../Model/port"
+import {NodePort} from "../../Model/node"
 import {Log} from "../../LogComponent/log"
 import {IWorkSpaceCommand} from './workspaceCommand';
-import {Workspace} from '../workspace';
+import {NodeWorkspace} from '../nodeWorkspace';
 import {PortModel} from '../../Forms/portModel';
 
 export class EditPortCommand implements IWorkSpaceCommand
 {
   private oldPortModel:PortModel = null;
-  constructor(private port: Port, private newPortModel: PortModel)
+  constructor(private port: NodePort, private newPortModel: PortModel)
   {
     this.oldPortModel = new PortModel(port.name, port.dataType, true, port.isInput);
   }
 
-  Execute(workspace: Workspace, logger: Log): void
+  Execute(workspace: NodeWorkspace, logger: Log): void
   {
     if (!workspace)
       throw `workspace is null`;
@@ -21,7 +21,7 @@ export class EditPortCommand implements IWorkSpaceCommand
     logger.debug(`changed port ${this.port.name} in ${workspace.name} to ${this.newPortModel.toString()}`);
   }
 
-  Revert(workspace: Workspace, logger: Log): void
+  Revert(workspace: NodeWorkspace, logger: Log): void
   {
     if (!workspace)
       throw `workspace is null`;

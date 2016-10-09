@@ -4,11 +4,11 @@ import {Node} from "../../Model/node"
 import {Log} from "../../LogComponent/log"
 import {Scene} from "../scene"
 import {NodeModel} from "../../Forms/nodeModel"
-import {Workspace} from '../workspace';
+import {NodeWorkspace} from '../nodeWorkspace';
 
 export class EditNodeCommand implements ISceneCommand
 {
-  constructor(private workspace:Workspace, private nodeModel: NodeModel)
+  constructor(private workspace:NodeWorkspace, private nodeModel: NodeModel)
   {}
 
   Execute(scene: Scene, logger: Log): void

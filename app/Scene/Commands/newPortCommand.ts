@@ -1,16 +1,16 @@
-import {Port} from "../../Model/port"
+import {NodePort} from "../../Model/node"
 import {Log} from "../../LogComponent/log"
 import {IWorkSpaceCommand} from './workspaceCommand';
-import {Workspace} from '../workspace';
+import {NodeWorkspace} from '../nodeWorkspace';
 
 
 export class NewPortCommand implements IWorkSpaceCommand
 {
-  constructor(private port: Port)
+  constructor(private port: NodePort)
   {
   }
 
-  Execute(workspace: Workspace, logger: Log): void
+  Execute(workspace: NodeWorkspace, logger: Log): void
   {
     if (!workspace)
       throw `workspace is null`;
@@ -19,7 +19,7 @@ export class NewPortCommand implements IWorkSpaceCommand
     logger.debug(`added port ${this.port.name} in ${workspace.name}`);
   }
 
-  Revert(workspace: Workspace, logger: Log): void
+  Revert(workspace: NodeWorkspace, logger: Log): void
   {
     if (!workspace)
       throw `workspace is null`;

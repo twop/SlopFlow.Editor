@@ -4,7 +4,7 @@ import {Scene} from "../Scene/scene";
 import {SceneView} from './sceneView'
 
 import { NodeEventService } from '../Common/nodeEvent.service';
-import {Workspace} from '../Scene/workspace';
+import {NodeWorkspace} from '../Scene/nodeWorkspace';
 import {NewPortRequest} from '../Common/portEvents';
 
 
@@ -39,7 +39,7 @@ export class WorkspaceComponent implements AfterViewInit
     this.sceneView.setCanvas(context, this.canvas);
   }
 
-  public get workspace():Workspace
+  public get workspace():NodeWorkspace
   {
     return this.scene.activeWorkspace;
   }

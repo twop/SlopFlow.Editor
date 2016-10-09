@@ -1,25 +1,24 @@
-import {Node} from "../Model/node";
-import {NodeInstance} from "./nodeInstance";
-import {Port} from '../Model/port';
+import {Node, NodePort} from "../Model/node";
+import {NodeSceneItem} from "./nodeSceneItem";
 import {Sizes} from '../Common/theme';
 import {Log} from '../LogComponent/log'
 import {IWorkSpaceCommand} from './Commands/workspaceCommand';
 import {EventEmitter} from '@angular/core';
 import {PortModel} from '../Forms/portModel';
 
-export class Workspace
+export class NodeWorkspace
 {
   constructor(public node: Node, sizes: Sizes, private log: Log)
   {
     this.name = node.name;
-    this.nodeInstance = new NodeInstance(node, sizes);
+    this.nodeInstance = new NodeSceneItem(node, sizes);
 
     //TODO: calculate that dynamically?
     this.nodeInstance.position.moveBy(20, 20);
   }
 
-  public modified = new EventEmitter<Workspace>();
-  public nodeInstance: NodeInstance
+  public modified = new EventEmitter<NodeWorkspace>();
+  public nodeInstance: NodeSceneItem
   public name: string;
 
   private undoCommands: IWorkSpaceCommand[] = [];
@@ -49,13 +48,13 @@ export class Workspace
     this.undoCommands.push(command);
   }
 
-  public addPort(port: Port): void
+  public addPort(port: NodePort): void
   {
     this.getNodes(port.isInput).push(port);
     this.nodeInstance.refresh();
   }
 
-  public removePort(port: Port): void
+  public removePort(port: NodePort): void
   {
     var ports = this.getNodes(port.isInput);
 
@@ -67,7 +66,7 @@ export class Workspace
     this.nodeInstance.refresh();
   }
 
-  public editPort(port: Port, portModel:PortModel): void
+  public editPort(port: NodePort, portModel:PortModel): void
   {
     port.name = portModel.name;
     port.dataType = portModel.dataType;

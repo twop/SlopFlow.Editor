@@ -8,7 +8,7 @@ import {ISceneCommand} from './Commands/sceneCommand'
 import {DataAccessService} from '../DataAccess/dataAccess.service'
 
 import {Theme} from "../Common/theme";
-import {Workspace} from './workspace';
+import {NodeWorkspace} from './nodeWorkspace';
 
 @Injectable()
 export class Scene
@@ -22,14 +22,14 @@ export class Scene
     });
   }
 
-  public activeWorkspaceChanged = new EventEmitter<Workspace>();
-  public workspaceModified = new EventEmitter<Workspace>();
-  public activeWorkspace: Workspace = null;
+  public activeWorkspaceChanged = new EventEmitter<NodeWorkspace>();
+  public workspaceModified = new EventEmitter<NodeWorkspace>();
+  public activeWorkspace: NodeWorkspace = null;
 
   private nodes: Node[] = [];
-  private workspaces: Workspace[] = [];
+  private workspaces: NodeWorkspace[] = [];
   
-  public getWorkspaces():Workspace[]
+  public getWorkspaces():NodeWorkspace[]
   {
     return this.workspaces;
   }
@@ -51,23 +51,23 @@ export class Scene
     this.activateWorkspace(workspace);
   }
 
-  public renameNodeInWorkspace(workspace: Workspace, newName:string)
+  public renameNodeInWorkspace(workspace: NodeWorkspace, newName:string)
   {
     workspace.name = newName;
     workspace.node.name = newName;
     this.workspaceModified.emit(workspace);
   }
 
-  private addWorkspaceFor(node: Node):Workspace
+  private addWorkspaceFor(node: Node):NodeWorkspace
   {
-    var workspace =  new Workspace(node, this.theme.sizes, this.log);
+    var workspace =  new NodeWorkspace(node, this.theme.sizes, this.log);
     this.workspaces.push(workspace);
     var scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
     return workspace;
   }
   
-  public activateWorkspace(workspace: Workspace): void
+  public activateWorkspace(workspace: NodeWorkspace): void
   {
     this.activeWorkspace = workspace;
     this.activeWorkspaceChanged.emit(workspace);

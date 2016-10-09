@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import {Node} from '../Model/node'
-import {Port} from '../Model/port'
+import {Node, NodePort} from '../Model/node'
 import {DefaultTypes} from '../Model/dataType';
 
 @Injectable()
@@ -15,13 +14,13 @@ export class DataAccessService
     var floatType = DefaultTypes.float;
 
     var sum = new Node("Sum");
-    sum.add(new Port("input1", intType, true));
-    sum.add(new Port("input2", intType, true));
-    sum.add(new Port("output", intType, false));
+    sum.add(new NodePort("input1", intType, true));
+    sum.add(new NodePort("input2", intType, true));
+    sum.add(new NodePort("output", intType, false));
 
     var greaterNode = new Node("Greater");
-    greaterNode.add(new Port("input", floatType, true));
-    greaterNode.add(new Port("output", floatType, false));
+    greaterNode.add(new NodePort("input", floatType, true));
+    greaterNode.add(new NodePort("output", floatType, false));
 
     this.nodes = [sum, greaterNode];
 

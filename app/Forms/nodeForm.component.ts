@@ -6,7 +6,7 @@ import { Scene } from '../Scene/scene';
 import { NewNodeCommand } from '../Scene/Commands/newNodeCommand';
 import { Node } from '../Model/node';
 import {EditNodeCommand} from '../Scene/Commands/editNodeCommand';
-import {Workspace} from '../Scene/workspace';
+import {NodeWorkspace} from '../Scene/nodeWorkspace';
 
 @Component({
   selector: 'node-form',
@@ -24,7 +24,7 @@ export class NodeFormComponent
   }
 
   public model: NodeModel = null;
-  public workspace:Workspace;
+  public workspace:NodeWorkspace;
 
   public get hasModel(): boolean
   {
@@ -57,7 +57,7 @@ export class NodeFormComponent
     this.model = new NodeModel(nodeName, false);
   }
 
-  private showEditNodeForm(workspace:Workspace): void
+  private showEditNodeForm(workspace:NodeWorkspace): void
   {
     this.workspace = workspace;
     this.model = new NodeModel(workspace.node.name, true);

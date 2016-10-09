@@ -1,14 +1,13 @@
-import {Node} from "../Model/node";
 import {Point} from "../Geometry/point";
-import {Port} from '../Model/port';
 import {Sizes} from '../Common/theme';
 import {Size} from '../Geometry/size';
-import {PortInstance} from './portInstance';
-import {IElementInstance} from './elementInstance';
+import {PortSceneItem} from './portSceneItem';
+import {ISceneItem, ModelObject} from './sceneItem';
+import {INode} from '../Model/nodeInterface';
 
-export class NodeInstance implements IElementInstance
+export class NodeSceneItem implements ISceneItem
 {
-  constructor(public node: Node, private sizes: Sizes)
+  constructor(public node: INode, private sizes: Sizes)
   {
     this.refresh();
   }
@@ -16,16 +15,16 @@ export class NodeInstance implements IElementInstance
   public position: Point = new Point(0, 0);
   public size: Size = new Size(0, 0);
 
-  public inputs = new Array<PortInstance>();
-  public outputs = new Array<PortInstance>();
+  public inputs: PortSceneItem[] = [];
+  public outputs: PortSceneItem[] = [];
 
   public hover: boolean;
-  public get modelObject(): Object {return this.node;}
+  public get modelObject(): ModelObject {return this.node;}
 
   public refresh()
   {
-    this.node.inputs.forEach(port => this.inputs.push(new PortInstance(port)))
-    this.node.outputs.forEach(port => this.outputs.push(new PortInstance(port)))
+    this.node.inputs.forEach(port => this.inputs.push(new PortSceneItem(port)))
+    this.node.outputs.forEach(port => this.outputs.push(new PortSceneItem(port)))
     this.recalculateSize(this.sizes)
   }
 
@@ -34,12 +33,12 @@ export class NodeInstance implements IElementInstance
     this.position.moveBy(dx, dy);
   }
 
-  public hitTest(point:Point):IElementInstance
+  public hitTest(point:Point):ISceneItem
   {
     //make it relative to the node
     point.subtract(this.position);
 
-    var hoverObject:IElementInstance =
+    var hoverObject:ISceneItem =
           this.hitTestPorts(this.inputs, point) ||
           this.hitTestPorts(this.outputs, point) ||
           this.hitTestNode(point);
@@ -49,7 +48,7 @@ export class NodeInstance implements IElementInstance
     return hoverObject;
   }
 
-  private hitTestNode(point: Point):IElementInstance
+  private hitTestNode(point: Point):ISceneItem
   {
     if((point.x >= 0) && (point.x <= this.size.width) && (point.y >= 0) && (point.y <= this.size.height))
       return this;
@@ -57,9 +56,9 @@ export class NodeInstance implements IElementInstance
     return null;
   }
 
-  private hitTestPorts(portInstances: PortInstance[], point: Point): IElementInstance
+  private hitTestPorts(portInstances: PortSceneItem[], point: Point): ISceneItem
   {
-    var hoverObject: IElementInstance = null;
+    var hoverObject: ISceneItem = null;
     portInstances.forEach(portInstance =>
     {
       if (portInstance.rectangle.contains(point))
@@ -83,7 +82,7 @@ export class NodeInstance implements IElementInstance
     this.alignPorts(this.outputs, this.size.width, sizes)
   }
 
-  private alignPorts(ports: PortInstance[], xpos: number, sizes: Sizes)
+  private alignPorts(ports: PortSceneItem[], xpos: number, sizes: Sizes)
   {
     var y = sizes.nodeDefaultHeight / 2 + sizes.portSize/2;
 

@@ -1,30 +1,34 @@
-import {Port} from './port';
-import {NodeInstance} from '../Scene/nodeInstance';
+import {IPort} from './port';
+import {DataType} from './dataType';
+import {INode} from './nodeInterface';
 
-export class Flow
+export class Flow implements INode
 {
   constructor(public name:string)
   {}
 
-  public inputs = new Array<FlowExternalPort>();
-  public outputs = new Array<FlowExternalPort>();
+  public inputs: FlowPort[] = [];
+  public outputs: FlowPort[] = [];
 
-  public items = new Array<NodeInstance>();
-  public links = new Array<PortLink>();
+  public items: INode[] = [];
+  public links: PortLink[] = [];
 }
 
-export class FlowExternalPort
+export class FlowPort implements IPort
 {
   constructor(
-    public port:Port,
+    public port:IPort,
     public name:string)
   {}
+
+  get dataType(): DataType { return this.port.dataType }
+  get isInput(): boolean { return this.port.isInput }
 }
 
 export class PortLink
 {
   constructor(
-    public from:Port,
-    public to:Port)
+    public from:IPort,
+    public to:IPort)
   {}
 }

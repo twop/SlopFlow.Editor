@@ -5,11 +5,11 @@ import { NodeEventService } from '../Common/nodeEvent.service';
 import { NewPortCommand } from '../Scene/Commands/newPortCommand';
 
 import { Scene } from '../Scene/scene';
-import { Port } from '../Model/port';
-import {Workspace} from '../Scene/workspace';
+import {NodeWorkspace} from '../Scene/nodeWorkspace';
 import {NewPortRequest, EditPortRequest} from '../Common/portEvents';
 import {EditPortCommand} from '../Scene/Commands/editPortCommand';
 import {DefaultTypes, DataType} from '../Model/dataType';
+import {NodePort} from '../Model/node';
 
 
 @Component({
@@ -40,8 +40,8 @@ export class PortFormComponent
 
   public model: PortModel = null;
 
-  private workspace:Workspace = null;
-  private port:Port = null;
+  private workspace:NodeWorkspace = null;
+  private port:NodePort = null;
 
   public get dataTypes():DataType[]
   {
@@ -56,7 +56,7 @@ export class PortFormComponent
     }
     else
     {
-      var port = new Port(this.model.name, this.model.dataType, this.model.isInput);
+      var port = new NodePort(this.model.name, this.model.dataType, this.model.isInput);
       this.workspace.executeCommand(new NewPortCommand(port));
     }
 
@@ -85,7 +85,7 @@ export class PortFormComponent
     this.model = new PortModel(nodeName, DefaultTypes.float, false, true);
   }
 
-  private showEditPortForm(port:Port): void
+  private showEditPortForm(port:NodePort): void
   {
     this.port = port;
     this.model = new PortModel(port.name, port.dataType, true, port.isInput);
