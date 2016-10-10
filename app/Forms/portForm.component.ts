@@ -11,7 +11,6 @@ import {EditPortCommand} from '../Scene/Commands/editPortCommand';
 import {DefaultTypes, DataType} from '../Model/dataType';
 import {NodePort} from '../Model/node';
 
-
 @Component({
   selector: 'port-form',
   templateUrl: 'app/Forms/portForm.component.html'
@@ -27,13 +26,13 @@ export class PortFormComponent
 
     nodeEventService.requestNewPort.subscribe(( request: NewPortRequest) =>
     {
-      formComponent.workspace = request.workspace;
+      formComponent.workspace = request.nodeWorkspace;
       formComponent.showCreatePortForm(request.name);
     });
 
     nodeEventService.requestEditPort.subscribe(( request: EditPortRequest) =>
     {
-      formComponent.workspace = request.workspace;
+      formComponent.workspace = request.nodeWorkspace;
       formComponent.showEditPortForm(request.port);
     });
   }

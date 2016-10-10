@@ -10,7 +10,7 @@ export class Flow implements INode
   public inputs: FlowPort[] = [];
   public outputs: FlowPort[] = [];
 
-  public items: INode[] = [];
+  public nodes: INode[] = [];
   public links: PortLink[] = [];
 }
 

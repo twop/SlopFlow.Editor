@@ -3,10 +3,10 @@ import {NodePort} from '../Model/node';
 
 export class NewPortRequest
 {
-  constructor(public name:string, public workspace:NodeWorkspace) {}
+  constructor(public name:string, public nodeWorkspace:NodeWorkspace) {}
 }
 
 export class EditPortRequest
 {
-  constructor(public port:NodePort, public workspace:NodeWorkspace) {}
+  constructor(public port:NodePort, public nodeWorkspace:NodeWorkspace) {}
 }

@@ -6,6 +6,8 @@ import {SceneView} from './sceneView'
 import { NodeEventService } from '../Common/nodeEvent.service';
 import {NodeWorkspace} from '../Scene/nodeWorkspace';
 import {NewPortRequest} from '../Common/portEvents';
+import {Workspace} from '../Scene/workspace';
+import {NodeToolbarComponent} from './nodeToolbar.component';
 
 
 @Component({
@@ -21,9 +23,19 @@ export class WorkspaceComponent implements AfterViewInit
 
   private canvas: HTMLCanvasElement = null;
 
-  constructor(private scene:Scene, private sceneView: SceneView, private eventService: NodeEventService)
+  constructor(private scene:Scene, private sceneView: SceneView)
   {
     //this.scene.activeWorkspaceChanged.subscribe(() => sceneView.drawScene());
+  }
+
+  public get isNode():boolean
+  {
+    return this.scene.activeWorkspace instanceof NodeWorkspace;
+  }
+
+  public get nodeWorkspace(): NodeWorkspace
+  {
+    return this.scene.activeWorkspace as NodeWorkspace;
   }
 
   ngAfterViewInit()
@@ -37,31 +49,6 @@ export class WorkspaceComponent implements AfterViewInit
     context.scale(this.devicePixelRatio, this.devicePixelRatio);
 
     this.sceneView.setCanvas(context, this.canvas);
-  }
-
-  public get workspace():NodeWorkspace
-  {
-    return this.scene.activeWorkspace;
-  }
-
-  public requestNewPort(): void
-  {
-    this.eventService.requestNewPort.emit(new NewPortRequest("new port", this.workspace));
-  }
-
-  public renameNode(): void
-  {
-    this.eventService.requestEditNode.emit(this.workspace);
-  }
-
-  public undo():void
-  {
-    this.workspace && this.workspace.undo();
-  }
-
-  public redo():void
-  {
-    this.workspace && this.workspace.redo();
   }
 
   private get devicePixelRatio(): number

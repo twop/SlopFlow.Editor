@@ -68,7 +68,13 @@ export class SceneView
   private drawScene(): void
   {
     this.context.clearRect(0, 0, this.canvas.scrollWidth, this.canvas.scrollHeight);
-    this.drawWorkspace(this.scene.activeWorkspace);
+    var workspace = this.scene.activeWorkspace;
+
+    if (!workspace)
+      return;
+
+    if (workspace instanceof NodeWorkspace)
+      this.drawNodeWorkspace(workspace);
   }
 
   public drawNode(elementInstance:NodeSceneItem): void
@@ -107,11 +113,8 @@ export class SceneView
     });
   }
 
-  private drawWorkspace(workspace: NodeWorkspace):void
+  private drawNodeWorkspace(workspace: NodeWorkspace):void
   {
-    if (!workspace)
-      return;
-
     this.drawer.offset = workspace.nodeInstance.position;
 
     this.context.save();

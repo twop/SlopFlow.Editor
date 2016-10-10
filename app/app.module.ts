@@ -5,6 +5,8 @@ import { FormsModule }   from '@angular/forms';
 import { AppComponent }  from './app.component';
 
 import {WorkspaceComponent} from  './WorkspaceComponent/workspace.component'
+import {NodeToolbarComponent} from './WorkspaceComponent/nodeToolbar.component';
+
 import {AssetsComponent} from  './AssetsComponent/assets.component'
 import {LogComponent} from  './LogComponent/log.component'
 import {NodeFormComponent} from  './Forms/nodeForm.component'
@@ -13,7 +15,7 @@ import {PortFormComponent} from  './Forms/portForm.component'
 import {Scene} from  './Scene/scene'
 import {Log} from  './LogComponent/log'
 import {Theme} from "./Common/theme";
-//import {SceneView} from "./WorkspaceComponent/sceneView";
+
 import {DataAccessService} from './DataAccess/dataAccess.service'
 
 @NgModule({
@@ -28,6 +30,7 @@ import {DataAccessService} from './DataAccess/dataAccess.service'
     NodeFormComponent,
     PortFormComponent,
     LogComponent,
+    NodeToolbarComponent,
   ],
   bootstrap: [AppComponent],
   providers: [Scene, Log, Theme, DataAccessService],

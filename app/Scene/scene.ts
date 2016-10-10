@@ -1,4 +1,3 @@
-///<reference path="../../node_modules/@angular/core/src/facade/async.d.ts"/>
 import {Injectable, EventEmitter} from '@angular/core'
 
 import {Node} from '../Model/node'
@@ -9,6 +8,7 @@ import {DataAccessService} from '../DataAccess/dataAccess.service'
 
 import {Theme} from "../Common/theme";
 import {NodeWorkspace} from './nodeWorkspace';
+import {Workspace} from './workspace';
 
 @Injectable()
 export class Scene
@@ -22,16 +22,16 @@ export class Scene
     });
   }
 
-  public activeWorkspaceChanged = new EventEmitter<NodeWorkspace>();
-  public workspaceModified = new EventEmitter<NodeWorkspace>();
-  public activeWorkspace: NodeWorkspace = null;
+  public activeWorkspaceChanged = new EventEmitter<Workspace>();
+  public workspaceModified = new EventEmitter<Workspace>();
+  public activeWorkspace: Workspace = null;
 
   private nodes: Node[] = [];
-  private workspaces: NodeWorkspace[] = [];
+  private nodeWorkspaces: NodeWorkspace[] = [];
   
-  public getWorkspaces():NodeWorkspace[]
+  public getNodeWorkspaces():NodeWorkspace[]
   {
-    return this.workspaces;
+    return this.nodeWorkspaces;
   }
 
   private loadNodes(nodes)
@@ -53,7 +53,6 @@ export class Scene
 
   public renameNodeInWorkspace(workspace: NodeWorkspace, newName:string)
   {
-    workspace.name = newName;
     workspace.node.name = newName;
     this.workspaceModified.emit(workspace);
   }
@@ -61,7 +60,7 @@ export class Scene
   private addWorkspaceFor(node: Node):NodeWorkspace
   {
     var workspace =  new NodeWorkspace(node, this.theme.sizes, this.log);
-    this.workspaces.push(workspace);
+    this.nodeWorkspaces.push(workspace);
     var scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
     return workspace;

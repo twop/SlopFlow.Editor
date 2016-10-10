@@ -2,50 +2,26 @@ import {Node, NodePort} from "../Model/node";
 import {NodeSceneItem} from "./nodeSceneItem";
 import {Sizes} from '../Common/theme';
 import {Log} from '../LogComponent/log'
-import {IWorkSpaceCommand} from './Commands/workspaceCommand';
-import {EventEmitter} from '@angular/core';
 import {PortModel} from '../Forms/portModel';
+import {Workspace} from './workspace';
 
-export class NodeWorkspace
+export class NodeWorkspace extends Workspace
 {
-  constructor(public node: Node, sizes: Sizes, private log: Log)
+  constructor(public node: Node, sizes: Sizes, log: Log)
   {
-    this.name = node.name;
+    super(log);
+
     this.nodeInstance = new NodeSceneItem(node, sizes);
 
     //TODO: calculate that dynamically?
     this.nodeInstance.position.moveBy(20, 20);
   }
 
-  public modified = new EventEmitter<NodeWorkspace>();
   public nodeInstance: NodeSceneItem
-  public name: string;
 
-  private undoCommands: IWorkSpaceCommand[] = [];
-  private redoCommands: IWorkSpaceCommand[] = [];
-
-  public get canRedo(): boolean {return this.redoCommands.length > 0;}
-
-  public get canUndo(): boolean {return this.undoCommands.length > 0;}
-
-  public undo(): void
+  public get name(): string
   {
-    if (!this.canUndo)
-      return;
-
-    var command = this.undoCommands.pop();
-    this.revertCommandInternal(command);
-    this.redoCommands.push(command);
-  }
-
-  public redo(): void
-  {
-    if (!this.canRedo)
-      return;
-
-    var command = this.redoCommands.pop();
-    this.executeCommandInternal(command);
-    this.undoCommands.push(command);
+    return this.node.name;
   }
 
   public addPort(port: NodePort): void
@@ -70,25 +46,6 @@ export class NodeWorkspace
   {
     port.name = portModel.name;
     port.dataType = portModel.dataType;
-  }
-
-  public executeCommand(command: IWorkSpaceCommand): void
-  {
-    this.executeCommandInternal(command);
-    this.undoCommands.push(command);
-    this.redoCommands.splice(0, this.redoCommands.length);
-  }
-
-  public executeCommandInternal(command: IWorkSpaceCommand): void
-  {
-    command.Execute(this, this.log);
-    this.modified.emit(this);
-  }
-
-  public revertCommandInternal(command: IWorkSpaceCommand): void
-  {
-    command.Revert(this, this.log);
-    this.modified.emit(this);
   }
 
   private getNodes(isInput: boolean)
