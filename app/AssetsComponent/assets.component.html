@@ -14,4 +14,20 @@
       </li>
     </ul>
   </div>
+
+  <div class="assetHeader panel-heading">
+    <span>Flows</span>
+    <button role="button" type="button" class="btn btn-default btn-sm" (click)="requestNewFlow()">
+      <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+      Add
+    </button>
+  </div>
+  <div class="panel-body">
+    <ul class="nodeList">
+      <li *ngFor="let workspace of scene.getNodeWorkspaces()" [class.selected]="workspace === scene.activeWorkspace"
+          (click)="activateWorkspace(workspace)">
+        <span class="typeMarker flowMarker">&lt;F&gt;</span><span class="vertical-middle">{{workspace.name}}</span>
+      </li>
+    </ul>
+  </div>
 </div>

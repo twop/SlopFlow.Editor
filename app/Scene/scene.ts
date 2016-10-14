@@ -9,6 +9,7 @@ import {DataAccessService} from '../DataAccess/dataAccess.service'
 import {Theme} from "../Common/theme";
 import {NodeWorkspace} from './nodeWorkspace';
 import {Workspace} from './workspace';
+import {Flow} from '../Model/flow';
 
 @Injectable()
 export class Scene
@@ -16,15 +17,18 @@ export class Scene
   constructor(private log:Log, private dataService:DataAccessService, private theme: Theme)
   {
     this.dataService = dataService;
-    this.dataService.getNodes().then(nodes => 
+    this.dataService.getAppData().then(appData =>
     {
-      this.loadNodes(nodes);
+      this.loadNodes(appData.nodes);
+      this.loadFlows(appData.flows);
     });
   }
 
   public activeWorkspaceChanged = new EventEmitter<Workspace>();
   public workspaceModified = new EventEmitter<Workspace>();
   public activeWorkspace: Workspace = null;
+
+  private flows:Flow[] = [];
 
   private nodes: Node[] = [];
   private nodeWorkspaces: NodeWorkspace[] = [];
@@ -34,13 +38,23 @@ export class Scene
     return this.nodeWorkspaces;
   }
 
-  private loadNodes(nodes)
+  public getFlowWorkspaces():NodeWorkspace[]
+  {
+    return this.nodeWorkspaces;
+  }
+
+  private loadNodes(nodes: Node[])
   {
     this.nodes = nodes;
     this.nodes.forEach(node=>
     {
       this.addWorkspaceFor(node);
     })
+  }
+
+  private loadFlows(flows:Flow[])
+  {
+    this.flows = flows;
   }
 
   public addNewNode(node: Node)

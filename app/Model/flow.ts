@@ -1,6 +1,7 @@
 import {IPort} from './port';
 import {DataType} from './dataType';
 import {INode} from './nodeInterface';
+import {NodeInstance} from './nodeInstance';
 
 export class Flow implements INode
 {
@@ -10,7 +11,7 @@ export class Flow implements INode
   public inputs: FlowPort[] = [];
   public outputs: FlowPort[] = [];
 
-  public nodes: INode[] = [];
+  public nodes: NodeInstance[] = [];
   public links: PortLink[] = [];
 }
 
@@ -28,7 +29,9 @@ export class FlowPort implements IPort
 export class PortLink
 {
   constructor(
-    public from:IPort,
-    public to:IPort)
+    public fromNode: NodeInstance,
+    public fromPort: IPort,
+    public toNode: NodeInstance,
+    public toPort: IPort)
   {}
 }

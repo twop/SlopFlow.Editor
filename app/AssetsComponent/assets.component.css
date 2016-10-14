@@ -33,6 +33,11 @@
   color: deepskyblue;
 }
 
+.flowMarker
+{
+  color: darkorange;
+}
+
 .typeMarker
 {
   margin-left: 1em;

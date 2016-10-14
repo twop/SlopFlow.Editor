@@ -7,6 +7,7 @@ import {NodeWorkspace} from '../Scene/nodeWorkspace';
 export class NodeEventService 
 {
   requestNewNode = new EventEmitter<string>();
+  requestNewFlow = new EventEmitter<string>();
   requestEditNode = new EventEmitter<NodeWorkspace>();
   requestNewPort = new EventEmitter<NewPortRequest>();
   requestEditPort = new EventEmitter<EditPortRequest>();

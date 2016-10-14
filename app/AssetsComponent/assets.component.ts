@@ -25,7 +25,11 @@ export class AssetsComponent
 
   requestNewNode(): void
   {
-    //TODO: add a name validation
-    this.nodeEventService.requestNewNode.emit("NewName");
+    this.nodeEventService.requestNewNode.emit("NewNode");
+  }
+
+  requestNewFlow(): void
+  {
+    this.nodeEventService.requestNewFlow.emit("NewFlow");
   }
 }
