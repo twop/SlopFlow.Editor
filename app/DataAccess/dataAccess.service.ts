@@ -28,8 +28,13 @@ export class DataAccessService
     const sum4 = new Flow('Sum4');
 
     const firstNode = new NodeInstance("firstNode", sum);
+    firstNode.position.moveBy(10, 10);
+
     const secondNode = new NodeInstance("secondNode", sum);
+    secondNode.position.moveBy(10, 130);
+
     const resultNode = new NodeInstance("resultNode", sum);
+    resultNode.position.moveBy(200, 60);
 
     const linkFirstToResult = new PortLink(firstNode, firstNode.outputs[0], resultNode, resultNode.inputs[0]);
     const linkSecondToResult = new PortLink(secondNode, secondNode.outputs[0], resultNode, resultNode.inputs[1]);

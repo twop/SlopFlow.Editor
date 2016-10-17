@@ -1,0 +1,52 @@
+.node
+{
+  fill:#808080;
+  fill-rule:evenodd;
+  stroke:#9ac3f5;
+  stroke-width:2;
+  stroke-linecap:butt;
+  stroke-linejoin:miter;
+  fill-opacity:0.1;
+  stroke-opacity: 0.5;
+}
+
+.node:hover
+{
+  stroke-opacity: 1;
+  fill-opacity:0.2;
+}
+
+.nodeHeader
+{
+  font: 14px Arial;
+  fill: white;
+}
+
+.port
+{
+  fill:#ff4c4c;
+  stroke:#7f292a;
+  stroke-width:1;
+}
+
+.port:hover
+{
+  stroke:white;
+}
+
+.svgNonInteractive
+{
+  pointer-events:none
+}
+
+.portName
+{
+  font: 11px Arial;
+  fill: white;
+}
+
+.portType
+{
+  font: 11px Arial;
+  fill: #4EC9B0;
+}

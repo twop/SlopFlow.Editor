@@ -1,23 +1,14 @@
 import {Node, NodePort} from "../Model/node";
-import {NodeSceneItem} from "./nodeSceneItem";
-import {Sizes} from '../Common/theme';
 import {Log} from '../LogComponent/log'
 import {PortModel} from '../Forms/portModel';
 import {Workspace} from './workspace';
 
 export class NodeWorkspace extends Workspace
 {
-  constructor(public node: Node, sizes: Sizes, log: Log)
+  constructor(public node: Node, log: Log)
   {
     super(log);
-
-    this.nodeInstance = new NodeSceneItem(node, sizes);
-
-    //TODO: calculate that dynamically?
-    this.nodeInstance.position.moveBy(20, 20);
   }
-
-  public nodeInstance: NodeSceneItem
 
   public get name(): string
   {
@@ -27,7 +18,6 @@ export class NodeWorkspace extends Workspace
   public addPort(port: NodePort): void
   {
     this.getNodes(port.isInput).push(port);
-    this.nodeInstance.refresh();
   }
 
   public removePort(port: NodePort): void
@@ -39,7 +29,6 @@ export class NodeWorkspace extends Workspace
     {
       ports.splice(index, 1);
     }
-    this.nodeInstance.refresh();
   }
 
   public editPort(port: NodePort, portModel:PortModel): void

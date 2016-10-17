@@ -1,0 +1,23 @@
+<svg:g xmlns:svg="http://www.w3.org/1999/XSL/Transform">
+  <svg:text class="nodeHeader svgNonInteractive" text-anchor="middle" [attr.y]="offset.y" [attr.x]="offset.x + nodeWidth/2">{{node.name}}</svg:text>
+  <svg:rect (click)="nodeClick.emit(node)" class="node" [attr.width]="nodeWidth" ry="5" [attr.height]="(maxPorts-1)*portSpace + portSize+ nodeHeight"
+        [attr.x]="offset.x" [attr.y]="rectTop"></svg:rect>
+
+  <svg:g *ngFor="let input of inputs; let i = index;">
+    <svg:text class="svgNonInteractive" [attr.y]="getPortNameY(i)" [attr.x]="offset.x - portSize/2">
+      <svg:tspan class="portName">{{input.name}}</svg:tspan>
+      <svg:tspan class="portType">:{{input.dataType.name}}</svg:tspan>
+    </svg:text>
+    <rect (click)="portClick.emit(input)" class="port" [attr.width]="portSize" [attr.height]="portSize" [attr.x]="offset.x - portSize/2"
+          [attr.y]="getPortY(i)"></rect>
+  </svg:g>
+
+  <svg:g *ngFor="let output of outputs; let i = index;">
+    <svg:text class="svgNonInteractive" [attr.y]="getPortNameY(i)" [attr.x]="rectLeft - portSize/2">
+      <svg:tspan class="portName">{{output.name}}</svg:tspan>
+      <svg:tspan class="portType">:{{output.dataType.name}}</svg:tspan>
+    </svg:text>
+    <svg:rect (click)="portClick.emit(output)" class="port" [attr.width]="portSize" [attr.height]="portSize" [attr.x]="rectLeft - portSize/2"
+          [attr.y]="getPortY(i)"></svg:rect>
+  </svg:g>
+</svg:g>

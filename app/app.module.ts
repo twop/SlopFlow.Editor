@@ -14,9 +14,11 @@ import {PortFormComponent} from  './Forms/portForm.component'
 
 import {Scene} from  './Scene/scene'
 import {Log} from  './LogComponent/log'
-import {Theme} from "./Common/theme";
 
 import {DataAccessService} from './DataAccess/dataAccess.service'
+import {NodeComponent} from './WorkspaceComponent/node.component';
+import {NodeWorkspaceComponent} from './WorkspaceComponent/nodeWorkspace.component';
+import {FlowWorkspaceComponent} from './WorkspaceComponent/flowWorkspace.component';
 
 @NgModule({
   imports: [
@@ -31,9 +33,12 @@ import {DataAccessService} from './DataAccess/dataAccess.service'
     PortFormComponent,
     LogComponent,
     NodeToolbarComponent,
+    NodeComponent,
+    NodeWorkspaceComponent,
+    FlowWorkspaceComponent
   ],
   bootstrap: [AppComponent],
-  providers: [Scene, Log, Theme, DataAccessService],
+  providers: [Scene, Log, DataAccessService],
 })
 
 export class AppModule { }

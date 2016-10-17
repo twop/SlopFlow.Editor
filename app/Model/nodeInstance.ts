@@ -1,5 +1,6 @@
 import {INode} from './nodeInterface';
 import {IPort} from './port';
+import {Point} from '../Geometry/point';
 
 export class NodeInstance implements INode
 {
@@ -10,6 +11,8 @@ export class NodeInstance implements INode
 
   inputs: IPort[];
   outputs: IPort[];
+
+  position: Point = new Point(0,0);
 
   public Refresh():void
   {

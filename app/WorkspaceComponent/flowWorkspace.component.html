@@ -1,0 +1,3 @@
+<svg:g *ngFor="let nodeInstance of getNodeInstances()">
+  <svg:g node-component [node]="nodeInstance" [offset]="nodeInstance.position" (portClick)="onPortClicked(nodeInstance, $event)" (nodeClick)="onNodeClicked($event)"/>
+</svg:g>

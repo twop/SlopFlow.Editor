@@ -6,15 +6,15 @@ import {Log} from '../LogComponent/log'
 import {ISceneCommand} from './Commands/sceneCommand'
 import {DataAccessService} from '../DataAccess/dataAccess.service'
 
-import {Theme} from "../Common/theme";
 import {NodeWorkspace} from './nodeWorkspace';
 import {Workspace} from './workspace';
 import {Flow} from '../Model/flow';
+import {FlowWorkspace} from './flowWorkspace';
 
 @Injectable()
 export class Scene
 {
-  constructor(private log:Log, private dataService:DataAccessService, private theme: Theme)
+  constructor(private log:Log, private dataService:DataAccessService)
   {
     this.dataService = dataService;
     this.dataService.getAppData().then(appData =>
@@ -28,19 +28,20 @@ export class Scene
   public workspaceModified = new EventEmitter<Workspace>();
   public activeWorkspace: Workspace = null;
 
-  private flows:Flow[] = [];
-
   private nodes: Node[] = [];
   private nodeWorkspaces: NodeWorkspace[] = [];
+
+  private flows:Flow[] = [];
+  private flowWorkspaces: FlowWorkspace[] = [];
   
   public getNodeWorkspaces():NodeWorkspace[]
   {
     return this.nodeWorkspaces;
   }
 
-  public getFlowWorkspaces():NodeWorkspace[]
+  public getFlowWorkspaces():FlowWorkspace[]
   {
-    return this.nodeWorkspaces;
+    return this.flowWorkspaces;
   }
 
   private loadNodes(nodes: Node[])
@@ -48,20 +49,24 @@ export class Scene
     this.nodes = nodes;
     this.nodes.forEach(node=>
     {
-      this.addWorkspaceFor(node);
-    })
+      this.addNodeWorkspaceFor(node);
+    });
   }
 
   private loadFlows(flows:Flow[])
   {
     this.flows = flows;
+    this.flows.forEach(flow=>
+    {
+      this.addFlowWorkspaceFor(flow);
+    });
   }
 
   public addNewNode(node: Node)
   {
     this.nodes.push(node);
 
-    var workspace = this.addWorkspaceFor(node);
+    var workspace = this.addNodeWorkspaceFor(node);
     this.activateWorkspace(workspace);
   }
 
@@ -71,10 +76,19 @@ export class Scene
     this.workspaceModified.emit(workspace);
   }
 
-  private addWorkspaceFor(node: Node):NodeWorkspace
+  private addNodeWorkspaceFor(node: Node):NodeWorkspace
   {
-    var workspace =  new NodeWorkspace(node, this.theme.sizes, this.log);
+    var workspace =  new NodeWorkspace(node, this.log);
     this.nodeWorkspaces.push(workspace);
+    var scene = this;
+    workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
+    return workspace;
+  }
+
+  private addFlowWorkspaceFor(flow: Flow):FlowWorkspace
+  {
+    var workspace =  new FlowWorkspace(flow, this.log);
+    this.flowWorkspaces.push(workspace);
     var scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
     return workspace;
