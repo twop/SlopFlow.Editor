@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": 
   {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -12,5 +12,5 @@
     "noImplicitAny": false,
     "watch": true
   },
-   "exclude": [ "node_modules" ]
+   "exclude": [ "node_modules",  "typings"]
 }

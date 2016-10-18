@@ -6,13 +6,14 @@ import {INode} from '../Model/nodeInterface';
 import {Log} from '../LogComponent/log';
 
 @Component({
-    moduleId: module.id,
     selector: 'g[flow-workspace]',
-    templateUrl: 'flowWorkspace.component.html'
+    templateUrl: 'app/WorkspaceComponent/flowWorkspace.component.html'
 })
 export class FlowWorkspaceComponent
 {
-  constructor(private log:Log) { }
+  constructor(private log:Log)
+  {
+  }
 
   @Input()
   public flowWorkspace:FlowWorkspace;

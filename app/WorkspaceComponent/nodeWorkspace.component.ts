@@ -4,11 +4,11 @@ import {NodePort, Node} from '../Model/node';
 import {NodeEventService} from '../Common/nodeEvent.service';
 import {EditPortRequest} from '../Common/portEvents';
 import {Point} from '../Geometry/point';
+import {Log} from '../LogComponent/log';
 
 @Component({
-    moduleId: module.id,
     selector: 'g[node-workspace]',
-    templateUrl: 'nodeWorkspace.component.html'
+    templateUrl: 'app/WorkspaceComponent/nodeWorkspace.component.html'
 })
 export class NodeWorkspaceComponent
 {

@@ -1,16 +1,53 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {
+  Component, Input, Output, EventEmitter, AfterViewChecked, AfterViewInit, OnChanges,
+  SimpleChange, DoCheck, AfterContentInit
+} from '@angular/core';
 import {INode} from '../Model/nodeInterface';
 import {IPort} from '../Model/port';
 import {Point} from '../Geometry/point';
+import {Log} from '../LogComponent/log';
 
 @Component({
-  moduleId: module.id,
   selector: 'g[node-component]',
-  styleUrls: ['node.component.css'],
-  templateUrl: 'node.component.html'
+  styleUrls: ['app/WorkspaceComponent/node.component.css'],
+  templateUrl: 'app/WorkspaceComponent/node.component.html'
 })
 export class NodeComponent
 {
+//  constructor(private log:Log)
+//  {
+//    log.warning("NodeComponent ctr");
+//  }
+//
+//  ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
+//    for (let propName in changes) {
+//      let chng = changes[propName];
+//      let cur  = JSON.stringify(chng.currentValue);
+//      let prev = JSON.stringify(chng.previousValue);
+//      this.log.warning(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+//    }
+//  }
+//
+//  ngAfterViewChecked(): void
+//  {
+//    this.log.warning("ngAfterViewChecked");
+//  }
+//
+//  ngAfterViewInit(): void
+//  {
+//    this.log.warning("ngAfterViewInit");
+//  }
+//
+//  ngDoCheck(): void
+//  {
+//    this.log.warning("ngDoCheck");
+//  }
+//
+//  ngAfterContentInit(): void
+//  {
+//    this.log.warning("ngAfterContentInit");
+//  }
+
   @Input()
   public node: INode;
 
