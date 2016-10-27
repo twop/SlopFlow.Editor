@@ -1,23 +1,29 @@
 <svg:g xmlns:svg="http://www.w3.org/1999/XSL/Transform">
-  <svg:text class="nodeHeader svgNonInteractive" text-anchor="middle" [attr.y]="offset.y" [attr.x]="offset.x + nodeWidth/2">{{node.name}}</svg:text>
-  <svg:rect (click)="nodeClick.emit(node)" class="node" [attr.width]="nodeWidth" ry="5" [attr.height]="(maxPorts-1)*portSpace + portSize+ nodeHeight"
-        [attr.x]="offset.x" [attr.y]="rectTop"></svg:rect>
+  <svg:text class="nodeHeader svgNonInteractive" text-anchor="middle"
+            [attr.y]="layout.rect.y - layout.nodeNameOffset"
+            [attr.x]="layout.rect.x + layout.rect.width/2">{{layout.node.name}}
+  </svg:text>
+  <svg:rect class="node" ry="5"
+            (click)="nodeClick.emit(layout.node)"
+            [attr.width]="layout.rect.width"
+            [attr.height]="layout.rect.height"
+            [attr.x]="layout.rect.x"
+            [attr.y]="layout.rect.y">
+  </svg:rect>
 
-  <svg:g *ngFor="let input of inputs; let i = index;">
-    <svg:text class="svgNonInteractive" [attr.y]="getPortNameY(i)" [attr.x]="offset.x - portSize/2">
-      <svg:tspan class="portName">{{input.name}}</svg:tspan>
-      <svg:tspan class="portType">:{{input.dataType.name}}</svg:tspan>
+  <svg:g *ngFor="let portLayout of layout">
+    <svg:text class="svgNonInteractive"
+              [attr.y]="portLayout.rect.y - layout.portNameOffset"
+              [attr.x]="portLayout.rect.x">
+      <svg:tspan class="portName">{{portLayout.port.name}}</svg:tspan>
+      <svg:tspan class="portType">:{{portLayout.port.dataType.name}}</svg:tspan>
     </svg:text>
-    <rect (click)="portClick.emit(input)" class="port" [attr.width]="portSize" [attr.height]="portSize" [attr.x]="offset.x - portSize/2"
-          [attr.y]="getPortY(i)"></rect>
-  </svg:g>
-
-  <svg:g *ngFor="let output of outputs; let i = index;">
-    <svg:text class="svgNonInteractive" [attr.y]="getPortNameY(i)" [attr.x]="rectLeft - portSize/2">
-      <svg:tspan class="portName">{{output.name}}</svg:tspan>
-      <svg:tspan class="portType">:{{output.dataType.name}}</svg:tspan>
-    </svg:text>
-    <svg:rect (click)="portClick.emit(output)" class="port" [attr.width]="portSize" [attr.height]="portSize" [attr.x]="rectLeft - portSize/2"
-          [attr.y]="getPortY(i)"></svg:rect>
+    <svg:rect class="port"
+          (click)="portClick.emit(portLayout.port)"
+          [attr.width]="portLayout.rect.width"
+          [attr.height]="portLayout.rect.height"
+          [attr.x]="portLayout.rect.x"
+          [attr.y]="portLayout.rect.y">
+    </svg:rect>
   </svg:g>
 </svg:g>

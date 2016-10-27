@@ -19,6 +19,7 @@ import {DataAccessService} from './DataAccess/dataAccess.service'
 import {NodeComponent} from './WorkspaceComponent/node.component';
 import {NodeWorkspaceComponent} from './WorkspaceComponent/nodeWorkspace.component';
 import {FlowWorkspaceComponent} from './WorkspaceComponent/flowWorkspace.component';
+import {LayoutService} from './WorkspaceComponent/layout.service';
 
 @NgModule({
   imports: [
@@ -38,7 +39,7 @@ import {FlowWorkspaceComponent} from './WorkspaceComponent/flowWorkspace.compone
     FlowWorkspaceComponent
   ],
   bootstrap: [AppComponent],
-  providers: [Scene, Log, DataAccessService],
+  providers: [Scene, Log, DataAccessService, LayoutService],
 })
 
 export class AppModule { }

@@ -8,17 +8,14 @@ import { Log, LogEntry } from './log'
 export class LogComponent implements OnInit
 {
   constructor(private log:Log) 
-  {
-  }
+  {}
 
-  public entries: LogEntry[] = null;
+  public entries: Array<LogEntry> = [];
 
   ngOnInit()
   {
-    this.entries = this.log.entries;
-
-    // TODO this will still work cause Im showing the same thing (this.logger.entries)
-    // but this will have to be changed when the view will be different than logic array
-    this.log.entryAdded.subscribe(() => {});
+    this.entries = this.log.entries.slice();
+    this.entries.reverse();
+    this.log.entryAdded.subscribe((entry: LogEntry) => {this.entries.unshift(entry)});
   }
 }
