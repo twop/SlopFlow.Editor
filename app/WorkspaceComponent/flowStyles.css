@@ -50,3 +50,10 @@
   font: 11px Arial;
   fill: #4EC9B0;
 }
+
+.portLink
+{
+  stroke-opacity: 0.8;
+  stroke-width: 2;
+  stroke: darkorange;
+}

@@ -50,7 +50,7 @@ export class Rectangle
 
   public get center(): Point
   {
-    return new Point((this.x + this.width)/2, (this.y + this.height)/2);
+    return new Point(this.x + this.width/2, this.y + this.height/2);
   }
   public get right(): number
   {

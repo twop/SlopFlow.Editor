@@ -42,11 +42,11 @@ export class DataAccessService
 
     sum4.nodes.push(firstNode, secondNode, resultNode);
 
-    sum4.outputs.push(new FlowPort(firstNode.inputs[0], "input1"))
-    sum4.outputs.push(new FlowPort(firstNode.inputs[1], "input2"))
-    sum4.outputs.push(new FlowPort(secondNode.inputs[0], "input3"))
-    sum4.outputs.push(new FlowPort(secondNode.inputs[1], "input4"))
-    sum4.outputs.push(new FlowPort(resultNode.outputs[0], "output"))
+    sum4.outputs.push(new FlowPort(firstNode.inputs[0], "input1"));
+    sum4.outputs.push(new FlowPort(firstNode.inputs[1], "input2"));
+    sum4.outputs.push(new FlowPort(secondNode.inputs[0], "input3"));
+    sum4.outputs.push(new FlowPort(secondNode.inputs[1], "input4"));
+    sum4.outputs.push(new FlowPort(resultNode.outputs[0], "output"));
 
     this.nodes = [sum, greaterNode];
     this.flows = [sum4];

@@ -2,13 +2,18 @@ import {Node, NodePort} from "../Model/node";
 import {Log} from '../LogComponent/log'
 import {PortModel} from '../Forms/portModel';
 import {Workspace} from './workspace';
+import {LayoutService, INodeLayout} from '../WorkspaceComponent/layout.service';
+import {Point} from '../Geometry/point';
 
 export class NodeWorkspace extends Workspace
 {
-  constructor(public node: Node, log: Log)
+  constructor(public node: Node, log: Log, layoutService:LayoutService)
   {
     super(log);
+    this.layout = layoutService.buildNodeLayout(node, new Point(10,15));
   }
+
+  readonly layout:INodeLayout;
 
   public get name(): string
   {

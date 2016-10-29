@@ -6,7 +6,7 @@ export class NodeInstance implements INode
 {
   constructor(public name: string, public node:INode)
   {
-    this.Refresh();
+    this.refresh();
   }
 
   inputs: IPort[];
@@ -14,7 +14,7 @@ export class NodeInstance implements INode
 
   position: Point = new Point(0,0);
 
-  public Refresh():void
+  public refresh():void
   {
     const wrapPort = (port: IPort) =>
     {

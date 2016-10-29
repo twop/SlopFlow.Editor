@@ -19,8 +19,6 @@ export class NodeWorkspaceComponent
   @Input()
   nodeWorkspace:NodeWorkspace;
 
-  public offset = new Point(10,15);
-  
   public onPortClicked(port:NodePort)
   {
     this.eventService.requestEditPort.emit( new EditPortRequest(port, this.nodeWorkspace));

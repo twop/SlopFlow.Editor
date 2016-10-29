@@ -10,11 +10,12 @@ import {NodeWorkspace} from './nodeWorkspace';
 import {Workspace} from './workspace';
 import {Flow} from '../Model/flow';
 import {FlowWorkspace} from './flowWorkspace';
+import {LayoutService} from '../WorkspaceComponent/layout.service';
 
 @Injectable()
 export class Scene
 {
-  constructor(private log:Log, private dataService:DataAccessService)
+  constructor(private log:Log, private dataService:DataAccessService, private layoutService:LayoutService)
   {
     this.dataService = dataService;
     this.dataService.getAppData().then(appData =>
@@ -78,7 +79,7 @@ export class Scene
 
   private addNodeWorkspaceFor(node: Node):NodeWorkspace
   {
-    var workspace =  new NodeWorkspace(node, this.log);
+    var workspace =  new NodeWorkspace(node, this.log, this.layoutService);
     this.nodeWorkspaces.push(workspace);
     var scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
@@ -87,7 +88,7 @@ export class Scene
 
   private addFlowWorkspaceFor(flow: Flow):FlowWorkspace
   {
-    var workspace =  new FlowWorkspace(flow, this.log);
+    var workspace =  new FlowWorkspace(flow, this.log, this.layoutService);
     this.flowWorkspaces.push(workspace);
     var scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));

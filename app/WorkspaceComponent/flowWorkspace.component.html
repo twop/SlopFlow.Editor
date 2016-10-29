@@ -1,3 +1,11 @@
-<svg:g *ngFor="let nodeInstance of getNodeInstances()">
-  <svg:g node-component [node]="nodeInstance" [offset]="nodeInstance.position" (portClick)="onPortClicked(nodeInstance, $event)" (nodeClick)="onNodeClicked($event)"/>
+<svg:g *ngFor="let linkLayout of layout.linkLayouts">
+  <svg:line class="portLink"
+            [attr.x1]="linkLayout.from.x"
+            [attr.y1]="linkLayout.from.y"
+            [attr.x2]="linkLayout.to.x"
+            [attr.y2]="linkLayout.to.y"/>
+</svg:g>
+
+<svg:g *ngFor="let nodeLayout of layout.nodeLayouts">
+  <svg:g node-component [layout]="nodeLayout" (portClick)="onPortClicked(nodeLayout.node, $event)" (nodeClick)="onNodeClicked($event)"/>
 </svg:g>
