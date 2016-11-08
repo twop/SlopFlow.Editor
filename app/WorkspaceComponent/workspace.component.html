@@ -1,5 +1,8 @@
 <div class="assets panel panel-default">
-  <div class="panel-heading">{{activeWorkspaceName}}</div>
+  <div class="panel-heading">
+    <span>{{activeWorkspaceName}}</span>
+    <node-toolbar *ngIf="isNode" [workspace]="nodeWorkspace"></node-toolbar>
+  </div>
   <div class="panel-body">
     <svg xlink="http://www.w3.org/1999/xlink" height="500" width="600" class='img-responsive'>
       <g *ngIf="isNode">
@@ -9,7 +12,6 @@
         <g flow-workspace [flowWorkspace]="flowWorkspace"/>
       </g>
     </svg>
-    <node-toolbar *ngIf="isNode" [workspace]="nodeWorkspace"></node-toolbar>
   </div>
 </div>
 

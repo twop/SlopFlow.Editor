@@ -8,6 +8,13 @@
     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
     Rename
   </button>
-  <button class="btn btn-default btn-sm" [disabled]="!workspace.canUndo" (click)="undo()">Undo</button>
-  <button class="btn btn-default btn-sm" [disabled]="!workspace.canRedo" (click)="redo()">Redo</button>
+
+  <button class="btn btn-default btn-sm" [disabled]="!workspace.canUndo" (click)="undo()">
+    <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+    Undo
+  </button>
+  <button class="btn btn-default btn-sm" [disabled]="!workspace.canRedo" (click)="redo()">
+    <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span>
+    Redo
+  </button>
 </div>

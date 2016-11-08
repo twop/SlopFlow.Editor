@@ -11,7 +11,7 @@
             [attr.y]="layout.rect.y">
   </svg:rect>
 
-  <svg:g *ngFor="let portLayout of layout">
+  <svg:g *ngFor="let portLayout of layout.portLayouts">
     <svg:text class="svgNonInteractive"
               [attr.y]="portLayout.rect.y - layout.portNameOffset"
               [attr.x]="portLayout.rect.x">

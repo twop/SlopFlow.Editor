@@ -46,15 +46,19 @@ export abstract class Workspace
     this.redoCommands.splice(0, this.redoCommands.length);
   }
 
+  protected abstract onModifiedInternal():void;
+
   private executeCommandInternal(command: IWorkSpaceCommand): void
   {
     command.Execute(this, this.log);
+    this.onModifiedInternal();
     this.modified.emit(this);
   }
 
   private revertCommandInternal(command: IWorkSpaceCommand): void
   {
     command.Revert(this, this.log);
+    this.onModifiedInternal();
     this.modified.emit(this);
   }
 }

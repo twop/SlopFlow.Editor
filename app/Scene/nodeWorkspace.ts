@@ -7,13 +7,13 @@ import {Point} from '../Geometry/point';
 
 export class NodeWorkspace extends Workspace
 {
-  constructor(public node: Node, log: Log, layoutService:LayoutService)
+  constructor(public node: Node, log: Log, private layoutService:LayoutService)
   {
     super(log);
     this.layout = layoutService.buildNodeLayout(node, new Point(10,15));
   }
 
-  readonly layout:INodeLayout;
+  public layout:INodeLayout;
 
   public get name(): string
   {
@@ -42,9 +42,15 @@ export class NodeWorkspace extends Workspace
     port.dataType = portModel.dataType;
   }
 
+  protected onModifiedInternal(): void
+  {
+    this.layout = this.layoutService.buildNodeLayout(this.node, new Point(10,15));
+  }
+
   private getNodes(isInput: boolean)
   {
     var ports = isInput ? this.node.inputs : this.node.outputs;
     return ports;
   }
+
 }

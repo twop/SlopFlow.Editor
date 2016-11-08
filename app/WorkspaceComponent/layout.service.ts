@@ -14,7 +14,7 @@ export interface INodeLayout
   readonly nodeNameOffset:number;
   readonly portNameOffset:number;
 
-  [Symbol.iterator]():IterableIterator<IPortLayout>;
+  readonly portLayouts:Array<IPortLayout>;
 }
 
 export interface IPortLayout
@@ -25,8 +25,12 @@ export interface IPortLayout
 
 export interface IFlowLayout
 {
+  readonly rect:Rectangle;
+
   readonly nodeLayouts:Array<INodeLayout>;
   readonly linkLayouts:Array<ILinkLayout>;
+
+  readonly portLayouts:Array<IPortLayout>;
 }
 
 export interface ILinkLayout
@@ -36,16 +40,36 @@ export interface ILinkLayout
   readonly to:Point;
 }
 
+class Sizes
+{
+  nodeNameOffset = 8;
+  portNameOffset = 4;
+
+  nodeDefaultWidth = 100;
+
+  portSize = 15;
+  portsDistance = 20;
+}
+
 @Injectable()
 export class LayoutService
 {
-  public buildNodeLayout = (node: INode, atPosition: Point): INodeLayout => new NodeLayout(node, atPosition);
+  private readonly nodeSizes = new Sizes();
+
+  public buildNodeLayout = (node: INode, atPosition: Point): INodeLayout =>
+  {
+    const maxPortsOnSide = Math.max(node.inputs.length, node.outputs.length);
+    const nodeHeight = ( maxPortsOnSide + 1) * this.nodeSizes.portsDistance + maxPortsOnSide *this.nodeSizes.portSize;
+
+    return this.layoutNode(node, atPosition, nodeHeight, this.nodeSizes);
+  };
+
   public buildFlowLayout(flow: Flow): IFlowLayout
   {
-    const nodeLayouts: Array<NodeLayout> = [];
-    const linkLayouts:Array<ILinkLayout> = [];
+    const nodeLayouts: Array<INodeLayout> = [];
+    const linkLayouts: Array<ILinkLayout> = [];
 
-    flow.nodes.map(node=> nodeLayouts.push(new NodeLayout(node, node.position)));
+    flow.nodes.forEach(node=> nodeLayouts.push( this.buildNodeLayout(node, node.position)));
 
     for (const link of flow.links)
     {
@@ -57,88 +81,72 @@ export class LayoutService
         });
     }
 
-    return { nodeLayouts:nodeLayouts, linkLayouts:linkLayouts};
+    const rect = new Rectangle(0,0,0,0);
+    nodeLayouts.forEach(nl=> rect.unionInPlace(nl.rect));
+    rect.inflate(20, 20);
+
+    let sizes = new Sizes;
+    sizes.nodeDefaultWidth = rect.width;
+    sizes.nodeNameOffset = 0;
+
+    let layout:INodeLayout = this.layoutNode(flow, rect.topLeft, rect.height, sizes);
+
+    return {
+      nodeLayouts:nodeLayouts,
+      linkLayouts:linkLayouts,
+      rect:rect,
+      portLayouts: layout.portLayouts};
   }
 
-  private getPortCenter(nodeLayouts: Array<NodeLayout>, node: NodeInstance, port: IPort):Point
+  private getPortCenter(nodeLayouts: Array<INodeLayout>, node: NodeInstance, port: IPort):Point
   {
-    const fromLayout: NodeLayout = nodeLayouts.find(l=>l.node == node);
-    return fromLayout.getPortRect(port).center;
-  }
-}
-
-function* generatePortLayouts(nodeLayout:NodeLayout)
-{
-  for (var i = 0; i < nodeLayout.node.inputs.length; i++)
-  {
-    yield nodeLayout.createPortLayout(nodeLayout.node.inputs[i], i, nodeLayout.rect.x);
+    const fromLayout: INodeLayout = nodeLayouts.find(l=>l.node == node);
+//    return fromLayout.getPortRect(port).center;
+    return new Point(0,0);
   }
 
-  for (var i = 0; i < nodeLayout.node.outputs.length; i++)
+  private layoutNode(node: INode, offset: Point, height:number, sizes:Sizes):INodeLayout
   {
-    yield nodeLayout.createPortLayout(nodeLayout.node.outputs[i], i, nodeLayout.rect.right);
-  }
-}
+   const rect = new Rectangle(offset.x, offset.y + sizes.nodeNameOffset, sizes.nodeDefaultWidth, height);
 
-class NodeLayout implements INodeLayout
-{
-  constructor( public node: INode, public offset: Point)
-  {
-    this.recalcRect();
-  }
+    const portLayouts:Array<IPortLayout> = this.layoutPorts(node.inputs, rect.y, rect.x, rect.height, sizes);
+    portLayouts.push(...this.layoutPorts(node.outputs, rect.y, rect.right, rect.height, sizes));
 
-  readonly nodeNameOffset = 8;
-  readonly portNameOffset = 4;
-
-  private calculatedRect:Rectangle = null;
-  private calculatedWithCount:number = 0;
-
-  public get rect():Rectangle
-  {
-    if (this.calculatedWithCount != this.maxPortsOnSide)
-      this.recalcRect();
-
-    return this.calculatedRect;
+    return {
+      node:node,
+      rect:rect,
+      nodeNameOffset:sizes.nodeNameOffset,
+      portNameOffset:sizes.portNameOffset,
+      portLayouts:portLayouts};
   }
 
-  private get maxPortsOnSide():number {return Math.max(this.node.inputs.length, this.node.outputs.length);};
-
-  private recalcRect():void
+  private layoutPorts(ports:Array<IPort>, top:number, x:number, height:number, sizes:Sizes):Array<IPortLayout>
   {
-    this.calculatedWithCount = this.maxPortsOnSide;
-    const nodeHeight = ( this.calculatedWithCount - 1) * NodeLayout.portSpace + NodeLayout.portSize + NodeLayout.nodeDefaultHeight;
-    this.calculatedRect = new Rectangle(this.offset.x, this.offset.y + this.nodeNameOffset, NodeLayout.nodeDefaultWidth, nodeHeight)
+    if (ports.length == 0) return [];
+
+    let distance = height/(ports.length + 1);
+    let startY = top + distance - sizes.portSize/2;
+
+    const createLayout = (port:IPort): IPortLayout =>
+    {
+      const rect = new Rectangle(x - sizes.portSize / 2, startY, sizes.portSize, sizes.portSize);
+      startY += sizes.portsDistance + sizes.portSize;
+      return {port: port, rect: rect};
+    };
+
+    return ports.map(port => createLayout(port));
   }
 
-  [Symbol.iterator] ():IterableIterator<IPortLayout> {return generatePortLayouts(this);};
-
-  public createPortLayout(port: IPort, index: number, x: number): IPortLayout
-  {
-    return { port: port, rect: this.getPortRectInternal(index, x)};
-  };
-
-  private getPortRectInternal (index: number, centerX:number): Rectangle
-  {
-    const y = this.rect.y + index * NodeLayout.portSpace + NodeLayout.nodeDefaultHeight / 2;
-    return new Rectangle(centerX - NodeLayout.portSize / 2, y, NodeLayout.portSize, NodeLayout.portSize);
-  }
-
-  public getPortRect (port:IPort): Rectangle
-  {
-    let index = this.node.inputs.findIndex(p => p == port);
-    if (index>=0)
-      return this.getPortRectInternal(index, this.rect.x);
-
-    index = this.node.outputs.findIndex(p => p == port);
-    if (index>=0)
-      return this.getPortRectInternal(index, this.rect.right);
-
-    throw "port is not present in node";
-  }
-
-  private static portSize = 15;
-  private static nodeDefaultWidth = 100;
-
-  private static portSpace = 35;
-  private static nodeDefaultHeight = 30;
+//  public getPortRect (port:IPort): Rectangle
+//  {
+//    let index = this.node.inputs.findIndex(p => p == port);
+//    if (index>=0)
+//      return this.getPortRectInternal(index, this.rect.x);
+//
+//    index = this.node.outputs.findIndex(p => p == port);
+//    if (index>=0)
+//      return this.getPortRectInternal(index, this.rect.right);
+//
+//    throw "port is not present in node";
+//  }
 }
