@@ -16,9 +16,9 @@
               [attr.y]="portLayout.rect.y - layout.portNameOffset"
               [attr.x]="portLayout.rect.x">
       <svg:tspan class="portName">{{portLayout.port.name}}</svg:tspan>
-      <svg:tspan class="portType">:{{portLayout.port.dataType.name}}</svg:tspan>
+      <svg:tspan class="portType">{{portLayout.port.dataType.name}}</svg:tspan>
     </svg:text>
-    <svg:rect class="port"
+    <svg:rect class="port" ry="2"
           (click)="portClick.emit(portLayout.port)"
           [attr.width]="portLayout.rect.width"
           [attr.height]="portLayout.rect.height"

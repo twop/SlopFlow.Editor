@@ -1,11 +1,37 @@
-<svg:g *ngFor="let linkLayout of layout.linkLayouts">
-  <svg:line class="portLink"
-            [attr.x1]="linkLayout.from.x"
-            [attr.y1]="linkLayout.from.y"
-            [attr.x2]="linkLayout.to.x"
-            [attr.y2]="linkLayout.to.y"/>
-</svg:g>
+<svg:g xmlns:svg="http://www.w3.org/1999/XSL/Transform">
 
-<svg:g *ngFor="let nodeLayout of layout.nodeLayouts">
-  <svg:g node-component [layout]="nodeLayout" (portClick)="onPortClicked(nodeLayout.node, $event)" (nodeClick)="onNodeClicked($event)"/>
+  <svg:rect class="flowRect svgNonInteractive" ry="5"
+            [attr.width]="layout.rect.width"
+            [attr.height]="layout.rect.height"
+            [attr.x]="layout.rect.x"
+            [attr.y]="layout.rect.y"/>
+
+  <svg:g *ngFor="let linkLayout of layout.linkLayouts">
+    <svg:line class="portLink"
+              [attr.x1]="linkLayout.from.x"
+              [attr.y1]="linkLayout.from.y"
+              [attr.x2]="linkLayout.to.x"
+              [attr.y2]="linkLayout.to.y"/>
+  </svg:g>
+
+  <svg:g *ngFor="let nodeLayout of layout.nodeLayouts">
+    <svg:g node-component [layout]="nodeLayout" (portClick)="onPortClicked(nodeLayout.node, $event)" (nodeClick)="onNodeClicked($event)"/>
+  </svg:g>
+
+  <svg:g *ngFor="let portLayout of layout.portLayouts">
+
+     <svg:text class="svgNonInteractive"
+              [attr.y]="portLayout.rect.y - layout.portNameOffset"
+              [attr.x]="portLayout.rect.x">
+      <svg:tspan class="portName">{{portLayout.port.name}}</svg:tspan>
+      <svg:tspan class="portType">{{portLayout.port.dataType.name}}</svg:tspan>
+    </svg:text>
+
+    <svg:circle class="port"
+              [attr.r]="portLayout.rect.width/2"
+              [attr.cx]="portLayout.rect.center.x"
+              [attr.cy]="portLayout.rect.center.y">
+    </svg:circle>
+
+  </svg:g>
 </svg:g>

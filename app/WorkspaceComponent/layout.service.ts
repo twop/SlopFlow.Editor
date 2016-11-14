@@ -30,6 +30,7 @@ export interface IFlowLayout
   readonly nodeLayouts:Array<INodeLayout>;
   readonly linkLayouts:Array<ILinkLayout>;
 
+  readonly portNameOffset:number;
   readonly portLayouts:Array<IPortLayout>;
 }
 
@@ -81,7 +82,7 @@ export class LayoutService
         });
     }
 
-    const rect = new Rectangle(0,0,0,0);
+    const rect = nodeLayouts.length? nodeLayouts[0].rect.clone() : new Rectangle(0,0,0,0);
     nodeLayouts.forEach(nl=> rect.unionInPlace(nl.rect));
     rect.inflate(20, 20);
 
@@ -94,6 +95,7 @@ export class LayoutService
     return {
       nodeLayouts:nodeLayouts,
       linkLayouts:linkLayouts,
+      portNameOffset:sizes.portNameOffset,
       rect:rect,
       portLayouts: layout.portLayouts};
   }

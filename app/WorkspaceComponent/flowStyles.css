@@ -45,6 +45,14 @@
   fill: white;
 }
 
+.flowRect
+{
+  fill-opacity: 0;
+  stroke-width: 2;
+  stroke: lightgreen;
+  stroke-opacity: 0.5;
+}
+
 .portType
 {
   font: 11px Arial;

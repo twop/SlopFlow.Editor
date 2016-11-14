@@ -68,6 +68,11 @@ export class Rectangle
     return this.x + this.width;
   }
 
+  public get bottom(): number
+  {
+    return this.y + this.height;
+  }
+
   public clone(): Rectangle
   {
     return new Rectangle(this.x, this.y, this.width, this.height);
