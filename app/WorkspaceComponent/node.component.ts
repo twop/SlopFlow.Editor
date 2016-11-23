@@ -2,7 +2,8 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {INode} from '../Model/nodeInterface';
 import {IPort} from '../Model/port';
 import {Log} from '../LogComponent/log';
-import {INodeLayout, IPortLayout} from './layout.service';
+import {INodeLayout, IPortLayout} from '../Scene/layout.service';
+import {INodeViewState} from './nodeViewState';
 
 @Component({
   selector: 'g[node-component]',
@@ -21,4 +22,7 @@ export class NodeComponent
 
   @Input()
   public layout: INodeLayout = null;
+
+  @Input()
+  public viewState:INodeViewState<any> = null;
 }

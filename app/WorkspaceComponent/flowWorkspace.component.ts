@@ -3,7 +3,7 @@ import {FlowWorkspace} from '../Scene/flowWorkspace';
 import {IPort} from '../Model/port';
 import {INode} from '../Model/nodeInterface';
 import {Log} from '../LogComponent/log';
-import {IFlowLayout} from './layout.service';
+import {IFlowLayout} from '../Scene/layout.service';
 
 @Component({
     selector: 'g[flow-workspace]',

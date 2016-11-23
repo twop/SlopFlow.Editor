@@ -1,10 +1,11 @@
 <div class="assets panel panel-default">
   <div class="panel-heading">
     <span>{{activeWorkspaceName}}</span>
-    <node-toolbar *ngIf="isNode" [workspace]="nodeWorkspace"></node-toolbar>
+    <context-toolbar *ngIf="scene.activeWorkspace" [toolbar]="scene.activeWorkspace.toolbar" [toolbarSize]="'sm'" ></context-toolbar>
   </div>
   <div class="panel-body">
-    <svg xlink="http://www.w3.org/1999/xlink" height="500" width="600" class='img-responsive'>
+    <context-toolbar [toolbar]="toolbar"></context-toolbar>
+    <svg xlink="http://www.w3.org/1999/xlink" height="500" width="600" class='img-responsive svg'>
       <g *ngIf="isNode">
         <g node-workspace [nodeWorkspace]="nodeWorkspace"/>
       </g>

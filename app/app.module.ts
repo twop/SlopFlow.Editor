@@ -5,7 +5,6 @@ import { FormsModule }   from '@angular/forms';
 import { AppComponent }  from './app.component';
 
 import {WorkspaceComponent} from  './WorkspaceComponent/workspace.component'
-import {NodeToolbarComponent} from './WorkspaceComponent/nodeToolbar.component';
 
 import {AssetsComponent} from  './AssetsComponent/assets.component'
 import {LogComponent} from  './LogComponent/log.component'
@@ -19,7 +18,9 @@ import {DataAccessService} from './DataAccess/dataAccess.service'
 import {NodeComponent} from './WorkspaceComponent/node.component';
 import {NodeWorkspaceComponent} from './WorkspaceComponent/nodeWorkspace.component';
 import {FlowWorkspaceComponent} from './WorkspaceComponent/flowWorkspace.component';
-import {LayoutService} from './WorkspaceComponent/layout.service';
+import {LayoutService} from './Scene/layout.service';
+import {ToolbarComponent} from './WorkspaceComponent/toolbar.component';
+import {NodeEventService} from './Common/nodeEvent.service';
 
 @NgModule({
   imports: [
@@ -33,13 +34,13 @@ import {LayoutService} from './WorkspaceComponent/layout.service';
     NodeFormComponent,
     PortFormComponent,
     LogComponent,
-    NodeToolbarComponent,
     NodeComponent,
     NodeWorkspaceComponent,
-    FlowWorkspaceComponent
+    FlowWorkspaceComponent,
+    ToolbarComponent
   ],
   bootstrap: [AppComponent],
-  providers: [Scene, Log, DataAccessService, LayoutService],
+  providers: [Scene, NodeEventService, Log, DataAccessService, LayoutService],
 })
 
 export class AppModule { }

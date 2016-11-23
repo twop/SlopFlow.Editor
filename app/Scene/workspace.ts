@@ -2,11 +2,14 @@ import {EventEmitter} from '@angular/core';
 
 import {IWorkSpaceCommand} from './Commands/workspaceCommand';
 import {Log} from '../LogComponent/log'
+import {Toolbar} from './toolbar';
 
 export abstract class Workspace
 {
   constructor(private log: Log)
   {}
+
+  public toolbar:Toolbar = new Toolbar();
 
   public modified = new EventEmitter<Workspace>();
 

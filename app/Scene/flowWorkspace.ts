@@ -1,7 +1,7 @@
 import {Log} from '../LogComponent/log'
 import {Workspace} from './workspace';
 import {Flow} from '../Model/flow';
-import {LayoutService, INodeLayout, IFlowLayout} from '../WorkspaceComponent/layout.service';
+import {LayoutService, INodeLayout, IFlowLayout} from './layout.service';
 import {INode} from '../Model/nodeInterface';
 
 export class FlowWorkspace extends Workspace

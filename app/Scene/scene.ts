@@ -10,18 +10,25 @@ import {NodeWorkspace} from './nodeWorkspace';
 import {Workspace} from './workspace';
 import {Flow} from '../Model/flow';
 import {FlowWorkspace} from './flowWorkspace';
-import {LayoutService} from '../WorkspaceComponent/layout.service';
+import {LayoutService} from './layout.service';
+import {NodeEventService} from '../Common/nodeEvent.service';
 
 @Injectable()
 export class Scene
 {
-  constructor(private log:Log, private dataService:DataAccessService, private layoutService:LayoutService)
+  constructor(
+    private log:Log,
+    private dataService:DataAccessService,
+    private layoutService:LayoutService,
+    private eventService: NodeEventService)
   {
     this.dataService = dataService;
     this.dataService.getAppData().then(appData =>
     {
       this.loadNodes(appData.nodes);
       this.loadFlows(appData.flows);
+
+      this.activeWorkspace = this.nodeWorkspaces.length && this.nodeWorkspaces[0];
     });
   }
 
@@ -79,7 +86,7 @@ export class Scene
 
   private addNodeWorkspaceFor(node: Node):NodeWorkspace
   {
-    var workspace =  new NodeWorkspace(node, this.log, this.layoutService);
+    var workspace =  new NodeWorkspace(node, this.log, this.layoutService, this.eventService);
     this.nodeWorkspaces.push(workspace);
     var scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));

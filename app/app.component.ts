@@ -5,8 +5,7 @@ import { NodeEventService } from './Common/nodeEvent.service';
 @Component({
   selector: 'my-app',
   styleUrls: ['app/app.component.css'],
-  templateUrl: 'app/app.component.html',
-  providers: [NodeEventService],
+  templateUrl: 'app/app.component.html'
 })
 
 export class AppComponent 
