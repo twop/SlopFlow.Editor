@@ -1,11 +1,12 @@
 import {Component, Input} from '@angular/core';
-import {Toolbar} from '../Scene/toolbar';
+import {Toolbar, ToolbarItem} from '../Scene/toolbar';
 
 @Component({
-  selector: 'context-toolbar',
+  selector: 'toolbar',
   template: `
   <div class="btn-group">
-    <button *ngFor="let item of toolbar.items" (click)="item.action()" [disabled]="!item.enabled" [ngClass]="'btn-' + 
+    <button *ngFor="let item of toolbar.items" (click)="item.action()" [disabled]="!item.isEnabled()" 
+    [ngClass]="'btn-' + 
     toolbarSize" class="btn btn-default">
       <span *ngIf="item.glyphicon" [ngClass]="item.glyphicon" class="glyphicon" aria-hidden="true"></span>
       {{item.actionName}}

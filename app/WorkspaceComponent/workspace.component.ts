@@ -16,14 +16,7 @@ export class WorkspaceComponent
   constructor(private scene:Scene)
   {
     //this.scene.activeWorkspaceChanged.subscribe(() => sceneView.drawScene());
-
-    const toolbarItem = new ToolbarItem("test", ()=> console.log("test"), true, Glyphicons.delete);
-    const toolbarItem1 = new ToolbarItem("test1", ()=> console.log("test1"), true, Glyphicons.edit);
-    const toolbarItem2 = new ToolbarItem("test2", ()=> console.log("test2"), true, Glyphicons.delete);
-    this.toolbar.items.push(toolbarItem, toolbarItem1, toolbarItem2);
   }
-
-  public toolbar:Toolbar = new Toolbar();
 
   public get isNode():boolean
   {

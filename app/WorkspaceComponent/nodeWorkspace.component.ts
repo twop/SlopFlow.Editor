@@ -7,26 +7,24 @@ import {Point} from '../Geometry/point';
 import {Log} from '../LogComponent/log';
 import {INode} from '../Model/nodeInterface';
 import {INodeViewState} from './nodeViewState';
-
-export type SelectionType = Node | NodePort;
+import {ContextToolbarService} from '../Scene/contextToolbar.service';
+import {Toolbar} from '../Scene/toolbar';
 
 @Component({
     selector: 'g[node-workspace]',
     template: `
     <svg:g node-component [layout]="nodeWorkspace.layout" [viewState]="nodeViewState"
-      (portClick)="onPortClicked($event)"
-      (nodeClick)="onNodeClicked($event)"/>`
+      (portClick)="onPortClicked($event)"/>`
 })
 export class NodeWorkspaceComponent
 {
-  constructor(private eventService: NodeEventService)
-  {
-  }
+  constructor(private toolbarService:ContextToolbarService)
+  {}
 
   @Input()
   nodeWorkspace:NodeWorkspace;
 
-  public nodeViewState:INodeViewState<SelectionType> = {
+  public nodeViewState:INodeViewState<NodePort> = {
     nodeIsSelectable: false,
     selectedObject: null
   };
@@ -35,16 +33,8 @@ export class NodeWorkspaceComponent
   {
     this.nodeViewState.selectedObject = port;
     console.log(`selection: ${port.name}`);
-    //this.eventService.requestEditPort.emit( new EditPortRequest(port, this.nodeWorkspace));
+
+    const portToolbar: Toolbar = this.nodeWorkspace.buildPortToolbar(port);
+    this.toolbarService.newToolbarEvent.emit(portToolbar);
   }
-
-  public onNodeClicked(node:Node)
-  {
-    console.log(`selection: ${node.name}`);
-    this.nodeViewState.selectedObject = node;
-    //this.eventService.requestEditNode.emit( this.nodeWorkspace);
-  }
-
-
-
 }

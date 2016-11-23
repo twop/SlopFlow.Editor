@@ -21,6 +21,8 @@ import {FlowWorkspaceComponent} from './WorkspaceComponent/flowWorkspace.compone
 import {LayoutService} from './Scene/layout.service';
 import {ToolbarComponent} from './WorkspaceComponent/toolbar.component';
 import {NodeEventService} from './Common/nodeEvent.service';
+import {ContextToolbarService} from './Scene/contextToolbar.service';
+import {ContextToolbarComponent} from './WorkspaceComponent/contextToolbar.component';
 
 @NgModule({
   imports: [
@@ -37,10 +39,18 @@ import {NodeEventService} from './Common/nodeEvent.service';
     NodeComponent,
     NodeWorkspaceComponent,
     FlowWorkspaceComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    ContextToolbarComponent
   ],
   bootstrap: [AppComponent],
-  providers: [Scene, NodeEventService, Log, DataAccessService, LayoutService],
+  providers: [
+    Scene,
+    NodeEventService,
+    ContextToolbarService,
+    Log,
+    DataAccessService,
+    LayoutService
+  ],
 })
 
 export class AppModule { }

@@ -9,7 +9,7 @@ export abstract class Workspace
   constructor(private log: Log)
   {}
 
-  public toolbar:Toolbar = new Toolbar();
+  public toolbar: Toolbar = new Toolbar();
 
   public modified = new EventEmitter<Workspace>();
 
@@ -18,13 +18,12 @@ export abstract class Workspace
 
   public abstract get name(): string;
 
-  public get canRedo(): boolean {return this.redoCommands.length > 0;}
-
-  public get canUndo(): boolean {return this.undoCommands.length > 0;}
+  public canRedo = (): boolean => this.redoCommands.length > 0;
+  public canUndo = (): boolean => this.undoCommands.length > 0;
 
   public undo(): void
   {
-    if (!this.canUndo)
+    if (!this.canUndo())
       return;
 
     var command = this.undoCommands.pop();
@@ -34,7 +33,7 @@ export abstract class Workspace
 
   public redo(): void
   {
-    if (!this.canRedo)
+    if (!this.canRedo())
       return;
 
     var command = this.redoCommands.pop();
@@ -49,7 +48,7 @@ export abstract class Workspace
     this.redoCommands.splice(0, this.redoCommands.length);
   }
 
-  protected abstract onModifiedInternal():void;
+  protected abstract onModifiedInternal(): void;
 
   private executeCommandInternal(command: IWorkSpaceCommand): void
   {
