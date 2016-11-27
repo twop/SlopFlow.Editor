@@ -1,8 +1,10 @@
-import { NgModule }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }   from '@angular/forms';
+import {NgModule}      from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule}   from '@angular/forms';
 
-import { AppComponent }  from './app.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+import {AppComponent}  from './app.component';
 
 import {WorkspaceComponent} from  './WorkspaceComponent/workspace.component'
 
@@ -20,14 +22,15 @@ import {NodeWorkspaceComponent} from './WorkspaceComponent/nodeWorkspace.compone
 import {FlowWorkspaceComponent} from './WorkspaceComponent/flowWorkspace.component';
 import {LayoutService} from './Scene/layout.service';
 import {ToolbarComponent} from './WorkspaceComponent/toolbar.component';
-import {NodeEventService} from './Common/nodeEvent.service';
 import {ContextToolbarService} from './Scene/contextToolbar.service';
 import {ContextToolbarComponent} from './WorkspaceComponent/contextToolbar.component';
+import {ModalService} from './Forms/modal.service';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
+    NgbModule.forRoot()
   ],
   declarations: [
     AppComponent,
@@ -40,17 +43,20 @@ import {ContextToolbarComponent} from './WorkspaceComponent/contextToolbar.compo
     NodeWorkspaceComponent,
     FlowWorkspaceComponent,
     ToolbarComponent,
-    ContextToolbarComponent
+    ContextToolbarComponent,
   ],
+  entryComponents: [NodeFormComponent, PortFormComponent],
   bootstrap: [AppComponent],
   providers: [
     Scene,
-    NodeEventService,
     ContextToolbarService,
     Log,
     DataAccessService,
-    LayoutService
+    LayoutService,
+    ModalService
   ],
 })
 
-export class AppModule { }
+export class AppModule
+{
+}

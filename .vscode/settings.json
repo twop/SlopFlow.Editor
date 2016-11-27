@@ -10,5 +10,6 @@
     },
 
     "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
-    "typescript.format.placeOpenBraceOnNewLineForFunctions": true
-}
+    "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "typescript.check.workspaceVersion": false
+  }

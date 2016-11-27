@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
-import { NodeModel }  from './nodeModel';
+import {Component, Input} from '@angular/core';
+import {NodeModel}  from './nodeModel';
 
-import { NodeEventService } from '../Common/nodeEvent.service';
-import { Scene } from '../Scene/scene';
-import { NewNodeCommand } from '../Scene/Commands/newNodeCommand';
-import { Node } from '../Model/node';
+import {Scene} from '../Scene/scene';
+import {NewNodeCommand} from '../Scene/Commands/newNodeCommand';
 import {EditNodeCommand} from '../Scene/Commands/editNodeCommand';
 import {NodeWorkspace} from '../Scene/nodeWorkspace';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'node-form',
@@ -15,20 +14,26 @@ import {NodeWorkspace} from '../Scene/nodeWorkspace';
 
 export class NodeFormComponent
 {
-  constructor(private scene: Scene, nodeEventService: NodeEventService)
+  constructor(public activeModal: NgbActiveModal)
   {
-    var formComponent = this;
-    scene.activeWorkspaceChanged.subscribe(()=> formComponent.onCancel());
-    nodeEventService.requestNewNode.subscribe((name) => formComponent.showCreateNodeForm(name));
-    nodeEventService.requestEditNode.subscribe((workspace) => formComponent.showEditNodeForm(workspace));
   }
 
   public model: NodeModel = null;
-  public workspace:NodeWorkspace;
+  public workspace: NodeWorkspace;
 
-  public get hasModel(): boolean
+  private scene: Scene;
+
+  public openCreateNode(scene: Scene, nodeName: string): void
   {
-    return this.model != null;
+    this.scene = scene;
+    this.model = new NodeModel(nodeName, false);
+  }
+
+  public openEditNode(scene: Scene, workspace: NodeWorkspace): void
+  {
+    this.scene = scene;
+    this.workspace = workspace;
+    this.model = new NodeModel(workspace.node.name, true);
   }
 
   public onSubmit(): void
@@ -39,11 +44,13 @@ export class NodeFormComponent
       this.scene.executeCommand(new NewNodeCommand(this.model));
 
     this.resetModel();
+    this.activeModal.close('submitted');
   }
 
   public onCancel(): void
   {
     this.resetModel();
+    this.activeModal.close('Close click');
   }
 
   private resetModel()
@@ -52,14 +59,5 @@ export class NodeFormComponent
     this.workspace = null;
   }
 
-  private showCreateNodeForm(nodeName: string): void
-  {
-    this.model = new NodeModel(nodeName, false);
-  }
 
-  private showEditNodeForm(workspace:NodeWorkspace): void
-  {
-    this.workspace = workspace;
-    this.model = new NodeModel(workspace.node.name, true);
-  }
 }

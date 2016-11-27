@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 
 import { Scene} from '../Scene/scene'
-import { Node } from '../Model/node'
-import { NodeEventService } from '../Common/nodeEvent.service';
 import {NodeWorkspace} from '../Scene/nodeWorkspace';
+import {ModalService} from '../Forms/modal.service';
 
 @Component({
   selector: 'my-assets',
@@ -15,7 +14,7 @@ export class AssetsComponent
 {
   constructor(
     public scene: Scene,
-    private nodeEventService: NodeEventService)
+    private modalService: ModalService)
   { }
   
   activateWorkspace(workspace: NodeWorkspace): void
@@ -25,11 +24,11 @@ export class AssetsComponent
 
   requestNewNode(): void
   {
-    this.nodeEventService.requestNewNode.emit("NewNode");
+    this.modalService.openNewNodeDialog(this.scene, "NewNode");
   }
 
   requestNewFlow(): void
   {
-    this.nodeEventService.requestNewFlow.emit("NewFlow");
+    //this.nodeEventService.requestNewFlow.emit("NewFlow");
   }
 }

@@ -5,30 +5,31 @@ import {Workspace} from './workspace';
 import {LayoutService, INodeLayout} from './layout.service';
 import {Point} from '../Geometry/point';
 import {Toolbar, Glyphicons, ToolbarItem} from './toolbar';
-import {NewPortRequest, EditPortRequest} from '../Common/portEvents';
-import {NodeEventService} from '../Common/nodeEvent.service';
 import {DeletePortCommand} from './Commands/deletePortCommand';
+import {ModalService} from '../Forms/modal.service';
+import {Scene} from './scene';
 
 export class NodeWorkspace extends Workspace
 {
   constructor(
+    private scene: Scene,
     public node: Node,
     log: Log,
-    private layoutService:LayoutService,
-    private eventService: NodeEventService)
+    private layoutService: LayoutService,
+    private modalService: ModalService)
   {
     super(log);
-    this.layout = layoutService.buildNodeLayout(node, new Point(10,15));
+    this.layout = layoutService.buildNodeLayout(node, new Point(10, 15));
 
-    const addPort = new ToolbarItem("Port", ()=> this.requestNewPort(), Glyphicons.addNew);
-    const rename = new ToolbarItem("Rename", ()=> this.requestRename(), Glyphicons.edit);
-    const undo = new ToolbarItem("Undo", ()=> this.undo(), Glyphicons.undo, this.canUndo);
-    const redo = new ToolbarItem("Redo", ()=> this.redo(), Glyphicons.redo, this.canRedo);
+    const addPort = new ToolbarItem("Port", () => this.requestNewPort(), Glyphicons.addNew);
+    const rename = new ToolbarItem("Rename", () => this.requestRename(), Glyphicons.edit);
+    const undo = new ToolbarItem("Undo", () => this.undo(), Glyphicons.undo, this.canUndo);
+    const redo = new ToolbarItem("Redo", () => this.redo(), Glyphicons.redo, this.canRedo);
 
     this.toolbar.items.push(addPort, rename, undo, redo);
   }
 
-  public layout:INodeLayout;
+  public layout: INodeLayout;
 
   public get name(): string
   {
@@ -51,26 +52,26 @@ export class NodeWorkspace extends Workspace
     }
   }
 
-  public editPort(port: NodePort, portModel:PortModel): void
+  public editPort(port: NodePort, portModel: PortModel): void
   {
     port.name = portModel.name;
     port.dataType = portModel.dataType;
   }
 
   public buildPortToolbar = (port: NodePort): Toolbar =>
-     new Toolbar(
+    new Toolbar(
       port.name,
-      new ToolbarItem("Edit", ()=> this.requestEditPort(port), Glyphicons.edit),
-      new ToolbarItem("Delete", ()=> this.deletePort(port), Glyphicons.delete) );
+      new ToolbarItem("Edit", () => this.requestEditPort(port), Glyphicons.edit),
+      new ToolbarItem("Delete", () => this.deletePort(port), Glyphicons.delete));
 
-  private requestEditPort = (port: NodePort) => this.eventService.requestEditPort.emit(new EditPortRequest(port, this));
-  private requestNewPort = () => this.eventService.requestNewPort.emit(new NewPortRequest("new port", this));
-  private requestRename = () => this.eventService.requestEditNode.emit(this);
+  private requestEditPort = (port: NodePort) => this.modalService.openEditPortDialog(port, this);
+  private requestNewPort = () => this.modalService.openNewPortDialog("new port", this);
+  private requestRename = () => this.modalService.openEditNodeDialog( this.scene, this);
   private deletePort = (port: NodePort) => this.executeCommand(new DeletePortCommand(port));
 
   protected onModifiedInternal(): void
   {
-    this.layout = this.layoutService.buildNodeLayout(this.node, new Point(10,15));
+    this.layout = this.layoutService.buildNodeLayout(this.node, new Point(10, 15));
   }
 
   private getNodes(isInput: boolean)
@@ -78,6 +79,4 @@ export class NodeWorkspace extends Workspace
     var ports = isInput ? this.node.inputs : this.node.outputs;
     return ports;
   }
-
-
 }

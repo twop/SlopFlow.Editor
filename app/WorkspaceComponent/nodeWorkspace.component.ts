@@ -1,11 +1,6 @@
 import { Component, Input } from '@angular/core';
 import {NodeWorkspace} from '../Scene/nodeWorkspace';
-import {NodePort, Node} from '../Model/node';
-import {NodeEventService} from '../Common/nodeEvent.service';
-import {EditPortRequest} from '../Common/portEvents';
-import {Point} from '../Geometry/point';
-import {Log} from '../LogComponent/log';
-import {INode} from '../Model/nodeInterface';
+import {NodePort} from '../Model/node';
 import {INodeViewState} from './nodeViewState';
 import {ContextToolbarService} from '../Scene/contextToolbar.service';
 import {Toolbar} from '../Scene/toolbar';

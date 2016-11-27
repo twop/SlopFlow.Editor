@@ -11,7 +11,7 @@ import {Workspace} from './workspace';
 import {Flow} from '../Model/flow';
 import {FlowWorkspace} from './flowWorkspace';
 import {LayoutService} from './layout.service';
-import {NodeEventService} from '../Common/nodeEvent.service';
+import {ModalService} from '../Forms/modal.service';
 
 @Injectable()
 export class Scene
@@ -20,7 +20,7 @@ export class Scene
     private log:Log,
     private dataService:DataAccessService,
     private layoutService:LayoutService,
-    private eventService: NodeEventService)
+    private modalService: ModalService)
   {
     this.dataService = dataService;
     this.dataService.getAppData().then(appData =>
@@ -74,7 +74,7 @@ export class Scene
   {
     this.nodes.push(node);
 
-    var workspace = this.addNodeWorkspaceFor(node);
+    const workspace = this.addNodeWorkspaceFor(node);
     this.activateWorkspace(workspace);
   }
 
@@ -86,18 +86,19 @@ export class Scene
 
   private addNodeWorkspaceFor(node: Node):NodeWorkspace
   {
-    var workspace =  new NodeWorkspace(node, this.log, this.layoutService, this.eventService);
+    const scene = this;
+
+    const workspace =  new NodeWorkspace(scene, node, this.log, this.layoutService, this.modalService);
     this.nodeWorkspaces.push(workspace);
-    var scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
     return workspace;
   }
 
   private addFlowWorkspaceFor(flow: Flow):FlowWorkspace
   {
-    var workspace =  new FlowWorkspace(flow, this.log, this.layoutService);
+    const workspace =  new FlowWorkspace(flow, this.log, this.layoutService);
     this.flowWorkspaces.push(workspace);
-    var scene = this;
+    const scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
     return workspace;
   }
