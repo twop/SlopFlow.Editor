@@ -1,102 +1,35 @@
-.nodeList
-{
+.nodeList {
   list-style-type: none;
-  padding-left: 0em;
-}
+  padding-left: 0em; }
 
-.nodeList li
-{
+.nodeList li {
   cursor: pointer;
   margin-left: 0;
-  border-radius: 0.2em;
-}
+  border-radius: 0.2em; }
 
-.nodeList li:hover
-{
+.nodeList li:hover {
   padding-left: 0.05em;
-  background-color: #343434;
-}
+  background-color: #343434; }
 
-.nodeList li.selected
-{
-  background-color: #2F5163;
-}
+.nodeList li.selected {
+  background-color: #2F5163; }
 
-.nodeList li.selected:hover
-{
+.nodeList li.selected:hover {
   padding-left: 0.05em;
-  background-color: #375F72;
-}
+  background-color: #375F72; }
 
-.nodeMarker
-{
-  color: deepskyblue;
-}
+.nodeMarker {
+  color: deepskyblue; }
 
-.flowMarker
-{
-  color: darkorange;
-}
+.flowMarker {
+  color: darkorange; }
 
-.typeMarker
-{
+.typeMarker {
   margin-left: 1em;
   font-size: 0.6em;
-  margin-right: 0.2em;
-}
+  margin-right: 0.2em; }
 
-.assetHeader span
-{
-  font-size: 1.2em;
-}
+.assetHeader span {
+  font-size: 1.2em; }
 
-/*
-.nodeList
-{
-  list-style-image: url('/assests/nodeIcon-12.png');
-}
-
-{
-  display: block;
-  margin: 0 0 2em 0;
-  list-style-type: none;
-  padding: 0;
-  width: 10em;
-}
-
-.nodeList li 
-{
-  cursor: pointer;
-  position: relative;
-  background-color: #252526;
-  margin: .5em;
-  padding: .3em 0 0 1em;
-  nodeHeight: 1.6em;
-  border-radius: 4px;
-}
-
-.nodeList li:hover 
-{
-  background-color: #2A2D2E;
-  left: .1em;
-}
-
-.selected 
-{
-  background-color: #CFD8DC !important;
-  color: #252526;
-}
-
-.nodeList li.selected:hover 
-{
-  background-color: #BBD8DC !important;
-  color: #252526;
-}
-
-.assets
-{
-  border-width: 1px;
-  border-style: groove;
-  padding: .3em;
-  background-color: #1E1E1E; 
-}*/
+/*# sourceMappingURL=assets.component.css.map */

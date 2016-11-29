@@ -1,0 +1,87 @@
+@import "../../sass/variables";
+
+.node
+{
+  fill: $node-fill;
+  fill-rule: evenodd;
+  stroke: $node-stroke;
+  stroke-width: 2;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  fill-opacity: 0.1;
+  stroke-opacity: 0.5;
+}
+
+.node:hover
+{
+  stroke-opacity: 1;
+  fill-opacity: 0.2;
+}
+
+.nodeHeader
+{
+  font: $node-header-font;
+  fill: $node-header;
+}
+
+.port
+{
+  fill: $port-fill;
+  stroke: $port-stroke;
+  stroke-width: 1;
+}
+
+.port:hover
+{
+  stroke: $port-stroke-hover;
+}
+
+.port.selected
+{
+  fill: $port-fill-selected;
+}
+
+.svgNonInteractive
+{
+  pointer-events: none
+}
+
+.portName
+{
+  font: $port-header-font;
+  fill: $port-header;
+}
+
+.flowRect
+{
+  fill-opacity: 0;
+  stroke-width: 2;
+  stroke: $flow-stroke;
+  stroke-opacity: 0.5;
+}
+
+.portType
+{
+  font: $port-type-font;
+  fill: $port-type;
+}
+
+.portLink
+{
+  stroke-opacity: 0.8;
+  stroke-width: 2;
+  stroke: $port-link;
+}
+
+.contextToolbar
+{
+  position: relative
+}
+
+.svg
+{
+  /*position: absolute;*/
+  left: 0;
+  top: 0;
+  z-index: -1;
+}

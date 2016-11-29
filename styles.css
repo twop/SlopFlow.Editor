@@ -1,33 +1,18 @@
-.vertical-middle
-{
-  vertical-align: middle;
-}
+.panel-body {
+  padding: 0.5em; }
 
-.standard-bottom-offset
-{
-  margin-bottom: 0.5em;
-}
+.panel-heading {
+  padding: 0.1em 0.5em; }
 
-.standard-top-offset
-{
-  margin-top: 0.5em;
-}
+.vertical-middle {
+  vertical-align: middle; }
 
-.standard-offset
-{
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-}
+.ng-valid[required] {
+  border-left: 5px solid #42A948;
+  /* green */ }
 
-/*override Bootstrap panel style*/
-.panel-body
-{
-  padding: 0.5em;
-}
+.ng-invalid {
+  border-left: 5px solid #a94442;
+  /* red */ }
 
-.panel-heading
-{
-  padding: 0.1em 0.5em;
-}
-
-
+/*# sourceMappingURL=styles.css.map */

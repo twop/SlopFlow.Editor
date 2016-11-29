@@ -1,85 +1,61 @@
-.node
-{
+.node {
   fill: #808080;
   fill-rule: evenodd;
-  stroke: #9ac3f5;
+  stroke: deepskyblue;
   stroke-width: 2;
   stroke-linecap: butt;
   stroke-linejoin: miter;
   fill-opacity: 0.1;
-  stroke-opacity: 0.5;
-}
+  stroke-opacity: 0.5; }
 
-.node:hover
-{
+.node:hover {
   stroke-opacity: 1;
-  fill-opacity: 0.2;
-}
+  fill-opacity: 0.2; }
 
-.nodeHeader
-{
+.nodeHeader {
   font: 14px Arial;
-  fill: white;
-}
+  fill: black; }
 
-.port
-{
+.port {
   fill: #ff4c4c;
   stroke: #7f292a;
-  stroke-width: 1;
-}
+  stroke-width: 1; }
 
-.port:hover
-{
-  stroke: white;
-}
+.port:hover {
+  stroke: white; }
 
-.port.selected
-{
-  fill: #FFDF77;
-}
+.port.selected {
+  fill: #FFDF77; }
 
-.svgNonInteractive
-{
-  pointer-events: none
-}
+.svgNonInteractive {
+  pointer-events: none; }
 
-.portName
-{
+.portName {
   font: 11px Arial;
-  fill: white;
-}
+  fill: black; }
 
-.flowRect
-{
+.flowRect {
   fill-opacity: 0;
   stroke-width: 2;
-  stroke: lightgreen;
-  stroke-opacity: 0.5;
-}
+  stroke: darkorange;
+  stroke-opacity: 0.5; }
 
-.portType
-{
+.portType {
   font: 11px Arial;
-  fill: #4EC9B0;
-}
+  fill: #4EC9B0; }
 
-.portLink
-{
+.portLink {
   stroke-opacity: 0.8;
   stroke-width: 2;
-  stroke: darkorange;
-}
+  stroke: darkorange; }
 
-.contextToolbar
-{
-  position: relative
-}
+.contextToolbar {
+  position: relative; }
 
-.svg
-{
+.svg {
   /*position: absolute;*/
   left: 0;
   top: 0;
-  z-index: -1;
-}
+  z-index: -1; }
+
+/*# sourceMappingURL=flowStyles.css.map */

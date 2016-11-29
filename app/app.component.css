@@ -1,11 +1,9 @@
-div.row-layout
-{
-  display:flex;
-  flex-direction:row
-}
+div.row-layout {
+  display: flex;
+  flex-direction: row; }
 
-div.column-layout
-{
-  display:flex;
-  flex-direction:column
-}
+div.column-layout {
+  display: flex;
+  flex-direction: column; }
+
+/*# sourceMappingURL=app.component.css.map */

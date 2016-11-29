@@ -1,0 +1,42 @@
+@import "functions";
+
+$primary-bg-color: #F8F8F8;
+$primary-text-color: get-text-color($primary-bg-color);
+
+$g-node-color: deepskyblue;
+$g-flow-color: darkorange;
+
+// node styles
+$node-fill: #808080;
+$node-stroke: $g-node-color;
+$node-header: $primary-text-color;
+$node-header-font: 14px Arial;
+
+
+// port styles
+$port-fill: #ff4c4c;
+$port-fill-selected:#FFDF77;
+$port-stroke: #7f292a;
+$port-stroke-hover: white;
+$port-header: $primary-text-color;
+$port-header-font: 11px Arial;
+
+$port-type-font: 11px Arial;
+$port-type: #4EC9B0;
+
+
+// port link
+$port-link: darkorange;
+
+
+// flow styles
+$flow-stroke: $g-flow-color;
+
+
+// node list
+$assets-background-hover: #343434;
+$assets-background-selected: #2F5163;
+$assets-background-hover-selected: #375F72;
+$assets-node-marker: $node-stroke;
+$assets-flow-marker: $g-flow-color;
+
