@@ -1,32 +1,28 @@
-<div class="panel panel-default">
-  <div class="assetHeader panel-heading">
-    <span>Nodes</span>
-    <button role="button" type="button" class="btn btn-default btn-sm" (click)="requestNewNode()">
-      <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+<div class="card">
+  <div class="card-block">
+    <span class="my-panel-header">Nodes</span>
+    <button role="button" type="button" class="btn btn-secondary btn-sm" (click)="requestNewNode()">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i>
       Add
     </button>
-  </div>
-  <div class="panel-body">
     <ul class="nodeList">
       <li *ngFor="let workspace of scene.getNodeWorkspaces()" [class.selected]="workspace === scene.activeWorkspace"
           (click)="activateWorkspace(workspace)">
-        <span class="typeMarker nodeMarker">&lt;N&gt;</span><span class="vertical-middle">{{workspace.name}}</span>
+        <span class="type-marker node-marker">&lt;N&gt;</span><span class="vertical-middle">{{workspace.name}}</span>
       </li>
     </ul>
   </div>
 
-  <div class="assetHeader panel-heading">
-    <span>Flows</span>
-    <button role="button" type="button" class="btn btn-default btn-sm" (click)="requestNewFlow()">
-      <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+  <div class="card-block">
+    <span class="my-panel-header">Flows</span>
+    <button role="button" type="button" class="btn btn-secondary btn-sm" (click)="requestNewFlow()">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i>
       Add
     </button>
-  </div>
-  <div class="panel-body">
     <ul class="nodeList">
       <li *ngFor="let workspace of scene.getFlowWorkspaces()" [class.selected]="workspace === scene.activeWorkspace"
           (click)="activateWorkspace(workspace)">
-        <span class="typeMarker flowMarker">&lt;F&gt;</span><span class="vertical-middle">{{workspace.name}}</span>
+        <span class="type-marker flow-marker">&lt;F&gt;</span><span class="vertical-middle">{{workspace.name}}</span>
       </li>
     </ul>
   </div>

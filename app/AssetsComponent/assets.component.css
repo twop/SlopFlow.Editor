@@ -9,27 +9,27 @@
 
 .nodeList li:hover {
   padding-left: 0.05em;
-  background-color: #343434; }
+  color: black;
+  background-color: #dfdfdf; }
 
 .nodeList li.selected {
-  background-color: #2F5163; }
+  color: black;
+  background-color: #c5c5c5; }
 
 .nodeList li.selected:hover {
+  color: black;
   padding-left: 0.05em;
-  background-color: #375F72; }
+  background-color: #b8b8b8; }
 
-.nodeMarker {
-  color: deepskyblue; }
+.node-marker {
+  color: darkblue; }
 
-.flowMarker {
-  color: darkorange; }
+.flow-marker {
+  color: orangered; }
 
-.typeMarker {
+.type-marker {
   margin-left: 1em;
   font-size: 0.6em;
   margin-right: 0.2em; }
-
-.assetHeader span {
-  font-size: 1.2em; }
 
 /*# sourceMappingURL=assets.component.css.map */

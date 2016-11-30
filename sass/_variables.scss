@@ -1,17 +1,16 @@
 @import "functions";
 
-$primary-bg-color: #F8F8F8;
+$primary-bg-color: #f8f8f8;
 $primary-text-color: get-text-color($primary-bg-color);
 
-$g-node-color: deepskyblue;
-$g-flow-color: darkorange;
+$g-node-color: pick-color($primary-bg-color, darkblue, deepskyblue );
+$g-flow-color: pick-color($primary-bg-color, orangered, orange);
 
 // node styles
 $node-fill: #808080;
 $node-stroke: $g-node-color;
 $node-header: $primary-text-color;
 $node-header-font: 14px Arial;
-
 
 // port styles
 $port-fill: #ff4c4c;
@@ -34,9 +33,9 @@ $flow-stroke: $g-flow-color;
 
 
 // node list
-$assets-background-hover: #343434;
-$assets-background-selected: #2F5163;
-$assets-background-hover-selected: #375F72;
+$assets-background-hover: darken($primary-bg-color, 10);
+$assets-background-selected: darken($assets-background-hover, 10);
+$assets-background-hover-selected: darken($assets-background-selected, 5);
 $assets-node-marker: $node-stroke;
 $assets-flow-marker: $g-flow-color;
 

@@ -3,7 +3,7 @@ import {Component} from "@angular/core";
 import {Scene} from "../Scene/scene";
 import {NodeWorkspace} from '../Scene/nodeWorkspace';
 import {FlowWorkspace} from '../Scene/flowWorkspace';
-import {Toolbar, ToolbarItem, Glyphicons} from '../Scene/toolbar';
+import {Toolbar, ToolbarItem, ToolbarIcons} from '../Scene/toolbar';
 
 @Component({
   selector: `my-workspace`,

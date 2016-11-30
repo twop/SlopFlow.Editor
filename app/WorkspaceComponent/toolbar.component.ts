@@ -6,9 +6,8 @@ import {Toolbar, ToolbarItem} from '../Scene/toolbar';
   template: `
   <div class="btn-group">
     <button *ngFor="let item of toolbar.items" (click)="item.action()" [disabled]="!item.isEnabled()" 
-    [ngClass]="'btn-' + 
-    toolbarSize" class="btn btn-default">
-      <span *ngIf="item.glyphicon" [ngClass]="item.glyphicon" class="glyphicon" aria-hidden="true"></span>
+    [ngClass]="'btn-' + toolbarSize" class="btn btn-default">
+      <span *ngIf="item.icon" [ngClass]="'fa-'+item.icon" class="fa" aria-hidden="true"></span>
       {{item.actionName}}
     </button>
   </div>`
@@ -19,5 +18,5 @@ export class ToolbarComponent
   public toolbar: Toolbar = null;
 
   @Input()
-  public toolbarSize: string = "xs";
+  public toolbarSize: string = "sm";
 }

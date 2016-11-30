@@ -3,7 +3,7 @@ export class ToolbarItem
   constructor(
     public actionName: string,
     public action: Function,
-    public glyphicon: string = null,
+    public icon: string = null,
     public isEnabled: ()=>boolean = ()=> true)
     {}
 }
@@ -18,11 +18,11 @@ export class Toolbar
   public readonly items: Array<ToolbarItem> = [];
 }
 
-export class Glyphicons
+export class ToolbarIcons
 {
-  static readonly edit = "glyphicon-edit";
-  static readonly delete = "glyphicon-trash";
-  static readonly redo = "glyphicon-circle-arrow-right";
-  static readonly undo = "glyphicon-circle-arrow-left";
-  static readonly addNew = "glyphicon-plus-sign";
+  static readonly edit = "edit";
+  static readonly delete = "trash";
+  static readonly redo = "repeat";
+  static readonly undo = "undo";
+  static readonly addNew = "plus-circle";
 }

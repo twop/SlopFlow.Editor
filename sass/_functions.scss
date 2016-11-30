@@ -9,3 +9,16 @@
     @return white;
   }
 }
+
+@function pick-color($background, $ifLightBack, $ifDarkBack)
+{
+  @if(lightness($background) > 50)
+  {
+    @return $ifLightBack;
+  }
+  @else
+  {
+    @return $ifDarkBack;
+  }
+}
+

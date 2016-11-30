@@ -4,7 +4,7 @@ import {PortModel} from '../Forms/portModel';
 import {Workspace} from './workspace';
 import {LayoutService, INodeLayout} from './layout.service';
 import {Point} from '../Geometry/point';
-import {Toolbar, Glyphicons, ToolbarItem} from './toolbar';
+import {Toolbar, ToolbarIcons, ToolbarItem} from './toolbar';
 import {DeletePortCommand} from './Commands/deletePortCommand';
 import {ModalService} from '../Forms/modal.service';
 import {Scene} from './scene';
@@ -21,10 +21,10 @@ export class NodeWorkspace extends Workspace
     super(log);
     this.layout = layoutService.buildNodeLayout(node, new Point(10, 15));
 
-    const addPort = new ToolbarItem("Port", () => this.requestNewPort(), Glyphicons.addNew);
-    const rename = new ToolbarItem("Rename", () => this.requestRename(), Glyphicons.edit);
-    const undo = new ToolbarItem("Undo", () => this.undo(), Glyphicons.undo, this.canUndo);
-    const redo = new ToolbarItem("Redo", () => this.redo(), Glyphicons.redo, this.canRedo);
+    const addPort = new ToolbarItem("Port", () => this.requestNewPort(), ToolbarIcons.addNew);
+    const rename = new ToolbarItem("Rename", () => this.requestRename(), ToolbarIcons.edit);
+    const undo = new ToolbarItem("Undo", () => this.undo(), ToolbarIcons.undo, this.canUndo);
+    const redo = new ToolbarItem("Redo", () => this.redo(), ToolbarIcons.redo, this.canRedo);
 
     this.toolbar.items.push(addPort, rename, undo, redo);
   }
@@ -61,8 +61,8 @@ export class NodeWorkspace extends Workspace
   public buildPortToolbar = (port: NodePort): Toolbar =>
     new Toolbar(
       port.name,
-      new ToolbarItem("Edit", () => this.requestEditPort(port), Glyphicons.edit),
-      new ToolbarItem("Delete", () => this.deletePort(port), Glyphicons.delete));
+      new ToolbarItem("Edit", () => this.requestEditPort(port), ToolbarIcons.edit),
+      new ToolbarItem("Delete", () => this.deletePort(port), ToolbarIcons.delete));
 
   private requestEditPort = (port: NodePort) => this.modalService.openEditPortDialog(port, this);
   private requestNewPort = () => this.modalService.openNewPortDialog("new port", this);

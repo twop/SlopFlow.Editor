@@ -1,3 +1,5 @@
+@import "variables";
+
 .vertical-middle
 {
   vertical-align: middle;
@@ -11,4 +13,14 @@
 .ng-invalid
 {
   border-left: 5px solid #a94442; /* red */
+}
+
+body
+{
+  background-color: lighten($primary-bg-color, 20);
+}
+
+.my-panel-header
+{
+  font-size: 1.2em;
 }

@@ -8,8 +8,8 @@ import {Scene} from '../Scene/scene';
   template: `
     <div *ngIf="toolbar_">
       <span *ngIf="toolbar_.name">{{toolbar_.name}}</span>
-      <toolbar [toolbar]="toolbar_" [toolbarSize]="'xs'" ></toolbar>
-      <button type="button" (click)="onClose()" class="close" aria-hidden="true">&times;</button>
+      <toolbar [toolbar]="toolbar_" [toolbarSize]="'sm'" ></toolbar>
+      <button type="button" (click)="onClose()" class="close" style="float: none" aria-hidden="true">&times;</button>
     </div>
     `
 })

@@ -1,7 +1,7 @@
 .node {
   fill: #808080;
   fill-rule: evenodd;
-  stroke: deepskyblue;
+  stroke: darkblue;
   stroke-width: 2;
   stroke-linecap: butt;
   stroke-linejoin: miter;
@@ -37,7 +37,7 @@
 .flowRect {
   fill-opacity: 0;
   stroke-width: 2;
-  stroke: darkorange;
+  stroke: orangered;
   stroke-opacity: 0.5; }
 
 .portType {
@@ -51,11 +51,5 @@
 
 .contextToolbar {
   position: relative; }
-
-.svg {
-  /*position: absolute;*/
-  left: 0;
-  top: 0;
-  z-index: -1; }
 
 /*# sourceMappingURL=flowStyles.css.map */
