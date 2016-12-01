@@ -7,11 +7,8 @@
             [attr.y]="layout.rect.y"/>
 
   <svg:g *ngFor="let linkLayout of layout.linkLayouts">
-    <svg:line class="portLink"
-              [attr.x1]="linkLayout.from.x"
-              [attr.y1]="linkLayout.from.y"
-              [attr.x2]="linkLayout.to.x"
-              [attr.y2]="linkLayout.to.y"/>
+    <svg:path class="portPath"
+        [attr.d]="linkLayout.path"/>          
   </svg:g>
 
   <svg:g *ngFor="let nodeLayout of layout.nodeLayouts">
