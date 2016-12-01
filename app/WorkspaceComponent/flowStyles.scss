@@ -73,6 +73,15 @@
   stroke: $port-link;
 }
 
+.portPath
+{
+  stroke-opacity: 0.8;
+  stroke-width: 2;
+  stroke: $port-link;
+  fill: none;
+  pointer-events: none;
+}
+
 .contextToolbar
 {
   position: relative

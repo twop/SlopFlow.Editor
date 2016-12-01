@@ -49,6 +49,13 @@
   stroke-width: 2;
   stroke: darkorange; }
 
+.portPath {
+  stroke-opacity: 0.8;
+  stroke-width: 2;
+  stroke: darkorange;
+  fill: none;
+  pointer-events: none; }
+
 .contextToolbar {
   position: relative; }
 

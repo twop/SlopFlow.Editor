@@ -39,6 +39,7 @@ export interface ILinkLayout
   readonly link:PortLink;
   readonly from:Point;
   readonly to:Point;
+  readonly path:String
 }
 
 class Sizes
@@ -69,16 +70,20 @@ export class LayoutService
   {
     const nodeLayouts: Array<INodeLayout> = [];
     const linkLayouts: Array<ILinkLayout> = [];
-
+    
     flow.nodes.forEach(node=> nodeLayouts.push( this.buildNodeLayout(node, node.position)));
 
     for (const link of flow.links)
     {
+      let fromPoint:Point = this.getPortCenter(nodeLayouts, link.fromNode, link.fromPort);  
+      let toPoint:Point = this.getPortCenter(nodeLayouts, link.toNode, link.toPort);
+      
       linkLayouts.push(
         {
           link:link,
-          from:this.getPortCenter(nodeLayouts, link.fromNode, link.fromPort),
-          to:this.getPortCenter(nodeLayouts, link.toNode, link.toPort),
+          from:fromPoint,
+          to:toPoint,
+          path:`M ${fromPoint.x} ${fromPoint.y} C ${fromPoint.x+50} ${fromPoint.y} ${toPoint.x-50} ${toPoint.y} ${toPoint.x} ${toPoint.y}`,
         });
     }
 
@@ -103,8 +108,9 @@ export class LayoutService
   private getPortCenter(nodeLayouts: Array<INodeLayout>, node: NodeInstance, port: IPort):Point
   {
     const fromLayout: INodeLayout = nodeLayouts.find(l=>l.node == node);
-//    return fromLayout.getPortRect(port).center;
-    return new Point(0,0);
+    const portLayout: IPortLayout = fromLayout.portLayouts.find(pl=>pl.port==port);
+    return portLayout.rect.center;
+//    return new Point(0,0);
   }
 
   private layoutNode(node: INode, offset: Point, height:number, sizes:Sizes):INodeLayout
