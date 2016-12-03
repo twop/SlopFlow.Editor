@@ -5,6 +5,7 @@ import {NodePort} from '../Model/node';
 import {PortFormComponent} from './portForm.component';
 import {NodeFormComponent} from './nodeForm.component';
 import {Scene} from '../Scene/scene';
+import {FlowFormComponent} from './flowForm.component';
 
 @Injectable()
 export class ModalService
@@ -33,5 +34,11 @@ export class ModalService
   {
     const component:NodeFormComponent = this.modalService.open(NodeFormComponent).componentInstance;
     component.openCreateNode( scene, name);
+  }
+
+  public openNewFlowDialog(scene:Scene, name:string): void
+  {
+    const component:FlowFormComponent = this.modalService.open(FlowFormComponent).componentInstance;
+    component.openCreateFlow( scene, name);
   }
 }

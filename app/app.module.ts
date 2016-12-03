@@ -25,6 +25,7 @@ import {ToolbarComponent} from './WorkspaceComponent/toolbar.component';
 import {ContextToolbarService} from './Scene/contextToolbar.service';
 import {ContextToolbarComponent} from './WorkspaceComponent/contextToolbar.component';
 import {ModalService} from './Forms/modal.service';
+import {FlowFormComponent} from './Forms/flowForm.component';
 
 @NgModule({
   imports: [
@@ -44,8 +45,9 @@ import {ModalService} from './Forms/modal.service';
     FlowWorkspaceComponent,
     ToolbarComponent,
     ContextToolbarComponent,
+    FlowFormComponent
   ],
-  entryComponents: [NodeFormComponent, PortFormComponent],
+  entryComponents: [NodeFormComponent, PortFormComponent, FlowFormComponent],
   bootstrap: [AppComponent],
   providers: [
     Scene,

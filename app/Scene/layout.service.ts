@@ -75,8 +75,8 @@ export class LayoutService
 
     for (const link of flow.links)
     {
-      let fromPoint:Point = this.getPortCenter(nodeLayouts, link.fromNode, link.fromPort);  
-      let toPoint:Point = this.getPortCenter(nodeLayouts, link.toNode, link.toPort);
+      const fromPoint:Point = this.getPortCenter(nodeLayouts, link.fromNode, link.fromPort);
+      const toPoint:Point = this.getPortCenter(nodeLayouts, link.toNode, link.toPort);
       
       linkLayouts.push(
         {
@@ -110,7 +110,6 @@ export class LayoutService
     const fromLayout: INodeLayout = nodeLayouts.find(l=>l.node == node);
     const portLayout: IPortLayout = fromLayout.portLayouts.find(pl=>pl.port==port);
     return portLayout.rect.center;
-//    return new Point(0,0);
   }
 
   private layoutNode(node: INode, offset: Point, height:number, sizes:Sizes):INodeLayout
@@ -144,17 +143,4 @@ export class LayoutService
 
     return ports.map(port => createLayout(port));
   }
-
-//  public getPortRect (port:IPort): Rectangle
-//  {
-//    let index = this.node.inputs.findIndex(p => p == port);
-//    if (index>=0)
-//      return this.getPortRectInternal(index, this.rect.x);
-//
-//    index = this.node.outputs.findIndex(p => p == port);
-//    if (index>=0)
-//      return this.getPortRectInternal(index, this.rect.right);
-//
-//    throw "port is not present in node";
-//  }
 }

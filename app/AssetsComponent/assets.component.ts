@@ -29,6 +29,6 @@ export class AssetsComponent
 
   requestNewFlow(): void
   {
-    //this.nodeEventService.requestNewFlow.emit("NewFlow");
+    this.modalService.openNewFlowDialog(this.scene, "NewFlow");
   }
 }

@@ -78,6 +78,14 @@ export class Scene
     this.activateWorkspace(workspace);
   }
 
+  public addNewFlow(flow: Flow)
+  {
+    this.flows.push(flow);
+
+    const workspace = this.addFlowWorkspaceFor(flow);
+    this.activateWorkspace(workspace);
+  }
+
   public renameNodeInWorkspace(workspace: NodeWorkspace, newName:string)
   {
     workspace.node.name = newName;
@@ -96,14 +104,14 @@ export class Scene
 
   private addFlowWorkspaceFor(flow: Flow):FlowWorkspace
   {
-    const workspace =  new FlowWorkspace(flow, this.log, this.layoutService);
+    const workspace =  new FlowWorkspace(flow, this.log, this.layoutService, this.modalService);
     this.flowWorkspaces.push(workspace);
     const scene = this;
     workspace.modified.subscribe((w)=> scene.workspaceModified.emit(w));
     return workspace;
   }
   
-  public activateWorkspace(workspace: NodeWorkspace): void
+  public activateWorkspace(workspace: Workspace): void
   {
     this.activeWorkspace = workspace;
     this.activeWorkspaceChanged.emit(workspace);
