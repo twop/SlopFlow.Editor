@@ -1,12 +1,12 @@
 {
-  "name": "slopFlow.editor",
+  "name": "slopflow.editor",
   "version": "1.0.0",
   "license": "ISC",
   "scripts": {
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "lite": "lite-server",
-    "start": "concurrently \"npm run tsc:w\" \"npm run lite\" "
+    "prestart": "tsc",
+    "start": "concurrently \"node server\" \"start http://localhost:3000\""
   },
   "dependencies": {
     "@angular/common": "2.0.1",
@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "@types/express": "^4.0.34",
-    "lite-server": "^2.2.2",
     "typescript": "^2.0.3",
     "concurrently": "^3.1.0"
   }
