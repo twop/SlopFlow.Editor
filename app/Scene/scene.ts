@@ -12,6 +12,7 @@ import {Flow} from '../Model/flow';
 import {FlowWorkspace} from './flowWorkspace';
 import {LayoutService} from './layout.service';
 import {ModalService} from '../Forms/modal.service';
+import {SceneActions} from '../actions/scene.actions';
 
 @Injectable()
 export class Scene
@@ -20,7 +21,8 @@ export class Scene
     private log:Log,
     private dataService:DataAccessService,
     private layoutService:LayoutService,
-    private modalService: ModalService)
+    private modalService: ModalService,
+    private sceneActions: SceneActions)
   {
     this.dataService = dataService;
     this.dataService.getAppData().then(appData =>
@@ -76,6 +78,8 @@ export class Scene
 
     const workspace = this.addNodeWorkspaceFor(node);
     this.activateWorkspace(workspace);
+
+    this.sceneActions.newNode(node.name);
   }
 
   public addNewFlow(flow: Flow)

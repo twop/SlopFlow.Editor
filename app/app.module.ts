@@ -4,6 +4,9 @@ import {FormsModule}   from '@angular/forms';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+import { NgReduxModule, NgRedux } from 'ng2-redux';
+import  * as createLogger from 'redux-logger';
+
 import {AppComponent}  from './app.component';
 
 import {WorkspaceComponent} from  './WorkspaceComponent/workspace.component'
@@ -26,12 +29,16 @@ import {ContextToolbarService} from './Scene/contextToolbar.service';
 import {ContextToolbarComponent} from './WorkspaceComponent/contextToolbar.component';
 import {ModalService} from './Forms/modal.service';
 import {FlowFormComponent} from './Forms/flowForm.component';
+import {IAppState, rootReducer, INITIAL_STATE} from './store/store';
+import {SceneActions} from './actions/scene.actions';
+
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    NgReduxModule.forRoot()
   ],
   declarations: [
     AppComponent,
@@ -55,10 +62,15 @@ import {FlowFormComponent} from './Forms/flowForm.component';
     Log,
     DataAccessService,
     LayoutService,
-    ModalService
+    ModalService,
+    SceneActions
   ],
 })
 
 export class AppModule
 {
+  constructor(ngRedux: NgRedux<IAppState>)
+  {
+    ngRedux.configureStore(rootReducer, INITIAL_STATE, [ createLogger() ]);
+  }
 }
