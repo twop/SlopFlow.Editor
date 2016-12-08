@@ -11,5 +11,5 @@
     "removeComments": false,
     "noImplicitAny": false
   },
-   "exclude": [ "node_modules",  "typings"]
+   "exclude": [ "node_modules"]
 }

@@ -1,0 +1,35 @@
+.nodeList {
+  list-style-type: none;
+  padding-left: 0em; }
+
+.nodeList li {
+  cursor: pointer;
+  margin-left: 0;
+  border-radius: 0.2em; }
+
+.nodeList li:hover {
+  padding-left: 0.05em;
+  color: black;
+  background-color: #dfdfdf; }
+
+.nodeList li.selected {
+  color: black;
+  background-color: #c5c5c5; }
+
+.nodeList li.selected:hover {
+  color: black;
+  padding-left: 0.05em;
+  background-color: #b8b8b8; }
+
+.node-marker {
+  color: darkblue; }
+
+.flow-marker {
+  color: orangered; }
+
+.type-marker {
+  margin-left: 1em;
+  font-size: 0.6em;
+  margin-right: 0.2em; }
+
+/*# sourceMappingURL=assets.css.map */

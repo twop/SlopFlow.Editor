@@ -1,4 +1,4 @@
-import {ISceneRecord, WorkspaceFactory, NodeFactory, SceneFactory} from './scene.types';
+import {ISceneRecord, NodeFactory, SceneFactory, PortFactory, INodeRecord, INode} from './scene.types';
 import {SceneAction} from '../actions/scene.actions';
 
 export function sceneReducer(
@@ -8,9 +8,23 @@ export function sceneReducer(
   switch (action.type)
   {
     case 'NEW_NODE':
+    {
       const node = NodeFactory(action.node);
-      const workspace = WorkspaceFactory({node});
-      return state.set("workspaces", state.workspaces.push(workspace));
+      return state.set("nodes", state.nodes.set(node.id, node));
+    }
+
+    case 'NEW_PORT':
+    {
+      const port = PortFactory(action.port);
+      const destination = action.isInput? 'inputs' : 'outputs';
+      const nodes = state.nodes.update(action.nodeId, (node:INodeRecord)=>node.set(destination, node.inputs.push(port)));
+      return state.set("nodes", nodes);
+    }
+
+    case "SELECT_NODE":
+    {
+      return state.set("selected", action.nodeId);
+    }
 
     default:
       return state;
