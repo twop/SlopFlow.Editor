@@ -1,16 +1,16 @@
 import {Component, OnInit} from "@angular/core";
-import {SceneActions} from '../../actions/scene.actions';
 import {IAppState} from '../../store/store';
 import {NgRedux} from 'ng2-redux';
 import {INode} from '../../store/scene.types';
-import {OrderedMap} from 'immutable';
 
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
+
 import {INodeLayout, RLayoutService} from '../../services/layout.service';
 import {Point} from '../../Geometry/point';
 import {Toolbar, ToolbarItem, ToolbarIcons} from '../../Scene/toolbar';
-
+import {NodeActions} from '../../actions/node.actions';
+import {StateWithHistory} from 'redux-undo';
 
 @Component({
   selector: `r-workspace`,
@@ -34,31 +34,47 @@ export class RWorkspaceComponent implements OnInit
 {
   constructor(
     private ngRedux: NgRedux<IAppState>,
-    private actions: SceneActions,
+    private actions: NodeActions,
     private layoutService: RLayoutService)
   {}
 
-  readonly position = new Point(20, 20);
+  private readonly position = new Point(20, 20);
   layout: Observable<INodeLayout> = null;
   name: Observable<string> = null;
   toolbar: Observable<Toolbar> = null;
 
   ngOnInit(): void
   {
-    const node: Observable<INode> = this.ngRedux
+    const node: Observable<StateWithHistory<INode>> = this.ngRedux
       .select((state: IAppState) => state.scene.nodes.get(state.scene.selected))
       .filter(node => node != null);
 
-    this.name = node.map(node => node.name);
-    this.layout = node.map(node => this.layoutService.buildNodeLayout(node, this.position));
+    this.name = node.map(node => node.present.name);
+    this.layout = node.map(node => this.layoutService.buildNodeLayout(node.present, this.position));
     this.toolbar = node.map(node => this.buildToolbar(node));
 
     this.layout.subscribe(layout => console.log(`layout: ${layout.node.name}`));
   }
 
-  private buildToolbar(node: INode): Toolbar
+  private buildToolbar(node: StateWithHistory<INode>): Toolbar
   {
-    const newPortFunc = () => this.actions.newPort('port', true, node);
-    return new Toolbar(node.name, new ToolbarItem('port', newPortFunc, ToolbarIcons.addNew))
+    const newPort = new ToolbarItem(
+      'port',
+      () => this.actions.newPort('port', true, node.present),
+      ToolbarIcons.addNew);
+
+    const undo = new ToolbarItem(
+      'undo',
+      () => this.actions.undo( node.present),
+      ToolbarIcons.undo,
+      ()=> node.past.length>0);
+
+    const redo = new ToolbarItem(
+      'redo',
+      () => this.actions.redo( node.present),
+      ToolbarIcons.redo,
+      ()=> node.future.length>0);
+
+    return new Toolbar(node.present.name, newPort, undo, redo);
   }
 }

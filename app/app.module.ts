@@ -37,6 +37,7 @@ import {RNodeComponent} from './components/workspace/node.component';
 import {RLayoutService} from './services/layout.service';
 import {RNodeWorkspaceComponent} from './components/workspace/nodeWorkspace.component';
 import {Iterable} from 'immutable';
+import {NodeActions} from './actions/node.actions';
 
 
 const reduxLoggerOptions ={
@@ -94,7 +95,8 @@ const reduxLoggerOptions ={
     LayoutService,
     ModalService,
     SceneActions,
-    RLayoutService
+    RLayoutService,
+    NodeActions
   ],
 })
 export class AppModule

@@ -1,5 +1,6 @@
 import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import {List, OrderedMap} from 'immutable'
+import {StateWithHistory} from 'redux-undo';
 
 export interface IPort
 {
@@ -31,12 +32,12 @@ export const NodeFactory = makeTypedFactory<INode, INodeRecord>(defaultNode);
 export interface IScene
 {
   selected:number;
-  nodes: OrderedMap<number,INodeRecord>;
+  nodes: OrderedMap<number, StateWithHistory<INodeRecord>>;
 }
 const initialScene:IScene =
         {
           selected:-1,
-          nodes: OrderedMap<number,INodeRecord>()
+          nodes: OrderedMap<number, StateWithHistory<INodeRecord>>()
         };
 
 export interface ISceneRecord extends TypedRecord<ISceneRecord>, IScene {}

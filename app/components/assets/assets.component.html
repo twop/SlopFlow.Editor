@@ -6,9 +6,9 @@
       Add
     </button>
     <ul class="nodeList">
-      <li *ngFor="let node of nodes | async" [class.selected]=" node.id === (selectedId | async) "
-          (click)="selectNode(node)">
-        <span class="type-marker node-marker">&lt;N&gt;</span><span class="vertical-middle">{{node.name}}</span>
+      <li *ngFor="let node of nodes | async" [class.selected]=" node.present.id === (selectedId | async) "
+          (click)="selectNode(node.present)">
+        <span class="type-marker node-marker">&lt;N&gt;</span><span class="vertical-middle">{{node.present.name}}</span>
       </li>
     </ul>
   </div>

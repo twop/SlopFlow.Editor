@@ -13,6 +13,7 @@
         'immutable' : 'node_modules/immutable/dist/immutable.js',
         'ng2-redux': 'node_modules/ng2-redux/lib',
         'redux': 'node_modules/redux/dist/redux.min.js',
+        'redux-undo': 'node_modules/redux-undo/dist/redux-undo.js',
         'redux-logger' : 'node_modules/redux-logger/dist/index.js',
         'typed-immutable-record' : 'node_modules/typed-immutable-record/dist'
     };

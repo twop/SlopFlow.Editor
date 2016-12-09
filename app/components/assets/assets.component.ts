@@ -9,6 +9,8 @@ import 'rxjs/add/operator/map'
 import {INode} from '../../store/scene.types';
 import {OrderedMap} from 'immutable';
 
+import {StateWithHistory} from 'redux-undo';
+
 @Component({
   selector: 'r-assets',
   templateUrl: 'app/components/assets/assets.component.html',
@@ -23,14 +25,14 @@ export class RAssetsComponent implements OnInit
     private actions: SceneActions)
   {}
 
-  nodes: Observable<Array<INode>> = null;
+  nodes: Observable<Array<StateWithHistory<INode>>> = null;
   selectedId: Observable<number> = null;
 
   ngOnInit(): void
   {
     this.nodes = this.ngRedux
       .select((state: IAppState) => state.scene.nodes)
-      .map((map: OrderedMap<number, INode>) => map.toArray());
+      .map((map: OrderedMap<number, StateWithHistory<INode>>) => map.toArray());
 
     this.selectedId = this.ngRedux.select((state: IAppState) => state.scene.selected);
 
