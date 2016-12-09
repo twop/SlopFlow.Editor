@@ -38,7 +38,7 @@ export class SceneActions
     const id = newId();
     const newNode: INode =
             {
-              name: name + id.toString(),
+              name,
               id,
               inputs: List<IPortRecord>(),
               outputs: List<IPortRecord>(),

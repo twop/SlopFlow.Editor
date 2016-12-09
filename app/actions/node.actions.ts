@@ -18,6 +18,11 @@ export interface INewPortAction extends INodeAction
   isInput: boolean;
 }
 
+export interface IRenameNodeAction extends INodeAction
+{
+  newName:string;
+}
+
 export interface INodeUndoAction extends INodeAction {}
 export interface INodeRedoAction extends INodeAction {}
 
@@ -26,6 +31,7 @@ export interface INodeRedoAction extends INodeAction {}
 export class NodeActions
 {
   static readonly NEW_PORT = 'NEW_PORT';
+  static readonly RENAME_NODE = 'RENAME_NODE';
   static readonly NODE_UNDO = 'NODE_UNDO';
   static readonly NODE_REDO = 'NODE_REDO';
 
@@ -49,15 +55,22 @@ export class NodeActions
       });
   }
 
-  undo = (node: INode): void => this.ngRedux.dispatch<INodeUndoAction>(
+  rename = (nodeId:number, newName:string): void => this.ngRedux.dispatch<IRenameNodeAction>(
     {
-      type: NodeActions.NODE_UNDO,
-      nodeId: node.id
+      type: NodeActions.RENAME_NODE,
+      nodeId,
+      newName
     });
 
-  redo = (node: INode): void => this.ngRedux.dispatch<INodeRedoAction>(
+  undo = (nodeId:number): void => this.ngRedux.dispatch<INodeUndoAction>(
+    {
+      type: NodeActions.NODE_UNDO,
+      nodeId
+    });
+
+  redo = (nodeId:number): void => this.ngRedux.dispatch<INodeRedoAction>(
     {
       type: NodeActions.NODE_REDO,
-      nodeId: node.id
+      nodeId
     });
 }

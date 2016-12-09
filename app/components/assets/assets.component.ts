@@ -10,6 +10,7 @@ import {INode} from '../../store/scene.types';
 import {OrderedMap} from 'immutable';
 
 import {StateWithHistory} from 'redux-undo';
+import {UserStoryService} from '../../services/userStory.service';
 
 @Component({
   selector: 'r-assets',
@@ -22,7 +23,8 @@ export class RAssetsComponent implements OnInit
 {
   constructor(
     private ngRedux: NgRedux<IAppState>,
-    private actions: SceneActions)
+    private actions: SceneActions,
+    private userStoryService: UserStoryService)
   {}
 
   nodes: Observable<Array<StateWithHistory<INode>>> = null;
@@ -47,8 +49,7 @@ export class RAssetsComponent implements OnInit
 
   requestNewNode(): void
   {
-    this.actions.newNode("NewNode");
-    //this.modalService.openNewNodeDialog(this.scene, "NewNode");
+    this.userStoryService.createNode();
   }
 
   requestNewFlow(): void

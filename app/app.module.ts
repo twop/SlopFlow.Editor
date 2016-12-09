@@ -38,6 +38,8 @@ import {RLayoutService} from './services/layout.service';
 import {RNodeWorkspaceComponent} from './components/workspace/nodeWorkspace.component';
 import {Iterable} from 'immutable';
 import {NodeActions} from './actions/node.actions';
+import {UserStoryService} from './services/userStory.service';
+import {NodeDialogComponent} from './dialogs/nodeDialog.component';
 
 
 const reduxLoggerOptions ={
@@ -83,9 +85,10 @@ const reduxLoggerOptions ={
     RAssetsComponent,
     RWorkspaceComponent,
     RNodeComponent,
-    RNodeWorkspaceComponent
+    RNodeWorkspaceComponent,
+    NodeDialogComponent
   ],
-  entryComponents: [NodeFormComponent, PortFormComponent, FlowFormComponent],
+  entryComponents: [NodeFormComponent, PortFormComponent, FlowFormComponent, NodeDialogComponent],
   bootstrap: [AppComponent],
   providers: [
     Scene,
@@ -96,13 +99,14 @@ const reduxLoggerOptions ={
     ModalService,
     SceneActions,
     RLayoutService,
-    NodeActions
+    NodeActions,
+    UserStoryService
   ],
 })
 export class AppModule
 {
   constructor(ngRedux: NgRedux<IAppState>)
   {
-    ngRedux.configureStore(rootReducer, INITIAL_STATE, [createLogger(reduxLoggerOptions)]);
+    ngRedux.configureStore(rootReducer, INITIAL_STATE, [createLogger()]);
   }
 }

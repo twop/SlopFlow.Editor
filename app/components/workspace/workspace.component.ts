@@ -11,6 +11,7 @@ import {Point} from '../../Geometry/point';
 import {Toolbar, ToolbarItem, ToolbarIcons} from '../../Scene/toolbar';
 import {NodeActions} from '../../actions/node.actions';
 import {StateWithHistory} from 'redux-undo';
+import {UserStoryService} from '../../services/userStory.service';
 
 @Component({
   selector: `r-workspace`,
@@ -35,7 +36,8 @@ export class RWorkspaceComponent implements OnInit
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private actions: NodeActions,
-    private layoutService: RLayoutService)
+    private layoutService: RLayoutService,
+    private userStoryService: UserStoryService)
   {}
 
   private readonly position = new Point(20, 20);
@@ -63,18 +65,23 @@ export class RWorkspaceComponent implements OnInit
       () => this.actions.newPort('port', true, node.present),
       ToolbarIcons.addNew);
 
+    const rename = new ToolbarItem(
+      'rename',
+      () => this.userStoryService.renameNode(node.present),
+      ToolbarIcons.edit);
+
     const undo = new ToolbarItem(
       'undo',
-      () => this.actions.undo( node.present),
+      () => this.actions.undo( node.present.id),
       ToolbarIcons.undo,
       ()=> node.past.length>0);
 
     const redo = new ToolbarItem(
       'redo',
-      () => this.actions.redo( node.present),
+      () => this.actions.redo( node.present.id),
       ToolbarIcons.redo,
       ()=> node.future.length>0);
 
-    return new Toolbar(node.present.name, newPort, undo, redo);
+    return new Toolbar(node.present.name, newPort, rename, undo, redo);
   }
 }
