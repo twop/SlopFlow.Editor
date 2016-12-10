@@ -4,7 +4,7 @@ import {FormsModule}   from '@angular/forms';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {NgReduxModule, NgRedux} from 'ng2-redux';
+import {NgReduxModule, NgRedux, DevToolsExtension} from 'ng2-redux';
 import  * as createLogger from 'redux-logger';
 
 import {AppComponent}  from './app.component';
@@ -109,13 +109,14 @@ const reduxLoggerOptions ={
     SceneActions,
     RLayoutService,
     NodeActions,
-    UserStoryService
+    UserStoryService,
+    DevToolsExtension
   ],
 })
 export class AppModule
 {
-  constructor(ngRedux: NgRedux<IAppState>)
+  constructor(ngRedux: NgRedux<IAppState>, devTools: DevToolsExtension)
   {
-    ngRedux.configureStore(rootReducer, INITIAL_STATE, [createLogger()]);
+    ngRedux.configureStore(rootReducer, INITIAL_STATE, [createLogger()], [devTools.enhancer()]);
   }
 }
