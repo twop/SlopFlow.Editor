@@ -4,7 +4,7 @@ import {newId} from './idgen';
 import {Action} from 'redux';
 import {StateWithHistory} from 'redux-undo';
 import {IPortModel} from '../dialogs/portDialog.component';
-import {IPort, INode} from '../store/node.types';
+import {IPort, PortType} from '../store/node.types';
 import {IAppState} from '../store/store';
 
 export interface INodeAction extends Action
@@ -16,7 +16,14 @@ export interface INodeAction extends Action
 export interface INewPortAction extends INodeAction
 {
   port: IPort;
-  isInput: boolean;
+}
+
+export interface IEditPortAction extends INodeAction
+{
+  portId: number;
+  name: string;
+  dataTypeId: number;
+  portType: PortType;
 }
 
 export interface IRenameNodeAction extends INodeAction
@@ -37,15 +44,19 @@ export interface INodeRedoAction extends INodeAction
 export class NodeActions
 {
   static readonly NEW_PORT = 'NEW_PORT';
+  static readonly EDIT_PORT = 'EDIT_PORT';
   static readonly RENAME_NODE = 'RENAME_NODE';
   static readonly NODE_UNDO = 'NODE_UNDO';
   static readonly NODE_REDO = 'NODE_REDO';
 
+  // TODO is there a better solution for that?
   private static all = [
     NodeActions.NEW_PORT,
     NodeActions.RENAME_NODE,
     NodeActions.NODE_REDO,
-    NodeActions.NODE_UNDO];
+    NodeActions.NODE_UNDO,
+    NodeActions.EDIT_PORT,
+  ];
 
   static isNodeAction(action: {type: string}): action is INodeAction
   {
@@ -54,21 +65,34 @@ export class NodeActions
 
   constructor(private ngRedux: NgRedux<IAppState>) {}
 
-  newPort(portModel: IPortModel, node: INode): void
+  newPort(portModel: IPortModel, nodeId: number): void
   {
     const port: IPort =
             {
               id: newId(),
               name: portModel.name,
               dataTypeId: portModel.dataTypeId,
+              type: portModel.portType
             };
 
     this.ngRedux.dispatch<INewPortAction>(
       {
         type: NodeActions.NEW_PORT,
         port,
-        isInput: portModel.isInput,
-        nodeId: node.id
+        nodeId
+      });
+  }
+
+  editPort(portModel: IPortModel, portId: number, nodeId: number): void
+  {
+    this.ngRedux.dispatch<IEditPortAction>(
+      {
+        type: NodeActions.EDIT_PORT,
+        name: portModel.name,
+        dataTypeId: portModel.dataTypeId,
+        portType: portModel.portType,
+        portId,
+        nodeId
       });
   }
 

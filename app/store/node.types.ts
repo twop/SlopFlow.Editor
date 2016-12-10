@@ -1,29 +1,43 @@
 import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import {List} from 'immutable'
 
+export enum PortType
+{
+  Input,
+  Output
+}
+
 export interface IPort
 {
   id: number;
   name: string;
+  type: PortType;
   dataTypeId:number;
 }
+
+const defaultPort: IPort =
+        {
+          id: 0,
+          name: "invalid Port",
+          dataTypeId: 0,
+          type: PortType.Input
+        };
+
 export interface IPortRecord extends TypedRecord<IPortRecord>, IPort {}
-export const PortFactory = makeTypedFactory<IPort, IPortRecord>({id:0, name:"invalid Port", dataTypeId:0});
+export const PortFactory = makeTypedFactory<IPort, IPortRecord>(defaultPort);
 
 export interface INode
 {
   id: number;
   name: string;
-  inputs: List<IPortRecord>
-  outputs: List<IPortRecord>
+  ports: List<IPortRecord>
 }
 
 const defaultNode: INode =
         {
           name: "newNode",
           id: 0,
-          inputs: List<IPortRecord>(),
-          outputs: List<IPortRecord>()
+          ports: List<IPortRecord>(),
         };
 
 export interface INodeRecord extends TypedRecord<INodeRecord>, INode {}

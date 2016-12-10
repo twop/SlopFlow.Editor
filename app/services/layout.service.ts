@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Point} from '../Geometry/point';
 import {Rectangle} from '../Geometry/rectangle';
 import {List} from 'immutable';
-import {INode, IPort} from '../store/node.types';
+import {INode, IPort, PortType} from '../store/node.types';
 
 export interface INodeLayout
 {
@@ -58,10 +58,14 @@ export class RLayoutService
 
   public buildNodeLayout = (node: INode, atPosition: Point): INodeLayout =>
   {
-    const maxPortsOnSide = Math.max(node.inputs.count(), node.outputs.count());
+    // TODO make it mem efficient. Avoid allocating another array
+    const inputs: Array<IPort> = node.ports.filter(p=> p.type === PortType.Input).toArray();
+    const outputs: Array<IPort> = node.ports.filter(p=> p.type === PortType.Output).toArray();
+
+    const maxPortsOnSide = Math.max(inputs.length, outputs.length);
     const nodeHeight = ( maxPortsOnSide + 1) * this.nodeSizes.portsDistance + maxPortsOnSide *this.nodeSizes.portSize;
 
-    return this.layoutNode(node, atPosition, nodeHeight, this.nodeSizes);
+    return this.layoutNode(node, inputs, outputs, atPosition, nodeHeight, this.nodeSizes);
   };
 
 //  public buildFlowLayout(flow: Flow): IFlowLayout
@@ -110,12 +114,12 @@ export class RLayoutService
 //    return portLayout.rect.center;
 //  }
 
-  private layoutNode(node: INode, offset: Point, height:number, sizes:Sizes):INodeLayout
+  private layoutNode(node: INode, inputs: Array<IPort>, outputs: Array<IPort>, offset: Point, height:number, sizes:Sizes):INodeLayout
   {
    const rect = new Rectangle(offset.x, offset.y + sizes.nodeNameOffset, sizes.nodeDefaultWidth, height);
 
-    const portLayouts:Array<IPortLayout> = this.layoutPorts(node.inputs, rect.y, rect.x, rect.height, sizes);
-    portLayouts.push(...this.layoutPorts(node.outputs, rect.y, rect.right, rect.height, sizes));
+    const portLayouts:Array<IPortLayout> = this.layoutPorts(inputs, rect.y, rect.x, rect.height, sizes);
+    portLayouts.push(...this.layoutPorts(outputs, rect.y, rect.right, rect.height, sizes));
 
     return {
       node:node,
@@ -125,11 +129,11 @@ export class RLayoutService
       portLayouts:portLayouts};
   }
 
-  private layoutPorts(ports:List<IPort>, top:number, x:number, height:number, sizes:Sizes):Array<IPortLayout>
+  private layoutPorts(ports:Array<IPort>, top:number, x:number, height:number, sizes:Sizes):Array<IPortLayout>
   {
-    if (ports.count() == 0) return [];
+    if (ports.length == 0) return [];
 
-    let distance = height/(ports.count() + 1);
+    let distance = height/(ports.length + 1);
     let startY = top + distance - sizes.portSize/2;
 
     const createLayout = (port:IPort): IPortLayout =>
@@ -139,6 +143,6 @@ export class RLayoutService
       return {port: port, rect: rect};
     };
 
-    return ports.map(port => createLayout(port)).toArray();
+    return ports.map(port => createLayout(port));
   }
 }

@@ -1,6 +1,6 @@
-<form (ngSubmit)="onSubmit()" #nodeForm="ngForm">
+<form (ngSubmit)="onSubmit()" #form="ngForm">
   <div class="modal-body">
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="onCancel()">
       <span aria-hidden="true">&times;</span>
     </button>
     <h4 class="modal-title">{{model.isEditMode? 'Rename Node' : 'Create Node'}}</h4>
@@ -12,10 +12,11 @@
         Name is required
       </div>
     </div>
-    <button type="submit" class="btn btn-primary btn-md" [disabled]="!nodeForm.form.valid">
+
+    <button type="submit" class="btn btn-primary btn-md" [disabled]="!form.form.valid">
       <span class="fa fa-save" aria-hidden="true"></span>
       Save
     </button>
-    <button (click)="onCancel()" class="btn btn-secondary btn-md">Cancel</button>
+    <button type="button" (click)="onCancel()" class="btn btn-secondary btn-md">Cancel</button>
   </div>
 </form>

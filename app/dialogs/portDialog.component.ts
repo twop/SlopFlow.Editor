@@ -1,39 +1,52 @@
 import {Component} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {IDataType} from '../store/dataType.types';
+import {PortType, IPort} from '../store/node.types';
+import {ModalDialog} from './modalDialog';
 
 export interface IPortModel
 {
   name: string;
   dataTypeId: number;
   isEditMode: boolean;
-  isInput: boolean;
+  portType: PortType;
 }
 
 @Component({
   templateUrl: 'app/dialogs/portDialog.component.html'
 })
-export class PortDialogComponent
+export class PortDialogComponent extends ModalDialog<IPortModel>
 {
-  constructor(public activeModal: NgbActiveModal)
+  constructor( activeModal: NgbActiveModal)
   {
+    super(activeModal);
   }
 
   public model: IPortModel = null;
-  public dataTypes : Array<IDataType>;
+  public dataTypes: Array<IDataType>;
+  public portTypeEnum = PortType;
 
-  public create(portName: string, dataTypes: Array<IDataType>): void
+  public createPort(portName: string, dataTypes: Array<IDataType>): void
   {
     this.dataTypes = dataTypes;
     this.model =
       {
-        name:portName,
+        name: portName,
         dataTypeId: dataTypes[0].id,
-        isEditMode:false,
-        isInput:true
+        isEditMode: false,
+        portType: PortType.Input
       };
   }
 
-  public onSubmit = (): void => this.activeModal.close(this.model);
-  public onCancel = (): void => this.activeModal.dismiss();
+  public editPort(port: IPort, dataTypes: Array<IDataType>): void
+  {
+    this.dataTypes = dataTypes;
+    this.model =
+      {
+        name: port.name,
+        dataTypeId: port.dataTypeId,
+        isEditMode: true,
+        portType: port.type
+      };
+  }
 }

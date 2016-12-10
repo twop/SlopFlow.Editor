@@ -2,38 +2,31 @@ import {Component} from '@angular/core';
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {INode} from '../store/node.types';
+import {ModalDialog} from './modalDialog';
 
-interface INodeModel
+export interface INodeModel
 {
   name: string;
-  isEditMode:boolean;
+  isEditMode: boolean;
 }
 
 @Component({templateUrl: 'app/dialogs/nodeDialog.component.html'})
-export class NodeDialogComponent
+export class NodeDialogComponent extends ModalDialog<INodeModel>
 {
-  constructor(public activeModal: NgbActiveModal)
-  {}
+  constructor(activeModal: NgbActiveModal)
+  {
+    super(activeModal);
+  }
 
   public model: INodeModel = null;
 
-  public create(name: string): void
+  public createNode(name: string): void
   {
-    this.model =  {name, isEditMode: false};
+    this.model = {name, isEditMode: false};
   }
 
-  public edit(node: INode): void
+  public editNode(node: INode): void
   {
     this.model = {name: node.name, isEditMode: true};
-  }
-
-  public onSubmit(): void
-  {
-    this.activeModal.close(this.model.name);
-  }
-
-  public onCancel(): void
-  {
-    this.activeModal.dismiss();
   }
 }

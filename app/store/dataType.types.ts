@@ -14,4 +14,4 @@ export const floatType:IDataType = {id:-4, name:'float'};
 
 
 export interface IDataTypeRecord extends TypedRecord<IDataTypeRecord>, IDataType {}
-export const DataTypeFactory = makeTypedFactory<IDataType, IDataTypeRecord>({id:0, name:"nonexistent type"});
+export const DataTypeFactory = makeTypedFactory<IDataType, IDataTypeRecord>({id:0, name:"nonexistent portType"});

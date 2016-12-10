@@ -40,8 +40,7 @@ export class SceneActions
             {
               name,
               id,
-              inputs: List<IPortRecord>(),
-              outputs: List<IPortRecord>(),
+              ports: List<IPortRecord>(),
             };
 
     const action: INewNodeAction =

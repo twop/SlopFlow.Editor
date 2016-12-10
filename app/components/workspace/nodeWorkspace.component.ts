@@ -3,6 +3,7 @@ import {INodeViewState} from '../../WorkspaceComponent/nodeViewState';
 import {ContextToolbarService} from '../../Scene/contextToolbar.service';
 import {INodeLayout} from '../../services/layout.service';
 import {IPort} from '../../store/node.types';
+import {UserStoryService} from '../../services/userStory.service';
 
 @Component({
     selector: 'g[node-rworkspace]',
@@ -12,7 +13,10 @@ import {IPort} from '../../store/node.types';
 })
 export class RNodeWorkspaceComponent
 {
-  constructor(private toolbarService:ContextToolbarService)
+  constructor(
+    private toolbarService:ContextToolbarService,
+    private userStoryService: UserStoryService
+  )
   {}
 
   @Input()
@@ -25,7 +29,8 @@ export class RNodeWorkspaceComponent
 
   public onPortClicked(port:IPort)
   {
-    this.nodeViewState.selectedObject = port;
+    //this.nodeViewState.selectedObject = port;
+    this.userStoryService.editPort(port, this.layout.node.id);
     console.log(`port clicked: ${port.name}`);
 
     //const portToolbar: Toolbar = this.nodeWorkspace.buildPortToolbar(port);

@@ -62,7 +62,7 @@ export class RWorkspaceComponent implements OnInit
   {
     const newPort = new ToolbarItem(
       'port',
-      () => this.userStoryService.createPort(node.present),
+      () => this.userStoryService.createPort(node.present.id),
       ToolbarIcons.addNew);
 
     const rename = new ToolbarItem(
