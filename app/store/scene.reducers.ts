@@ -1,10 +1,13 @@
-import {ISceneRecord, NodeFactory, SceneFactory, PortFactory, INodeRecord} from './scene.types';
-import {INewPortAction, NodeActions, INodeAction, IRenameNodeAction} from '../actions/node.actions';
+import {ISceneRecord, SceneFactory} from './scene.types';
+import {NodeActions} from '../actions/node.actions';
 import {INewNodeAction, SceneActions} from '../actions/scene.actions';
 import {ISelectNodeAction} from '../actions/scene.actions';
 
 import {Action, Reducer} from 'redux';
 import undoable, {StateWithHistory} from 'redux-undo';
+
+import {NodeFactory, INodeRecord} from './node.types';
+import {nodeReducer} from './node.reducers';
 
 
 function newHistory<T>(initialState: T): StateWithHistory<T>
@@ -23,15 +26,6 @@ function addNode(state: ISceneRecord, action: INewNodeAction): ISceneRecord
   return state.set("nodes", state.nodes.set(node.id, newHistory(node)));
 }
 
-function addPort(state: INodeRecord, action: INewPortAction): INodeRecord
-{
-  const port = PortFactory(action.port);
-  const destination = action.isInput ? 'inputs' : 'outputs';
-  return state.set(destination, state.inputs.push(port));
-}
-
-const renameNode = (state: INodeRecord, action: IRenameNodeAction): INodeRecord => state.set('name', action.newName);
-
 const undoableNodeReducer: Reducer<StateWithHistory<INodeRecord>> = undoable(
   nodeReducer,
   {
@@ -39,27 +33,6 @@ const undoableNodeReducer: Reducer<StateWithHistory<INodeRecord>> = undoable(
     redoType: NodeActions.NODE_REDO,
     undoType: NodeActions.NODE_UNDO
   });
-
-
-function nodeReducer(state: INodeRecord, action: INodeAction): INodeRecord
-{
-  switch (action.type)
-  {
-    case NodeActions.NEW_PORT:
-    {
-      return addPort(state, <INewPortAction>action);
-    }
-
-    case NodeActions.RENAME_NODE:
-    {
-      return renameNode(state, <IRenameNodeAction>action);
-    }
-
-    default:
-      return state;
-  }
-}
-
 
 export function sceneReducer(
   state: ISceneRecord = SceneFactory(),

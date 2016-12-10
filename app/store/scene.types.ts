@@ -1,43 +1,25 @@
 import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
-import {List, OrderedMap} from 'immutable'
+import {OrderedMap} from 'immutable'
 import {StateWithHistory} from 'redux-undo';
-
-export interface IPort
-{
-  id: number;
-  name: string;
-}
-export interface IPortRecord extends TypedRecord<IPortRecord>, IPort {}
-export const PortFactory = makeTypedFactory<IPort, IPortRecord>({id:0, name:"newPort"});
-
-export interface INode
-{
-  id: number;
-  name: string;
-  inputs: List<IPortRecord>
-  outputs: List<IPortRecord>
-}
-
-const defaultNode: INode =
-        {
-          name: "newNode",
-          id: 0,
-          inputs: List<IPortRecord>(),
-          outputs: List<IPortRecord>()
-        };
-
-export interface INodeRecord extends TypedRecord<INodeRecord>, INode {}
-export const NodeFactory = makeTypedFactory<INode, INodeRecord>(defaultNode);
+import {INodeRecord} from './node.types';
+import {intType, stringType, floatType, boolType, IDataTypeRecord, DataTypeFactory} from './dataType.types';
 
 export interface IScene
 {
-  selected:number;
+  selected: number;
   nodes: OrderedMap<number, StateWithHistory<INodeRecord>>;
+  types: OrderedMap<number, IDataTypeRecord>;
 }
-const initialScene:IScene =
+const initialScene: IScene =
         {
-          selected:-1,
-          nodes: OrderedMap<number, StateWithHistory<INodeRecord>>()
+          selected: -1,
+          nodes: OrderedMap<number, StateWithHistory<INodeRecord>>(),
+          types: OrderedMap<number, IDataTypeRecord>([
+            [intType.id, DataTypeFactory(intType)],
+            [stringType.id, DataTypeFactory(stringType)],
+            [floatType.id, DataTypeFactory(floatType)],
+            [boolType.id, DataTypeFactory(boolType)]
+          ])
         };
 
 export interface ISceneRecord extends TypedRecord<ISceneRecord>, IScene {}

@@ -1,7 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {IAppState} from '../../store/store';
 import {NgRedux} from 'ng2-redux';
-import {INode} from '../../store/scene.types';
 
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
@@ -12,6 +10,8 @@ import {Toolbar, ToolbarItem, ToolbarIcons} from '../../Scene/toolbar';
 import {NodeActions} from '../../actions/node.actions';
 import {StateWithHistory} from 'redux-undo';
 import {UserStoryService} from '../../services/userStory.service';
+import {IAppState} from '../../store/store';
+import {INode} from '../../store/node.types';
 
 @Component({
   selector: `r-workspace`,
@@ -62,7 +62,7 @@ export class RWorkspaceComponent implements OnInit
   {
     const newPort = new ToolbarItem(
       'port',
-      () => this.actions.newPort('port', true, node.present),
+      () => this.userStoryService.createPort(node.present),
       ToolbarIcons.addNew);
 
     const rename = new ToolbarItem(

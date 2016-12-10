@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Point} from '../Geometry/point';
 import {Rectangle} from '../Geometry/rectangle';
-import {INode, IPort} from '../store/scene.types';
 import {List} from 'immutable';
+import {INode, IPort} from '../store/node.types';
 
 export interface INodeLayout
 {

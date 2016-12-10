@@ -39,7 +39,9 @@ import {RNodeWorkspaceComponent} from './components/workspace/nodeWorkspace.comp
 import {Iterable} from 'immutable';
 import {NodeActions} from './actions/node.actions';
 import {UserStoryService} from './services/userStory.service';
+import {PortDialogComponent} from './dialogs/portDialog.component';
 import {NodeDialogComponent} from './dialogs/nodeDialog.component';
+
 
 
 const reduxLoggerOptions ={
@@ -86,9 +88,16 @@ const reduxLoggerOptions ={
     RWorkspaceComponent,
     RNodeComponent,
     RNodeWorkspaceComponent,
-    NodeDialogComponent
+    NodeDialogComponent,
+    PortDialogComponent
   ],
-  entryComponents: [NodeFormComponent, PortFormComponent, FlowFormComponent, NodeDialogComponent],
+  entryComponents: [
+    NodeFormComponent,
+    PortFormComponent,
+    FlowFormComponent,
+    NodeDialogComponent,
+    PortDialogComponent],
+
   bootstrap: [AppComponent],
   providers: [
     Scene,

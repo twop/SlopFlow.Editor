@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {INode} from '../store/scene.types';
+import {INode} from '../store/node.types';
 
 interface INodeModel
 {
@@ -17,12 +17,12 @@ export class NodeDialogComponent
 
   public model: INodeModel = null;
 
-  public openCreateNode(name: string): void
+  public create(name: string): void
   {
     this.model =  {name, isEditMode: false};
   }
 
-  public openEditNode(node: INode): void
+  public edit(node: INode): void
   {
     this.model = {name: node.name, isEditMode: true};
   }

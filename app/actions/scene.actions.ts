@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {NgRedux} from 'ng2-redux';
 import {IAppState} from '../store/store';
-import {INode, IPortRecord} from '../store/scene.types';
+import {INode, IPortRecord} from '../store/node.types';
 import {List} from 'immutable';
 import {newId} from './idgen';
 import {Action} from 'redux';

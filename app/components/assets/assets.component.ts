@@ -6,11 +6,11 @@ import {IAppState} from '../../store/store';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
-import {INode} from '../../store/scene.types';
 import {OrderedMap} from 'immutable';
 
 import {StateWithHistory} from 'redux-undo';
 import {UserStoryService} from '../../services/userStory.service';
+import {INode} from '../../store/node.types';
 
 @Component({
   selector: 'r-assets',

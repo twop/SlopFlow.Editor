@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
 import {INodeViewState} from '../../WorkspaceComponent/nodeViewState';
 import {ContextToolbarService} from '../../Scene/contextToolbar.service';
-import {Toolbar} from '../../Scene/toolbar';
 import {INodeLayout} from '../../services/layout.service';
-import {IPort} from '../../store/scene.types';
+import {IPort} from '../../store/node.types';
 
 @Component({
     selector: 'g[node-rworkspace]',
