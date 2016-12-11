@@ -8,6 +8,7 @@ import {Toolbar, ToolbarIcons, ToolbarItem} from './toolbar';
 import {DeletePortCommand} from './Commands/deletePortCommand';
 import {ModalService} from '../Forms/modal.service';
 import {Scene} from './scene';
+import {PortFormComponent} from '../Forms/portForm.component';
 
 export class NodeWorkspace extends Workspace
 {
@@ -64,7 +65,7 @@ export class NodeWorkspace extends Workspace
       new ToolbarItem("Edit", () => this.requestEditPort(port), ToolbarIcons.edit),
       new ToolbarItem("Delete", () => this.deletePort(port), ToolbarIcons.delete));
 
-  private requestEditPort = (port: NodePort) => this.modalService.openEditPortDialog(port, this);
+  private requestEditPort = (port: NodePort) => this.modalService.open(PortFormComponent, (c)=>c.openEditPort(port, this));
   private requestNewPort = () => this.modalService.openNewPortDialog("new port", this);
   private requestRename = () => this.modalService.openEditNodeDialog( this.scene, this);
   private deletePort = (port: NodePort) => this.executeCommand(new DeletePortCommand(port));
