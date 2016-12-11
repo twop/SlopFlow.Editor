@@ -24,6 +24,7 @@
     "express": "^4.14.0",
     "font-awesome": "^4.7.0",
     "immutable": "^3.8.1",
+    "mongodb": "^2.2.12",
     "ng2-redux": "^4.1.0",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.4",
@@ -35,9 +36,10 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@types/redux-logger": "^2.6.32",
     "@types/express": "^4.0.34",
-    "typescript": "^2.0.3",
-    "concurrently": "^3.1.0"
+    "@types/mongodb": "^2.1.36",
+    "@types/redux-logger": "^2.6.32",
+    "concurrently": "^3.1.0",
+    "typescript": "^2.0.3"
   }
 }
