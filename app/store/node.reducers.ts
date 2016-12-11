@@ -1,16 +1,25 @@
-import {INewPortAction, NodeActions, INodeAction, IRenameNodeAction, IEditPortAction} from '../actions/node.actions';
+import {
+  INewPortAction, NodeActions, INodeAction, IRenameNodeAction, IEditPortAction,
+  IDeletePortAction
+} from '../actions/node.actions';
 import {NodeFactory, INodeRecord, PortFactory, IPortRecord} from './node.types';
 import {List} from 'immutable';
 
 function addPort(state: INodeRecord, action: INewPortAction): INodeRecord
 {
   const port = PortFactory(action.port);
-  return state.set('ports', state.ports.push(port));
+  return state.withMutations(node => node.ports = node.ports.push(port));
+}
+
+function deletePort(state: INodeRecord, action: IDeletePortAction): INodeRecord
+{
+  const index = state.ports.findIndex((p) => p.id == action.portId);
+  return state.withMutations(node => node.ports = node.ports.delete(index));
 }
 
 function editPort(state: INodeRecord, action: IEditPortAction): INodeRecord
 {
-  const updatePort = (portRecord:IPortRecord) =>
+  const updatePort = (portRecord: IPortRecord) =>
   {
     let mutablePort = portRecord.asMutable();
     mutablePort.name = action.name;
@@ -20,7 +29,7 @@ function editPort(state: INodeRecord, action: IEditPortAction): INodeRecord
   };
 
   const index = state.ports.findIndex((p) => p.id == action.portId);
-  return state.set('ports', state.ports.update(index, updatePort));
+  return state.withMutations(node => node.ports = node.ports.update(index, updatePort));
 }
 
 const renameNode = (state: INodeRecord, action: IRenameNodeAction): INodeRecord => state.set('name', action.newName);
@@ -38,6 +47,11 @@ export function nodeReducer(state: INodeRecord = NodeFactory(), action: INodeAct
     case NodeActions.EDIT_PORT:
     {
       return editPort(state, <IEditPortAction>action);
+    }
+
+    case NodeActions.DELETE_PORT:
+    {
+      return deletePort(state, <IDeletePortAction>action);
     }
 
     case NodeActions.RENAME_NODE:

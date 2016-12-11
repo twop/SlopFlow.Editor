@@ -17,13 +17,18 @@ function newHistory<T>(initialState: T): StateWithHistory<T>
 
 function selectNode(state: ISceneRecord, action: ISelectNodeAction): ISceneRecord
 {
-  return state.set("selected", action.nodeId);
+  return state.withMutations(scene => scene.selected = action.nodeId);
 }
 
 function addNode(state: ISceneRecord, action: INewNodeAction): ISceneRecord
 {
   const node = NodeFactory(action.node);
-  return state.set("nodes", state.nodes.set(node.id, newHistory(node)));
+
+  return state.withMutations(scene =>
+  {
+    scene.nodes = state.nodes.set(node.id, newHistory(node));
+    scene.selected = node.id
+  });
 }
 
 const undoableNodeReducer: Reducer<StateWithHistory<INodeRecord>> = undoable(
@@ -60,8 +65,7 @@ export function sceneReducer(
   if (NodeActions.isNodeAction(action))
   {
     const updateFunc = (nodeHistory: StateWithHistory<INodeRecord>) => undoableNodeReducer(nodeHistory, action);
-    const nodes = state.nodes.update(action.nodeId, updateFunc);
-    return state.set("nodes", nodes);
+    return state.withMutations(scene => scene.nodes = state.nodes.update(action.nodeId, updateFunc));
   }
 
   return state;

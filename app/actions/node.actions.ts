@@ -26,6 +26,11 @@ export interface IEditPortAction extends INodeAction
   portType: PortType;
 }
 
+export interface IDeletePortAction extends INodeAction
+{
+  portId: number;
+}
+
 export interface IRenameNodeAction extends INodeAction
 {
   newName: string;
@@ -45,6 +50,8 @@ export class NodeActions
 {
   static readonly NEW_PORT = 'NEW_PORT';
   static readonly EDIT_PORT = 'EDIT_PORT';
+  static readonly DELETE_PORT = 'DELETE_PORT ';
+
   static readonly RENAME_NODE = 'RENAME_NODE';
   static readonly NODE_UNDO = 'NODE_UNDO';
   static readonly NODE_REDO = 'NODE_REDO';
@@ -56,6 +63,7 @@ export class NodeActions
     NodeActions.NODE_REDO,
     NodeActions.NODE_UNDO,
     NodeActions.EDIT_PORT,
+    NodeActions.DELETE_PORT,
   ];
 
   static isNodeAction(action: {type: string}): action is INodeAction
@@ -91,6 +99,16 @@ export class NodeActions
         name: portModel.name,
         dataTypeId: portModel.dataTypeId,
         portType: portModel.portType,
+        portId,
+        nodeId
+      });
+  }
+
+  deletePort(portId: number, nodeId: number): void
+  {
+    this.ngRedux.dispatch<IDeletePortAction>(
+      {
+        type: NodeActions.DELETE_PORT,
         portId,
         nodeId
       });

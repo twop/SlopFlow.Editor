@@ -4,6 +4,7 @@ import {ContextToolbarService} from '../../Scene/contextToolbar.service';
 import {INodeLayout} from '../../services/layout.service';
 import {IPort} from '../../store/node.types';
 import {UserStoryService} from '../../services/userStory.service';
+import {Toolbar, ToolbarItem, ToolbarIcons} from '../../Scene/toolbar';
 
 @Component({
     selector: 'g[node-rworkspace]',
@@ -29,11 +30,20 @@ export class RNodeWorkspaceComponent
 
   public onPortClicked(port:IPort)
   {
-    //this.nodeViewState.selectedObject = port;
-    this.userStoryService.editPort(port, this.layout.node.id);
-    console.log(`port clicked: ${port.name}`);
+    this.nodeViewState.selectedObject = port;
+    //console.log(`port clicked: ${port.name}`);
 
-    //const portToolbar: Toolbar = this.nodeWorkspace.buildPortToolbar(port);
-    //this.toolbarService.newToolbarEvent.emit(portToolbar);
+    const portToolbar: Toolbar = this.buildPortToolbar(port);
+    this.toolbarService.newToolbarEvent.emit(portToolbar);
+  }
+
+  public buildPortToolbar (port: IPort): Toolbar
+  {
+    const nodeId: number = this.layout.node.id;
+
+    return new Toolbar(
+      port.name,
+      new ToolbarItem("Edit", () => this.userStoryService.editPort(port, nodeId), ToolbarIcons.edit),
+      new ToolbarItem("Delete", () => this.userStoryService.deletePort(port, nodeId), ToolbarIcons.delete));
   }
 }

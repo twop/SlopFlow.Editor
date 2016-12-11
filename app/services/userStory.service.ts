@@ -9,6 +9,9 @@ import {NodeDialogComponent, INodeModel} from '../dialogs/nodeDialog.component';
 import {IAppState} from '../store/store';
 import {INode, IPort} from '../store/node.types';
 import {ModalDialog} from '../dialogs/modalDialog';
+import {ConfirmatioDialogComponent, IConfirmation} from '../dialogs/confirmatioDialog.component';
+import {UiTexts} from '../components/ui.texts';
+import {ToolbarIcons} from '../Scene/toolbar';
 
 type DialogComponent<T extends ModalDialog<TModel>, TModel> = { new(activeModal: NgbActiveModal): T };
 
@@ -16,7 +19,7 @@ interface IModalSettings<T extends ModalDialog<TResult>, TResult>
 {
   type: DialogComponent<T, TResult>;
   init?: (component: T) => void;
-  onResult?: (result: TResult) => void;
+  onSuccess?: (result: TResult) => void;
 }
 
 @Injectable()
@@ -41,7 +44,7 @@ export class UserStoryService
 
       if (res)
       {
-        settings.onResult(res);
+        settings.onSuccess(res);
       }
     };
 
@@ -68,7 +71,7 @@ export class UserStoryService
       {
         type: NodeDialogComponent,
         init: (d) => d.createNode("newNode"),
-        onResult: (model : INodeModel) => this.sceneActions.newNode(model.name)
+        onSuccess: (model: INodeModel) => this.sceneActions.newNode(model.name)
       });
   }
 
@@ -78,7 +81,7 @@ export class UserStoryService
       {
         type: NodeDialogComponent,
         init: (d) => d.editNode(node),
-        onResult: (model : INodeModel) => this.nodeActions.rename(node.id, model.name)
+        onSuccess: (model: INodeModel) => this.nodeActions.rename(node.id, model.name)
       });
   }
 
@@ -90,7 +93,7 @@ export class UserStoryService
       {
         type: PortDialogComponent,
         init: (d) => d.createPort("newPort", dataTypes),
-        onResult: (portModel: IPortModel) => this.nodeActions.newPort(portModel, nodeId)
+        onSuccess: (portModel: IPortModel) => this.nodeActions.newPort(portModel, nodeId)
       });
   }
 
@@ -102,7 +105,26 @@ export class UserStoryService
       {
         type: PortDialogComponent,
         init: (d) => d.editPort(port, dataTypes),
-        onResult: (portModel: IPortModel) => this.nodeActions.editPort(portModel, port.id, nodeId)
+        onSuccess: (portModel: IPortModel) => this.nodeActions.editPort(portModel, port.id, nodeId)
+      });
+  }
+
+  public deletePort(port: IPort, nodeId: number): void
+  {
+    const confirmation: IConfirmation =
+            {
+              title: UiTexts.deleteDialogTitle(port.name),
+              buttonIcon: ToolbarIcons.delete,
+              buttonText: UiTexts.deleteButtonText,
+              text: UiTexts.deleteDialogText,
+              buttonStyle: 'btn-danger'
+            };
+
+    this.openModal(
+      {
+        type: ConfirmatioDialogComponent,
+        init: (d) => d.showConfirmation(confirmation),
+        onSuccess: (result: any) => this.nodeActions.deletePort(port.id, nodeId)
       });
   }
 }

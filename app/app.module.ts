@@ -41,6 +41,7 @@ import {NodeActions} from './actions/node.actions';
 import {UserStoryService} from './services/userStory.service';
 import {PortDialogComponent} from './dialogs/portDialog.component';
 import {NodeDialogComponent} from './dialogs/nodeDialog.component';
+import {ConfirmatioDialogComponent} from './dialogs/confirmatioDialog.component';
 
 
 
@@ -89,14 +90,16 @@ const reduxLoggerOptions ={
     RNodeComponent,
     RNodeWorkspaceComponent,
     NodeDialogComponent,
-    PortDialogComponent
+    PortDialogComponent,
+    ConfirmatioDialogComponent
   ],
   entryComponents: [
     NodeFormComponent,
     PortFormComponent,
     FlowFormComponent,
     NodeDialogComponent,
-    PortDialogComponent],
+    PortDialogComponent,
+    ConfirmatioDialogComponent],
 
   bootstrap: [AppComponent],
   providers: [
