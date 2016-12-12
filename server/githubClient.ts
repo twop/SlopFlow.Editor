@@ -4,7 +4,7 @@ import * as url from 'url';
 import * as express from 'express';
 import * as path from 'path';
 import * as http from 'http';
-
+import * as fs from 'fs';
 interface GitUserData
 {
 	 accessToken:string
@@ -20,7 +20,10 @@ export class GitHubClient
 
 		constructor()
 		{
-		}
+			var data = JSON.parse(fs.readFileSync('./server/gitAppConfig.json','utf8'));
+			this.id = data.clientID;
+			this.secret = data.secret;
+		};
 
 		public authorize(request: express.Request, response: express.Response)
 		{
