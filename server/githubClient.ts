@@ -12,8 +12,8 @@ interface GitUserData
 ///https://developer.github.com/v3/oauth/ not finished
 export class GitHubClient 
 {
-		private id: string = "e134bb82b0e0c904e57e";
-		private secret: string = "685af6e6435e61f04cbdbf6bdc54452178b48f7a";
+		private id: string = '';
+		private secret: string = '';
 		private user: GitUserData;
 		private originalUrl: string;
 		private _stateString: string;
