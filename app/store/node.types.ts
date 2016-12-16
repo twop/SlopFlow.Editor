@@ -9,10 +9,11 @@ export enum PortType
 
 export interface IPort
 {
-  id: number;
+  readonly id: number;
+
   name: string;
   type: PortType;
-  dataTypeId:number;
+  dataTypeId: number;
 }
 
 const defaultPort: IPort =
@@ -28,7 +29,8 @@ export const PortFactory = makeTypedFactory<IPort, IPortRecord>(defaultPort);
 
 export interface INode
 {
-  id: number;
+  readonly id: number;
+
   name: string;
   ports: List<IPortRecord>
 }

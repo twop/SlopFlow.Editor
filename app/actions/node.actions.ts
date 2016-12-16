@@ -114,20 +114,20 @@ export class NodeActions
       });
   }
 
-  rename = (nodeId: number, newName: string): void => this.ngRedux.dispatch<IRenameNodeAction>(
+  rename = (nodeId: number, newName: string) => this.ngRedux.dispatch<IRenameNodeAction>(
     {
       type: NodeActions.RENAME_NODE,
       nodeId,
       newName
     });
 
-  undo = (nodeId: number): void => this.ngRedux.dispatch<INodeUndoAction>(
+  undo = (nodeId: number) => this.ngRedux.dispatch<INodeUndoAction>(
     {
       type: NodeActions.NODE_UNDO,
       nodeId
     });
 
-  redo = (nodeId: number): void => this.ngRedux.dispatch<INodeRedoAction>(
+  redo = (nodeId: number) => this.ngRedux.dispatch<INodeRedoAction>(
     {
       type: NodeActions.NODE_REDO,
       nodeId

@@ -1,24 +1,26 @@
 {
   "name": "slopflow.editor",
   "version": "1.0.0",
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "prestart": "tsc",
-    "start": "concurrently \"node server\" \"start http://localhost:3000\""
+    "start": "concurrently \"node server\" \"start http://localhost:3000\"",
+    "test": "tsc && concurrently \"tsc -w\" \"karma start karma.conf.js\"",
+    "test-once": "tsc && karma start karma.conf.js --single-run"
   },
   "dependencies": {
-    "@angular/common": "2.0.1",
-    "@angular/compiler": "2.0.1",
-    "@angular/core": "2.0.1",
-    "@angular/forms": "2.0.1",
-    "@angular/http": "2.0.1",
-    "@angular/platform-browser": "2.0.1",
-    "@angular/platform-browser-dynamic": "2.0.1",
-    "@angular/router": "3.0.1",
-    "@angular/upgrade": "2.0.1",
-    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.13",
+    "@angular/common": "2.3.1",
+    "@angular/compiler": "2.3.1",
+    "@angular/core": "2.3.1",
+    "@angular/forms": "2.3.1",
+    "@angular/http": "2.3.1",
+    "@angular/platform-browser": "2.3.1",
+    "@angular/platform-browser-dynamic": "2.3.1",
+    "@angular/router": "3.3.1",
+
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.14",
     "bootstrap": "^4.0.0-alpha.5",
     "core-js": "^2.4.0",
     "express": "^4.14.0",
@@ -30,16 +32,27 @@
     "redux-logger": "^2.7.4",
     "redux-undo": "^1.0.0-beta9-2",
     "reflect-metadata": "^0.1.3",
-    "rxjs": "5.0.0-beta.12",
+    "rxjs": "5.0.0-rc.4",
     "systemjs": "0.19.27",
     "typed-immutable-record": "0.0.6",
-    "zone.js": "^0.6.12"
+    "zone.js": "^0.7.2"
   },
   "devDependencies": {
     "@types/express": "^4.0.34",
     "@types/mongodb": "^2.1.36",
     "@types/redux-logger": "^2.6.32",
+    "@types/node": "^6.0.46",
+    "@types/jasmine": "^2.5.36",
+
+    "typescript": "^2.0.8",
+
     "concurrently": "^3.1.0",
-    "typescript": "^2.0.3"
+
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.3.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-cli": "^1.0.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-jasmine-html-reporter": "^0.2.2"
   }
 }
