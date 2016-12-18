@@ -3,7 +3,7 @@ import {Log} from '../LogComponent/log'
 import {PortModel} from '../Forms/portModel';
 import {Workspace} from './workspace';
 import {LayoutService, INodeLayout} from './layout.service';
-import {Point} from '../Geometry/point';
+import {Point} from '../geometry/point';
 import {Toolbar, ToolbarIcons, ToolbarItem} from './toolbar';
 import {DeletePortCommand} from './Commands/deletePortCommand';
 import {ModalService} from '../Forms/modal.service';

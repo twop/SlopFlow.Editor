@@ -1,4 +1,4 @@
-import {Rectangle} from '../Geometry/rectangle'
+import {Rectangle} from '../geometry/rectangle'
 import {ISceneItem, ModelObject} from './sceneItem';
 import {IPort} from '../Model/port';
 

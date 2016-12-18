@@ -1,6 +1,6 @@
 import {INode} from './nodeInterface';
 import {IPort} from './port';
-import {Point} from '../Geometry/point';
+import {Point} from '../geometry/point';
 
 export class NodeInstance implements INode
 {

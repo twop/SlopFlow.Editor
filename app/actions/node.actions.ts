@@ -10,7 +10,6 @@ import {IAppState} from '../store/store';
 export interface INodeAction extends Action
 {
   nodeId: number;
-  type: string;
 }
 
 export interface INewPortAction extends INodeAction
@@ -51,7 +50,6 @@ export class NodeActions
   static readonly NEW_PORT = 'NEW_PORT';
   static readonly EDIT_PORT = 'EDIT_PORT';
   static readonly DELETE_PORT = 'DELETE_PORT ';
-
   static readonly RENAME_NODE = 'RENAME_NODE';
   static readonly NODE_UNDO = 'NODE_UNDO';
   static readonly NODE_REDO = 'NODE_REDO';

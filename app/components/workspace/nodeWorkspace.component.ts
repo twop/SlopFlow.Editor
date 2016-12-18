@@ -39,7 +39,7 @@ export class RNodeWorkspaceComponent
 
   public buildPortToolbar (port: IPort): Toolbar
   {
-    const nodeId: number = this.layout.node.id;
+    const nodeId: number = this.layout.id;
 
     return new Toolbar(
       port.name,

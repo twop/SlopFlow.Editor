@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Point} from '../Geometry/point';
+import {Point} from '../geometry/point';
 import {IPort} from '../Model/port';
 import {INode} from '../Model/nodeInterface';
-import {Rectangle} from '../Geometry/rectangle';
+import {Rectangle} from '../geometry/rectangle';
 import {NodeInstance} from '../Model/nodeInstance';
 import {PortLink, Flow} from '../Model/flow';
 

@@ -1,8 +1,15 @@
+import { INode, IPort } from './node.types';
+import { assign } from './store';
+
 describe("some", ()=>
   {
-    it('true should be true', () =>
+    it('true should be true', ()=>
     {
-      expect(1).toBe(1);
+      const node: INode = {id: 1, name: 'name', ports: null };
+
+      const mutated:INode = assign({...node}, {id:2});
+
+      expect(node.name).toEqual(mutated.name);
     });
   }
 );

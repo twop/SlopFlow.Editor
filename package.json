@@ -26,7 +26,6 @@
     "core-js": "^2.4.0",
     "express": "^4.14.0",
     "font-awesome": "^4.7.0",
-    "immutable": "^3.8.1",
     "mongodb": "^2.2.12",
     "ng2-redux": "^4.1.0",
     "redux": "^3.6.0",
@@ -35,7 +34,6 @@
     "reflect-metadata": "^0.1.3",
     "rxjs": "5.0.0-rc.4",
     "systemjs": "0.19.27",
-    "typed-immutable-record": "0.0.6",
     "zone.js": "^0.7.2"
   },
   "devDependencies": {
@@ -45,7 +43,7 @@
     "@types/node": "^6.0.46",
     "@types/jasmine": "^2.5.36",
 
-    "typescript": "^2.0.8",
+    "typescript": "^2.1.4",
 
     "concurrently": "^3.1.0",
 

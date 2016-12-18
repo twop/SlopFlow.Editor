@@ -36,34 +36,12 @@ import {RWorkspaceComponent} from './components/workspace/workspace.component';
 import {RNodeComponent} from './components/workspace/node.component';
 import {RLayoutService} from './services/layout.service';
 import {RNodeWorkspaceComponent} from './components/workspace/nodeWorkspace.component';
-import {Iterable} from 'immutable';
 import {NodeActions} from './actions/node.actions';
 import {UserStoryService} from './services/userStory.service';
 import {PortDialogComponent} from './dialogs/portDialog.component';
 import {NodeDialogComponent} from './dialogs/nodeDialog.component';
 import {ConfirmatioDialogComponent} from './dialogs/confirmatioDialog.component';
 import {AuthorizationDialogComponent} from './dialogs/authorizationDialog.component'
-
-
-
-const reduxLoggerOptions ={
-  // Transform Immutable objects into JSON
-  stateTransformer: (state) =>
-  {
-    const newState = {};
-    for (let i of Object.keys(state))
-    {
-      if (Iterable.isIterable(state[i]))
-      {
-        newState[i] = state[i].toJS();
-      } else
-      {
-        newState[i] = state[i];
-      }
-    }
-    return newState;
-  }
-};
 
 
 @NgModule({

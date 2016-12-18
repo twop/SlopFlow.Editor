@@ -1,47 +1,51 @@
+import { INode, IPort } from './node.types';
+import { assign } from './store';
+
 import {
-  INewPortAction, NodeActions, INodeAction, IRenameNodeAction, IEditPortAction,
+  INewPortAction,
+  NodeActions,
+  INodeAction,
+  IRenameNodeAction,
+  IEditPortAction,
   IDeletePortAction
 } from '../actions/node.actions';
-import {NodeFactory, INodeRecord, PortFactory, IPortRecord} from './node.types';
-import {List} from 'immutable';
 
-function addPort(state: INodeRecord, action: INewPortAction): INodeRecord
-{
-  const port = PortFactory(action.port);
-  return state.withMutations(node => node.ports = node.ports.push(port));
-}
 
-function deletePort(state: INodeRecord, action: IDeletePortAction): INodeRecord
+function editPort(state: INode, action: IEditPortAction): INode
 {
-  const index = state.ports.findIndex((p) => p.id == action.portId);
-  return state.withMutations(node => node.ports = node.ports.delete(index));
-}
-
-function editPort(state: INodeRecord, action: IEditPortAction): INodeRecord
-{
-  const updatePort = (portRecord: IPortRecord) =>
+  const updatePort = (port: IPort):IPort =>
   {
-    let mutablePort = portRecord.asMutable();
-    mutablePort.name = action.name;
-    mutablePort.dataTypeId = action.dataTypeId;
-    mutablePort.type = action.portType;
-    return mutablePort.asImmutable();
+    if (port.id != action.portId)
+      return port;
+
+    return assign(
+      {...port},
+      {
+        name: action.name,
+        dataTypeId: action.dataTypeId,
+        type: action.portType
+      });
   };
 
-  const index = state.ports.findIndex((p) => p.id == action.portId);
-  return state.withMutations(node => node.ports = node.ports.update(index, updatePort));
+  return assign({...state}, {ports: state.ports.map(updatePort)});
 }
 
-const renameNode = (state: INodeRecord, action: IRenameNodeAction): INodeRecord => state.set('name', action.newName);
+const renameNode = (state: INode, action: IRenameNodeAction): INode => assign({...state}, {name: action.newName});
 
+const defaultNode: INode =
+        {
+          name: "newNode",
+          id: 0,
+          ports: [],
+        };
 
-export function nodeReducer(state: INodeRecord = NodeFactory(), action: INodeAction): INodeRecord
+export function nodeReducer(state: INode = defaultNode, action: INodeAction): INode
 {
   switch (action.type)
   {
     case NodeActions.NEW_PORT:
     {
-      return addPort(state, <INewPortAction>action);
+      return assign({...state}, {ports: [...state.ports, (<INewPortAction>action).port]});
     }
 
     case NodeActions.EDIT_PORT:
@@ -51,7 +55,7 @@ export function nodeReducer(state: INodeRecord = NodeFactory(), action: INodeAct
 
     case NodeActions.DELETE_PORT:
     {
-      return deletePort(state, <IDeletePortAction>action);
+      return assign({...state}, {ports: state.ports.filter(p => p.id != (<IDeletePortAction>action).portId)});
     }
 
     case NodeActions.RENAME_NODE:
