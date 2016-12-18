@@ -12,4 +12,18 @@
       </li>
     </ul>
   </div>
+
+  <div class="card-block">
+    <span class="my-panel-header">Flows</span>
+    <button role="button" type="button" class="btn btn-secondary btn-sm" (click)="requestNewFlow()">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i>
+      Add
+    </button>
+    <ul class="nodeList">
+      <li *ngFor="let flow of flows | async" [class.selected]="flow.present.id === (selectedId | async) "
+          (click)="selectFlow(flow.present)">
+        <span class="type-marker flow-marker">&lt;F&gt;</span><span class="vertical-middle">{{flow.present.name}}</span>
+      </li>
+    </ul>
+  </div>
 </div>

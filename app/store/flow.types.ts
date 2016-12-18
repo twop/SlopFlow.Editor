@@ -40,6 +40,7 @@ export interface IFlowElement
   readonly originId: number;
   readonly type: FlowElementType;
 
+  name:string;
   position: Point;
   ports: IElementPort[];
 }
@@ -47,6 +48,8 @@ export interface IFlowElement
 export interface IFlow
 {
   readonly id: number;
+
+  name:string;
 
   elements: IFlowElement[];
   elementLinks: IElementLink[];

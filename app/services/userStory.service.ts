@@ -5,13 +5,14 @@ import {NodeActions} from '../actions/node.actions';
 import {NgRedux} from 'ng2-redux';
 import {PortDialogComponent, IPortModel} from '../dialogs/portDialog.component';
 import {IDataType} from '../store/dataType.types';
-import {NodeDialogComponent, INodeModel} from '../dialogs/nodeDialog.component';
+import {NodeDialogComponent} from '../dialogs/nodeDialog.component';
 import {IAppState} from '../store/store';
 import {INode, IPort} from '../store/node.types';
 import {ModalDialog} from '../dialogs/modalDialog';
 import {ConfirmatioDialogComponent, IConfirmation} from '../dialogs/confirmatioDialog.component';
 import {UiTexts} from '../components/ui.texts';
 import {ToolbarIcons} from '../Scene/toolbar';
+import { FlowActions } from '../actions/flow.actions';
 
 type DialogComponent<T extends ModalDialog<TModel>, TModel> = { new(activeModal: NgbActiveModal): T };
 
@@ -70,8 +71,12 @@ export class UserStoryService
     this.openModal(
       {
         type: NodeDialogComponent,
-        init: (d) => d.createNode("newNode"),
-        onSuccess: (model: INodeModel) => this.sceneActions.newNode(model.name)
+        init: (d) =>
+        { 
+          d.title = UiTexts.dialogTitle_RenameNode;
+          d.model = 'node';
+        },
+        onSuccess: (model: string) => this.sceneActions.newNode(model)
       });
   }
 
@@ -80,8 +85,40 @@ export class UserStoryService
     this.openModal(
       {
         type: NodeDialogComponent,
-        init: (d) => d.editNode(node),
-        onSuccess: (model: INodeModel) => this.nodeActions.rename(node.id, model.name)
+        init: (d) =>
+        { 
+          d.title = UiTexts.dialogTitle_RenameNode;
+          d.model = node.name;
+        },
+        onSuccess: (model: string) => this.nodeActions.rename(node.id, model)
+      });
+  }
+
+  public renameFlow(node: INode): void
+  {
+    this.openModal(
+      {
+        type: NodeDialogComponent,
+        init: (d) =>
+        { 
+          d.title = UiTexts.dialogTitle_RenameFlow;
+          d.model = node.name;
+        },
+        onSuccess: (model: string) => {}// this.FlowActions.rename(node.id, model.name)
+      });
+  }
+
+  public createFlow(): void
+  {
+    this.openModal(
+      {
+        type: NodeDialogComponent,
+        init: (d) =>
+        { 
+          d.title = UiTexts.dialogTitle_CreateFlow
+          d.model = 'flow';
+        },
+        onSuccess: (model: string) => this.sceneActions.newFlow(model)
       });
   }
 
