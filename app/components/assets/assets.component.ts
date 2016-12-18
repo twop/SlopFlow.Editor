@@ -6,8 +6,6 @@ import {IAppState} from '../../store/store';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
-import {OrderedMap} from 'immutable';
-
 import {StateWithHistory} from 'redux-undo';
 import {UserStoryService} from '../../services/userStory.service';
 import {INode} from '../../store/node.types';
@@ -33,8 +31,7 @@ export class RAssetsComponent implements OnInit
   ngOnInit(): void
   {
     this.nodes = this.ngRedux
-      .select((state: IAppState) => state.scene.nodes)
-      .map((map: OrderedMap<number, StateWithHistory<INode>>) => map.toArray());
+      .select((state: IAppState) => state.scene.nodes);
 
     this.selectedId = this.ngRedux.select((state: IAppState) => state.scene.selected);
 

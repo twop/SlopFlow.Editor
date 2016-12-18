@@ -87,7 +87,7 @@ export class UserStoryService
 
   public createPort(nodeId: number): void
   {
-    const dataTypes: Array<IDataType> = this.ngRedux.getState().scene.types.toArray();
+    const dataTypes: Array<IDataType> = this.ngRedux.getState().scene.types;
 
     this.openModal(
       {
@@ -99,7 +99,7 @@ export class UserStoryService
 
   public editPort(port: IPort, nodeId: number): void
   {
-    const dataTypes: Array<IDataType> = this.ngRedux.getState().scene.types.toArray();
+    const dataTypes: Array<IDataType> = this.ngRedux.getState().scene.types;
 
     this.openModal(
       {

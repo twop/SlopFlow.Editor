@@ -1,5 +1,5 @@
-import {List, OrderedMap} from 'immutable';
 import {IPort} from './node.types';
+import {Point} from '../geometry/point';
 
 export enum FlowElementType
 {
@@ -40,16 +40,17 @@ export interface IFlowElement
   readonly originId: number;
   readonly type: FlowElementType;
 
-  ports: List<IElementPort>;
+  position: Point;
+  ports: IElementPort[];
 }
 
 export interface IFlow
 {
   readonly id: number;
 
-  elements: OrderedMap<number, IFlowElement>;
-  elementLinks: List<IElementLink>;
+  elements: IFlowElement[];
+  elementLinks: IElementLink[];
 
-  ports: List<IPort>;
-  portLinks: List<IElementToPortLink>;
+  ports: IPort[];
+  portLinks: IElementToPortLink[];
 }

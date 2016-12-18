@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Point} from '../Geometry/point';
-import {Rectangle} from '../Geometry/rectangle';
-import {List} from 'immutable';
+import {Point} from '../geometry/point';
+import {Rectangle} from '../geometry/rectangle';
 import {INode, IPort, PortType} from '../store/node.types';
 
 export interface INodeLayout
@@ -59,8 +58,8 @@ export class RLayoutService
   public buildNodeLayout = (node: INode, atPosition: Point): INodeLayout =>
   {
     // TODO make it mem efficient. Avoid allocating another array
-    const inputs: Array<IPort> = node.ports.filter(p=> p.type === PortType.Input).toArray();
-    const outputs: Array<IPort> = node.ports.filter(p=> p.type === PortType.Output).toArray();
+    const inputs: Array<IPort> = node.ports.filter(p=> p.type === PortType.Input);
+    const outputs: Array<IPort> = node.ports.filter(p=> p.type === PortType.Output);
 
     const maxPortsOnSide = Math.max(inputs.length, outputs.length);
     const nodeHeight = ( maxPortsOnSide + 1) * this.nodeSizes.portsDistance + maxPortsOnSide *this.nodeSizes.portSize;

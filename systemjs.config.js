@@ -26,12 +26,10 @@
             // other libraries
             'rxjs': 'npm:rxjs',
             '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
-            'immutable': 'npm:immutable/dist/immutable.js',
             'ng2-redux': 'npm:ng2-redux/lib',
             'redux': 'npm:redux/dist/redux.min.js',
             'redux-undo': 'npm:redux-undo/dist/redux-undo.js',
             'redux-logger': 'npm:redux-logger/dist/index.js',
-            'typed-immutable-record': 'npm:typed-immutable-record/dist'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -46,7 +44,6 @@
                 main: './index.js',
                 defaultExtension: 'js'
             },
-            'typed-immutable-record': { main: 'index.js', defaultExtension: 'js' }
         }
     });
 })(this);

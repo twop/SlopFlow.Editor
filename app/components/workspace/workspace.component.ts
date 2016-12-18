@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
 import {INodeLayout, RLayoutService} from '../../services/layout.service';
-import {Point} from '../../Geometry/point';
+import {Point} from '../../geometry/point';
 import {Toolbar, ToolbarItem, ToolbarIcons} from '../../Scene/toolbar';
 import {NodeActions} from '../../actions/node.actions';
 import {StateWithHistory} from 'redux-undo';
@@ -48,7 +48,7 @@ export class RWorkspaceComponent implements OnInit
   ngOnInit(): void
   {
     const node: Observable<StateWithHistory<INode>> = this.ngRedux
-      .select((state: IAppState) => state.scene.nodes.get(state.scene.selected))
+      .select((state: IAppState) => state.scene.nodes.find( nHistory => nHistory.present.id  == state.scene.selected))
       .filter(node => node != null);
 
     this.name = node.map(node => node.present.name);

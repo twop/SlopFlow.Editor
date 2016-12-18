@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {NgRedux} from 'ng2-redux';
 import {IAppState} from '../store/store';
-import {INode, IPortRecord} from '../store/node.types';
-import {List} from 'immutable';
+import {INode} from '../store/node.types';
 import {newId} from './idgen';
 import {Action} from 'redux';
 
@@ -40,7 +39,7 @@ export class SceneActions
             {
               name,
               id,
-              ports: List<IPortRecord>(),
+              ports: [],
             };
 
     const action: INewNodeAction =

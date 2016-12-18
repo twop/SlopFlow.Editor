@@ -6,7 +6,9 @@
         "**/.git": true,
         "**/.DS_Store": true,
         "**/*.js": {"when": "$(basename).ts"},
-        "**/*.js.map": true
+        "**/*.js.map": true,
+        "**/*.css": {"when": "$(basename).scss"},
+        "**/*.css.map": true
     },
 
     "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
