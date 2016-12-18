@@ -42,6 +42,7 @@ import {UserStoryService} from './services/userStory.service';
 import {PortDialogComponent} from './dialogs/portDialog.component';
 import {NodeDialogComponent} from './dialogs/nodeDialog.component';
 import {ConfirmatioDialogComponent} from './dialogs/confirmatioDialog.component';
+import {AuthorizationDialogComponent} from './dialogs/authorizationDialog.component'
 
 
 
@@ -91,7 +92,8 @@ const reduxLoggerOptions ={
     RNodeWorkspaceComponent,
     NodeDialogComponent,
     PortDialogComponent,
-    ConfirmatioDialogComponent
+    ConfirmatioDialogComponent,
+    AuthorizationDialogComponent
   ],
   entryComponents: [
     NodeFormComponent,
@@ -99,7 +101,8 @@ const reduxLoggerOptions ={
     FlowFormComponent,
     NodeDialogComponent,
     PortDialogComponent,
-    ConfirmatioDialogComponent],
+    ConfirmatioDialogComponent,
+    AuthorizationDialogComponent],
 
   bootstrap: [AppComponent],
   providers: [

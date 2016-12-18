@@ -32,8 +32,8 @@ export class GitHubClient
 				response.redirect("https://github.com/login/oauth/authorize?" + querystring.stringify({ client_id: this.id, state: this._stateString }));
 		}
 
-		public isAuthorized(request: express.Request):Boolean
-		{
+		public isAuthorized():Boolean
+		{		
 				return this.user!=undefined;
 		};
 
@@ -101,10 +101,8 @@ export class GitHubClient
 
 		private onSuccess(request: express.Request, response: express.Response, gitUserData:GitUserData)
 		{
-				var dirPath = path.join(__dirname + '/../')
-				request.app.use('/', express.static(dirPath));
 				console.log("success "+this.user.accessToken);
-				response.redirect(this.originalUrl);
+				response.redirect("/");
 		};
 
 		private sendRequest(options: any, callback: any) 
