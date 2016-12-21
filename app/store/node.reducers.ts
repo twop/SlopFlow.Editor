@@ -2,7 +2,7 @@ import { INode, IPort } from './node.types';
 import { assign } from './store';
 
 import {
-  INewPortAction,
+  INewNodePortAction,
   NodeActions,
   INodeAction,
   IRenameNodeAction,
@@ -43,9 +43,9 @@ export function nodeReducer(state: INode = defaultNode, action: INodeAction): IN
 {
   switch (action.type)
   {
-    case NodeActions.NEW_PORT:
+    case NodeActions.NEW_NODE_PORT:
     {
-      return assign({...state}, {ports: [...state.ports, (<INewPortAction>action).port]});
+      return assign({...state}, {ports: [...state.ports, (<INewNodePortAction>action).port]});
     }
 
     case NodeActions.EDIT_PORT:

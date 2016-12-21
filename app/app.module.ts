@@ -42,6 +42,7 @@ import {PortDialogComponent} from './dialogs/portDialog.component';
 import {NodeDialogComponent} from './dialogs/nodeDialog.component';
 import {ConfirmatioDialogComponent} from './dialogs/confirmatioDialog.component';
 import {AuthorizationDialogComponent} from './dialogs/authorizationDialog.component'
+import {RFlowWorkspaceComponent} from './components/workspace/flowWorkspace.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import {AuthorizationDialogComponent} from './dialogs/authorizationDialog.compon
     NodeDialogComponent,
     PortDialogComponent,
     ConfirmatioDialogComponent,
-    AuthorizationDialogComponent
+    AuthorizationDialogComponent,
+    RFlowWorkspaceComponent
   ],
   entryComponents: [
     NodeFormComponent,

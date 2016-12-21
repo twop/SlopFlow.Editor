@@ -12,7 +12,7 @@ export interface INodeAction extends Action
   nodeId: number;
 }
 
-export interface INewPortAction extends INodeAction
+export interface INewNodePortAction extends INodeAction
 {
   port: IPort;
 }
@@ -47,7 +47,7 @@ export interface INodeRedoAction extends INodeAction
 @Injectable()
 export class NodeActions
 {
-  static readonly NEW_PORT = 'NEW_PORT';
+  static readonly NEW_NODE_PORT = 'NEW_PORT';
   static readonly EDIT_PORT = 'EDIT_PORT';
   static readonly DELETE_PORT = 'DELETE_PORT ';
   static readonly RENAME_NODE = 'RENAME_NODE';
@@ -56,7 +56,7 @@ export class NodeActions
 
   // TODO is there a better solution for that?
   private static all = [
-    NodeActions.NEW_PORT,
+    NodeActions.NEW_NODE_PORT,
     NodeActions.RENAME_NODE,
     NodeActions.NODE_REDO,
     NodeActions.NODE_UNDO,
@@ -81,9 +81,9 @@ export class NodeActions
               type: portModel.portType
             };
 
-    this.ngRedux.dispatch<INewPortAction>(
+    this.ngRedux.dispatch<INewNodePortAction>(
       {
-        type: NodeActions.NEW_PORT,
+        type: NodeActions.NEW_NODE_PORT,
         port,
         nodeId
       });
