@@ -47,7 +47,7 @@ export interface INodeRedoAction extends INodeAction
 @Injectable()
 export class NodeActions
 {
-  static readonly NEW_NODE_PORT = 'NEW_PORT';
+  static readonly NEW_NODE_PORT = 'NEW_NODE_PORT';
   static readonly EDIT_PORT = 'EDIT_PORT';
   static readonly DELETE_PORT = 'DELETE_PORT ';
   static readonly RENAME_NODE = 'RENAME_NODE';

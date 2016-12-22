@@ -37,12 +37,13 @@ import {RNodeComponent} from './components/workspace/node.component';
 import {RLayoutService} from './services/layout.service';
 import {RNodeWorkspaceComponent} from './components/workspace/nodeWorkspace.component';
 import {NodeActions} from './actions/node.actions';
-import {UserStoryService} from './services/userStory.service';
 import {PortDialogComponent} from './dialogs/portDialog.component';
 import {NodeDialogComponent} from './dialogs/nodeDialog.component';
 import {ConfirmatioDialogComponent} from './dialogs/confirmatioDialog.component';
 import {AuthorizationDialogComponent} from './dialogs/authorizationDialog.component'
 import {RFlowWorkspaceComponent} from './components/workspace/flowWorkspace.component';
+import { FlowActions } from './actions/flow.actions';
+import { DialogService } from './services/dialog.service';
 
 
 @NgModule({
@@ -95,8 +96,9 @@ import {RFlowWorkspaceComponent} from './components/workspace/flowWorkspace.comp
     SceneActions,
     RLayoutService,
     NodeActions,
-    UserStoryService,
-    DevToolsExtension
+    DevToolsExtension,
+    FlowActions,
+    DialogService
   ],
 })
 export class AppModule

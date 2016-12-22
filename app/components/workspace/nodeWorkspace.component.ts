@@ -1,34 +1,37 @@
 import { Component, Input } from '@angular/core';
-import {INodeViewState} from '../../WorkspaceComponent/nodeViewState';
-import {ContextToolbarService} from '../../Scene/contextToolbar.service';
-import {INodeLayout} from '../../services/layout.service';
-import {IPort} from '../../store/node.types';
-import {UserStoryService} from '../../services/userStory.service';
-import {Toolbar, ToolbarItem, ToolbarIcons} from '../../Scene/toolbar';
+import { INodeViewState } from '../../WorkspaceComponent/nodeViewState';
+import { ContextToolbarService } from '../../Scene/contextToolbar.service';
+import { INodeLayout } from '../../services/layout.service';
+import { IPort } from '../../store/node.types';
+import { DialogService } from '../../services/dialog.service';
+import { Toolbar, ToolbarItem, ToolbarIcons } from '../../Scene/toolbar';
+import { NodeActions } from '../../actions/node.actions';
+import { IPortModel } from '../../dialogs/portDialog.component';
 
 @Component({
-    selector: 'g[node-rworkspace]',
-    template: ` 
+  selector: 'g[node-rworkspace]',
+  template: ` 
     <svg:g *ngIf="layout" node-rcomponent [layout]="layout" [viewState]="nodeViewState"
       (portClick)="onPortClicked($event)"/>`
 })
 export class RNodeWorkspaceComponent
 {
   constructor(
-    private toolbarService:ContextToolbarService,
-    private userStoryService: UserStoryService
+    private toolbarService: ContextToolbarService,
+    private actions: NodeActions,
+    private dialogs: DialogService
   )
-  {}
+  { }
 
   @Input()
-  layout:INodeLayout;
+  layout: INodeLayout;
 
-  public nodeViewState:INodeViewState<IPort> = {
+  public nodeViewState: INodeViewState<IPort> = {
     nodeIsSelectable: false,
     selectedObject: null
   };
 
-  public onPortClicked(port:IPort)
+  public onPortClicked(port: IPort)
   {
     this.nodeViewState.selectedObject = port;
     //console.log(`port clicked: ${port.name}`);
@@ -37,13 +40,20 @@ export class RNodeWorkspaceComponent
     this.toolbarService.newToolbarEvent.emit(portToolbar);
   }
 
-  public buildPortToolbar (port: IPort): Toolbar
+  public buildPortToolbar(port: IPort): Toolbar
   {
     const nodeId: number = this.layout.id;
 
     return new Toolbar(
       port.name,
-      new ToolbarItem("Edit", () => this.userStoryService.editPort(port, nodeId), ToolbarIcons.edit),
-      new ToolbarItem("Delete", () => this.userStoryService.deletePort(port, nodeId), ToolbarIcons.delete));
+      new ToolbarItem(
+        "Edit",
+        () => this.dialogs.editPort(port, (model: IPortModel) => this.actions.editPort(model, port.id, nodeId)),
+        ToolbarIcons.edit),
+
+      new ToolbarItem(
+        "Delete",
+        () => this.dialogs.deletePort(port.name, () => this.actions.deletePort(port.id, nodeId)),
+        ToolbarIcons.delete));
   }
 }

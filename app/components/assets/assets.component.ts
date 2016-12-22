@@ -1,15 +1,15 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import {SceneActions} from '../../actions/scene.actions';
-import {NgRedux} from 'ng2-redux';
-import {IAppState} from '../../store/store';
-import {Observable} from 'rxjs/Observable';
+import { SceneActions } from '../../actions/scene.actions';
+import { NgRedux } from 'ng2-redux';
+import { IAppState } from '../../store/store';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
-import {StateWithHistory} from 'redux-undo';
-import {UserStoryService} from '../../services/userStory.service';
-import {INode} from '../../store/node.types';
+import { StateWithHistory } from 'redux-undo';
+import { INode } from '../../store/node.types';
 import { IFlow } from '../../store/flow.types';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'r-assets',
@@ -23,8 +23,8 @@ export class RAssetsComponent implements OnInit
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private actions: SceneActions,
-    private userStoryService: UserStoryService)
-  {}
+    private dialogs: DialogService)
+  { }
 
   nodes: Observable<Array<StateWithHistory<INode>>> = null;
   flows: Observable<Array<StateWithHistory<IFlow>>> = null;
@@ -50,11 +50,11 @@ export class RAssetsComponent implements OnInit
 
   requestNewNode(): void
   {
-    this.userStoryService.createNode();
+    this.dialogs.createNode((name: string) => this.actions.newNode(name));
   }
 
   requestNewFlow(): void
   {
-    this.userStoryService.createFlow();
+    this.dialogs.createFlow((name: string) => this.actions.newFlow(name));
   }
 }

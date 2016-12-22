@@ -13,6 +13,7 @@ import {ConfirmatioDialogComponent, IConfirmation} from '../dialogs/confirmatioD
 import {UiTexts} from '../components/ui.texts';
 import {ToolbarIcons} from '../Scene/toolbar';
 import { FlowActions } from '../actions/flow.actions';
+import { IFlow } from '../store/flow.types';
 
 type DialogComponent<T extends ModalDialog<TModel>, TModel> = { new(activeModal: NgbActiveModal): T };
 
@@ -24,12 +25,12 @@ interface IModalSettings<T extends ModalDialog<TResult>, TResult>
 }
 
 @Injectable()
-export class UserStoryService
+export class DialogService
 {
   constructor(
     private modalService: NgbModal,
     private sceneActions: SceneActions,
-    private nodeActions: NodeActions,
+    
     private ngRedux: NgRedux<IAppState>)
   {}
 
@@ -40,8 +41,7 @@ export class UserStoryService
 
     const reportResult = (res) =>
     {
-      console.log(`dialog result:`);
-      console.log(res);
+      console.log(`dialog result:`, res);
 
       if (res)
       {
@@ -53,8 +53,7 @@ export class UserStoryService
     {
       if (reason)
       {
-        console.log('dialog failed:');
-        console.log(reason);
+        console.log('dialog failed:', reason);
       }
     };
 
@@ -66,7 +65,7 @@ export class UserStoryService
       .catch(reportFailure);
   }
 
-  public createNode(): void
+  public createNode(onSuccess: (model: string) => void): void
   {
     this.openModal(
       {
@@ -76,11 +75,12 @@ export class UserStoryService
           d.title = UiTexts.dialogTitle_RenameNode;
           d.model = 'node';
         },
-        onSuccess: (model: string) => this.sceneActions.newNode(model)
+        //onSuccess: (model: string) => this.sceneActions.newNode(model)
+        onSuccess
       });
   }
 
-  public renameNode(node: INode): void
+  public renameNode(nodeName: string, onSuccess: (model: string) => void): void
   {
     this.openModal(
       {
@@ -88,13 +88,13 @@ export class UserStoryService
         init: (d) =>
         { 
           d.title = UiTexts.dialogTitle_RenameNode;
-          d.model = node.name;
+          d.model = nodeName;
         },
-        onSuccess: (model: string) => this.nodeActions.rename(node.id, model)
+        onSuccess
       });
   }
 
-  public renameFlow(node: INode): void
+  public renameFlow(flowName:string, onSuccess: (model: string) => void): void
   {
     this.openModal(
       {
@@ -102,13 +102,13 @@ export class UserStoryService
         init: (d) =>
         { 
           d.title = UiTexts.dialogTitle_RenameFlow;
-          d.model = node.name;
+          d.model = flowName;
         },
-        onSuccess: (model: string) => {}// this.FlowActions.rename(node.id, model.name)
+        onSuccess
       });
   }
 
-  public createFlow(): void
+  public createFlow(onSuccess: (model: string)=>void): void
   {
     this.openModal(
       {
@@ -118,11 +118,12 @@ export class UserStoryService
           d.title = UiTexts.dialogTitle_CreateFlow
           d.model = 'flow';
         },
-        onSuccess: (model: string) => this.sceneActions.newFlow(model)
+        onSuccess
+        // onSuccess: (model: string) => this.sceneActions.newFlow(model)
       });
   }
 
-  public createPort(nodeId: number): void
+  public createPort(onSuccess: (portModel: IPortModel)=>void): void
   {
     const dataTypes: Array<IDataType> = this.ngRedux.getState().scene.types;
 
@@ -130,11 +131,12 @@ export class UserStoryService
       {
         type: PortDialogComponent,
         init: (d) => d.createPort("newPort", dataTypes),
-        onSuccess: (portModel: IPortModel) => this.nodeActions.newPort(portModel, nodeId)
+        //onSuccess: (portModel: IPortModel) => this.nodeActions.newPort(portModel, nodeId)
+        onSuccess
       });
   }
 
-  public editPort(port: IPort, nodeId: number): void
+  public editPort(port: IPort, onSuccess: (portModel: IPortModel) => void): void
   {
     const dataTypes: Array<IDataType> = this.ngRedux.getState().scene.types;
 
@@ -142,15 +144,15 @@ export class UserStoryService
       {
         type: PortDialogComponent,
         init: (d) => d.editPort(port, dataTypes),
-        onSuccess: (portModel: IPortModel) => this.nodeActions.editPort(portModel, port.id, nodeId)
+        onSuccess
       });
   }
 
-  public deletePort(port: IPort, nodeId: number): void
+  public deletePort(portName: string, onConfirmed:()=>void): void
   {
     const confirmation: IConfirmation =
             {
-              title: UiTexts.deleteDialogTitle(port.name),
+              title: UiTexts.deleteDialogTitle(portName),
               buttonIcon: ToolbarIcons.delete,
               buttonText: UiTexts.deleteButtonText,
               text: UiTexts.deleteDialogText,
@@ -161,7 +163,8 @@ export class UserStoryService
       {
         type: ConfirmatioDialogComponent,
         init: (d) => d.showConfirmation(confirmation),
-        onSuccess: (result: any) => this.nodeActions.deletePort(port.id, nodeId)
+        //onSuccess: (result: any) => this.nodeActions.deletePort(port.id, nodeId)
+        onSuccess: onConfirmed
       });
   }
 }

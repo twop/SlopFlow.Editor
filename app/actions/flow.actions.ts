@@ -5,6 +5,7 @@ import { IPort } from '../store/node.types';
 import { IPortModel } from '../dialogs/portDialog.component';
 import { NgRedux } from 'ng2-redux';
 import { IAppState } from '../store/store';
+import { Injectable } from '@angular/core';
 
 export interface IFlowAction extends Action
 {
@@ -16,17 +17,25 @@ export interface INewFlowPortAction extends IFlowAction
   port:IPort;
 }
 
+export interface IRenameFlowAction extends IFlowAction
+{
+  newName: string;
+}
+
+@Injectable()
 export class FlowActions
 {
   static readonly NEW_FLOW_PORT = 'NEW_FLOW_PORT';
   static readonly FLOW_UNDO = 'FLOW_UNDO';
   static readonly FLOW_REDO = 'FLOW_REDO';
+  static readonly RENAME_FLOW = 'RENAME_FLOW';
 
   // TODO is there a better solution for that?
   private static all = [
     FlowActions.NEW_FLOW_PORT,
     FlowActions.FLOW_REDO,
     FlowActions.FLOW_UNDO,
+    FlowActions.RENAME_FLOW,
   ];
 
   static isFlowAction(action: {type: string}): action is IFlowAction
@@ -52,5 +61,16 @@ export class FlowActions
         port,
         flowId
       });
-  }  
+  }
+
+  rename = (flowId: number, newName: string) => this.ngRedux.dispatch<IRenameFlowAction>(
+    {
+      type: FlowActions.RENAME_FLOW,
+      flowId,
+      newName
+    });
+
+  undo = (flowId: number) => this.ngRedux.dispatch<IFlowAction>({type: FlowActions.FLOW_UNDO, flowId});
+
+  redo = (flowId: number) => this.ngRedux.dispatch<IFlowAction>({type: FlowActions.FLOW_REDO, flowId});  
 }

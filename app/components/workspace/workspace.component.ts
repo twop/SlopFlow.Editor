@@ -11,10 +11,13 @@ import { Point } from '../../geometry/point';
 import { Toolbar, ToolbarItem, ToolbarIcons } from '../../Scene/toolbar';
 import { NodeActions } from '../../actions/node.actions';
 import { StateWithHistory } from 'redux-undo';
-import { UserStoryService } from '../../services/userStory.service';
+import { DialogService } from '../../services/dialog.service';
 import { IAppState } from '../../store/store';
 import { INode } from '../../store/node.types';
 import { IFlow } from '../../store/flow.types';
+import { IPortModel } from '../../dialogs/portDialog.component';
+import { FlowActions } from '../../actions/flow.actions';
+import { newId } from '../../actions/idgen';
 
 @Component({
   selector: `r-workspace`,
@@ -28,8 +31,8 @@ import { IFlow } from '../../store/flow.types';
       <div class="">
         <!--<context-toolbar></context-toolbar>-->
         <svg xlink="http://www.w3.org/1999/xlink" height="500" width="600" class='img-fluid svg'>
-          <g node-rworkspace [layout]="nodeLayout | async"/>
-          <g flow-rworkspace [layout]="flowLayout | async"/>
+          <g *ngIf="nodeLayout | async" node-rworkspace [layout]="nodeLayout | async"/>
+          <g *ngIf="flowLayout | async" flow-rworkspace [layout]="flowLayout | async"/>
         </svg>
       </div>
     </div>`
@@ -39,10 +42,11 @@ export class RWorkspaceComponent implements OnInit
 {
   constructor(
     private ngRedux: NgRedux<IAppState>,
-    private actions: NodeActions,
+    private nodeActions: NodeActions,
+    private flowActions: FlowActions,
     private layoutService: RLayoutService,
-    private userStoryService: UserStoryService)
-  { }
+    private dialogs: DialogService)
+  { } 
 
   private readonly position = new Point(20, 20);
   nodeLayout: Observable<INodeLayout> = null;
@@ -67,32 +71,35 @@ export class RWorkspaceComponent implements OnInit
       .map(nh => nh.present.name)
       .merge(flow$.map(fh => fh.present.name));
 
-    this.toolbar = node$.map(node => this.buildNodeToolbar(node));
-
-    //this.nodeLayout.subscribe(layout => console.log(`layout: ${layout.name}`));
+    this.toolbar = node$
+    .map(node => this.buildNodeToolbar(node))
+    .merge(flow$.map(flow => this.buildFlowToolbar(flow)));
   }
 
   private buildNodeToolbar(node: StateWithHistory<INode>): Toolbar
   {
+    const nodeId = node.present.id;
+    const nodeName = node.present.name;
+
     const newPort = new ToolbarItem(
       'port',
-      () => this.userStoryService.createPort(node.present.id),
+      () => this.dialogs.createPort((model: IPortModel) => this.nodeActions.newPort(model, nodeId)),
       ToolbarIcons.addNew);
 
     const rename = new ToolbarItem(
       'rename',
-      () => this.userStoryService.renameNode(node.present),
+      () => this.dialogs.renameNode(nodeName, (newName: string) => this.nodeActions.rename(nodeId, newName)),
       ToolbarIcons.edit);
 
     const undo = new ToolbarItem(
       'undo',
-      () => this.actions.undo(node.present.id),
+      () => this.nodeActions.undo(nodeId),
       ToolbarIcons.undo,
       () => node.past.length > 0);
 
-    const redo = new ToolbarItem(
+      const redo = new ToolbarItem(
       'redo',
-      () => this.actions.redo(node.present.id),
+      () => this.nodeActions.redo(nodeId),
       ToolbarIcons.redo,
       () => node.future.length > 0);
 
@@ -101,28 +108,31 @@ export class RWorkspaceComponent implements OnInit
 
   private buildFlowToolbar(flow: StateWithHistory<IFlow>): Toolbar
   {
+    const flowId = flow.present.id;
+    const flowName = flow.present.name;
+
     const newPort = new ToolbarItem(
       'port',
-      () => this.userStoryService.createPort(flow.present.id),
+      () => this.dialogs.createPort((model: IPortModel) => this.flowActions.newPort(model, flowId)),
       ToolbarIcons.addNew);
 
     const rename = new ToolbarItem(
       'rename',
-      () => this.userStoryService.renameNode(flow.present),
+      () => this.dialogs.renameNode(flowName, (newName: string) => this.flowActions.rename(flowId, newName)),
       ToolbarIcons.edit);
 
     const undo = new ToolbarItem(
       'undo',
-      () => this.actions.undo(flow.present.id),
+      () => this.flowActions.undo(flowId),
       ToolbarIcons.undo,
       () => flow.past.length > 0);
 
     const redo = new ToolbarItem(
       'redo',
-      () => this.actions.redo(flow.present.id),
+      () => this.flowActions.redo(flowId),
       ToolbarIcons.redo,
       () => flow.future.length > 0);
 
-    return new Toolbar(flow.present.name, newPort, rename, undo, redo);
+    return new Toolbar(flowName, newPort, rename, undo, redo);
   }
 }

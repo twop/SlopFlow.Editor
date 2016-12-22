@@ -30,8 +30,6 @@ function editPort(state: INode, action: IEditPortAction): INode
   return assign({...state}, {ports: state.ports.map(updatePort)});
 }
 
-const renameNode = (state: INode, action: IRenameNodeAction): INode => assign({...state}, {name: action.newName});
-
 const defaultNode: INode =
         {
           name: "newNode",
@@ -60,7 +58,7 @@ export function nodeReducer(state: INode = defaultNode, action: INodeAction): IN
 
     case NodeActions.RENAME_NODE:
     {
-      return renameNode(state, <IRenameNodeAction>action);
+      return assign({...state}, {name: (<IRenameNodeAction>action).newName});
     }
 
     default:
