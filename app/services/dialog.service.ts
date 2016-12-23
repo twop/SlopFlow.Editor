@@ -11,7 +11,7 @@ import {INode, IPort} from '../store/node.types';
 import {ModalDialog} from '../dialogs/modalDialog';
 import {ConfirmatioDialogComponent, IConfirmation} from '../dialogs/confirmatioDialog.component';
 import {UiTexts} from '../components/ui.texts';
-import {ToolbarIcons} from '../Scene/toolbar';
+import {ToolbarIcons} from './toolbar';
 import { FlowActions } from '../actions/flow.actions';
 import { IFlow } from '../store/flow.types';
 

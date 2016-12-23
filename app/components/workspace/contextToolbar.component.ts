@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
-import {ContextToolbarService} from '../Scene/contextToolbar.service';
-import {Toolbar} from '../Scene/toolbar';
-import {Scene} from '../Scene/scene';
+import {ContextToolbarService} from '../../services/contextToolbar.service';
+import {Toolbar} from '../../services/toolbar';
 
 @Component({
   selector: 'context-toolbar',
@@ -15,11 +14,9 @@ import {Scene} from '../Scene/scene';
 })
 export class ContextToolbarComponent
 {
-  constructor(scene:Scene, private toolbarService: ContextToolbarService)
+  constructor( private toolbarService: ContextToolbarService)
   {
     toolbarService.newToolbarEvent.subscribe((t) => this.toolbar_ = t);
-    scene.activeWorkspaceChanged.subscribe(this.onClose);
-    scene.workspaceModified.subscribe(this.onClose);
   }
 
   private toolbar_:Toolbar = null;

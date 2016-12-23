@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AuthorizationDialogComponent, IAuthModel } from './dialogs/authorizationDialog.component';
-import { ModalService } from './Forms/modal.service';
 import {NgbModal, NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

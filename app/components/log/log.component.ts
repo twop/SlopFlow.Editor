@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Log, LogEntry } from './log'
+import { Log, LogEntry } from '../../services/log'
 
 @Component({
   selector: 'my-log',
-  templateUrl: 'app/LogComponent/log.component.html'
+  templateUrl: 'app/components/log/log.component.html'
 })
 export class LogComponent implements OnInit
 {

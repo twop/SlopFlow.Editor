@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Toolbar, ToolbarItem} from '../Scene/toolbar';
+import {Toolbar, ToolbarItem} from '../../services/toolbar';
 
 @Component({
   selector: 'toolbar',

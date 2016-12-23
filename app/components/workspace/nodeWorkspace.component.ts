@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { INodeViewState } from '../../WorkspaceComponent/nodeViewState';
-import { ContextToolbarService } from '../../Scene/contextToolbar.service';
+import { INodeViewState } from './nodeViewState';
+import { ContextToolbarService } from '../../services/contextToolbar.service';
 import { INodeLayout } from '../../services/layout.service';
 import { IPort } from '../../store/node.types';
 import { DialogService } from '../../services/dialog.service';
-import { Toolbar, ToolbarItem, ToolbarIcons } from '../../Scene/toolbar';
+import { Toolbar, ToolbarItem, ToolbarIcons } from '../../services/toolbar';
 import { NodeActions } from '../../actions/node.actions';
 import { IPortModel } from '../../dialogs/portDialog.component';
 

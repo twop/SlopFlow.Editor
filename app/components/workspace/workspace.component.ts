@@ -8,7 +8,7 @@ import 'rxjs/add/operator/merge'
 
 import { INodeLayout, RLayoutService, IFlowLayout } from '../../services/layout.service';
 import { Point } from '../../geometry/point';
-import { Toolbar, ToolbarItem, ToolbarIcons } from '../../Scene/toolbar';
+import { Toolbar, ToolbarItem, ToolbarIcons } from '../../services/toolbar';
 import { NodeActions } from '../../actions/node.actions';
 import { StateWithHistory } from 'redux-undo';
 import { DialogService } from '../../services/dialog.service';
@@ -17,7 +17,6 @@ import { INode } from '../../store/node.types';
 import { IFlow } from '../../store/flow.types';
 import { IPortModel } from '../../dialogs/portDialog.component';
 import { FlowActions } from '../../actions/flow.actions';
-import { newId } from '../../actions/idgen';
 
 @Component({
   selector: `r-workspace`,
@@ -29,7 +28,7 @@ import { newId } from '../../actions/idgen';
         <toolbar *ngIf="toolbar | async" [toolbar]="toolbar | async"></toolbar>
       </div>
       <div class="">
-        <!--<context-toolbar></context-toolbar>-->
+        <context-toolbar></context-toolbar>
         <svg xlink="http://www.w3.org/1999/xlink" height="500" width="600" class='img-fluid svg'>
           <g *ngIf="nodeLayout | async" node-rworkspace [layout]="nodeLayout | async"/>
           <g *ngIf="flowLayout | async" flow-rworkspace [layout]="flowLayout | async"/>

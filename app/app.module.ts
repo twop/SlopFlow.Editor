@@ -9,26 +9,12 @@ import  * as createLogger from 'redux-logger';
 
 import {AppComponent}  from './app.component';
 
-import {WorkspaceComponent} from  './WorkspaceComponent/workspace.component'
+import {LogComponent} from  './components/log/log.component'
+import {Log} from  './services/log'
 
-import {AssetsComponent} from  './AssetsComponent/assets.component'
-import {LogComponent} from  './LogComponent/log.component'
-import {NodeFormComponent} from  './Forms/nodeForm.component'
-import {PortFormComponent} from  './Forms/portForm.component'
-
-import {Scene} from  './Scene/scene'
-import {Log} from  './LogComponent/log'
-
-import {DataAccessService} from './DataAccess/dataAccess.service'
-import {NodeComponent} from './WorkspaceComponent/node.component';
-import {NodeWorkspaceComponent} from './WorkspaceComponent/nodeWorkspace.component';
-import {FlowWorkspaceComponent} from './WorkspaceComponent/flowWorkspace.component';
-import {LayoutService} from './Scene/layout.service';
-import {ToolbarComponent} from './WorkspaceComponent/toolbar.component';
-import {ContextToolbarService} from './Scene/contextToolbar.service';
-import {ContextToolbarComponent} from './WorkspaceComponent/contextToolbar.component';
-import {ModalService} from './Forms/modal.service';
-import {FlowFormComponent} from './Forms/flowForm.component';
+import {ToolbarComponent} from './components/workspace/toolbar.component';
+import {ContextToolbarService} from './services/contextToolbar.service';
+import {ContextToolbarComponent} from './components/workspace/contextToolbar.component';
 import {IAppState, rootReducer, INITIAL_STATE} from './store/store';
 import {SceneActions} from './actions/scene.actions';
 import {RAssetsComponent} from './components/assets/assets.component';
@@ -55,17 +41,9 @@ import { DialogService } from './services/dialog.service';
   ],
   declarations: [
     AppComponent,
-    WorkspaceComponent,
-    AssetsComponent,
-    NodeFormComponent,
-    PortFormComponent,
     LogComponent,
-    NodeComponent,
-    NodeWorkspaceComponent,
-    FlowWorkspaceComponent,
     ToolbarComponent,
     ContextToolbarComponent,
-    FlowFormComponent,
     RAssetsComponent,
     RWorkspaceComponent,
     RNodeComponent,
@@ -77,9 +55,6 @@ import { DialogService } from './services/dialog.service';
     RFlowWorkspaceComponent
   ],
   entryComponents: [
-    NodeFormComponent,
-    PortFormComponent,
-    FlowFormComponent,
     NodeDialogComponent,
     PortDialogComponent,
     ConfirmatioDialogComponent,
@@ -87,12 +62,8 @@ import { DialogService } from './services/dialog.service';
 
   bootstrap: [AppComponent],
   providers: [
-    Scene,
     ContextToolbarService,
     Log,
-    DataAccessService,
-    LayoutService,
-    ModalService,
     SceneActions,
     RLayoutService,
     NodeActions,

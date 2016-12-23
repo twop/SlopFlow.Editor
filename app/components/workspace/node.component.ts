@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {INodeLayout} from '../../Scene/layout.service';
-import {INodeViewState} from '../../WorkspaceComponent/nodeViewState';
+import {INodeViewState} from './nodeViewState';
 import {IPort, INode} from '../../store/node.types';
+import {INodeLayout} from '../../services/layout.service';
 
 @Component({
   selector: 'g[node-rcomponent]',

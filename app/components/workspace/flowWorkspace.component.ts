@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Log} from '../../LogComponent/log';
+import {Log} from '../../services/log';
 import {IPort} from '../../store/node.types';
 import {IFlowLayout} from '../../services/layout.service';
 
