@@ -1,3 +1,4 @@
 --require ts-node/register
+--require reflect-metadata
 --reporter list
 test/**/*.ts
