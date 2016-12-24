@@ -1,11 +1,11 @@
-import { Action } from 'redux';
-import { IFlow } from '../store/flow.types';
-import { newId } from './idgen';
-import { IPort } from '../store/node.types';
-import { IPortModel } from '../dialogs/portDialog.component';
-import { NgRedux } from 'ng2-redux';
-import { IAppState } from '../store/store';
-import { Injectable } from '@angular/core';
+import {Action} from 'redux';
+import {IFlow} from '../store/flow.types';
+import {newId} from './idgen';
+import {IPort} from '../store/node.types';
+import {IPortModel} from '../dialogs/portDialog.component';
+import {NgRedux} from 'ng2-redux';
+import {IAppState} from '../store/store';
+import {Injectable} from '@angular/core';
 
 export interface IFlowAction extends Action
 {
@@ -14,7 +14,7 @@ export interface IFlowAction extends Action
 
 export interface INewFlowPortAction extends IFlowAction
 {
-  port:IPort;
+  port: IPort;
 }
 
 export interface IRenameFlowAction extends IFlowAction
@@ -44,7 +44,7 @@ export class FlowActions
   }
 
   constructor(private ngRedux: NgRedux<IAppState>) {}
-  
+
   newPort(portModel: IPortModel, flowId: number): void
   {
     const port: IPort =
@@ -72,5 +72,5 @@ export class FlowActions
 
   undo = (flowId: number) => this.ngRedux.dispatch<IFlowAction>({type: FlowActions.FLOW_UNDO, flowId});
 
-  redo = (flowId: number) => this.ngRedux.dispatch<IFlowAction>({type: FlowActions.FLOW_REDO, flowId});  
+  redo = (flowId: number) => this.ngRedux.dispatch<IFlowAction>({type: FlowActions.FLOW_REDO, flowId});
 }

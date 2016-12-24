@@ -13,14 +13,6 @@ export interface IPort
   dataTypeId: number;
 }
 
-// const defaultPort: IPort =
-//         {
-//           id: 0,
-//           name: "invalid Port",
-//           dataTypeId: 0,
-//           type: PortType.Input
-//         };
-
 export interface INode
 {
   readonly id: number;
