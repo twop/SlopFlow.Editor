@@ -1,7 +1,8 @@
 node_modules/**
-typings/**
 app/**/*.js
 app/**/*.js.map
+test/**/*.js
+test/**/*.js.map
 server.js.map
 server.js
 server/**/*.js
