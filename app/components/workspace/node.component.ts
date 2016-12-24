@@ -4,11 +4,11 @@ import {IPort, INode} from '../../store/node.types';
 import {INodeLayout} from '../../services/layout.service';
 
 @Component({
-  selector: 'g[node-rcomponent]',
+  selector: 'g[node-component]',
   styleUrls: [`app/components/workspace/workspace.css`],
   templateUrl: 'app/components/workspace/node.component.html'
 })
-export class RNodeComponent
+export class NodeComponent
 {
   constructor()
   {

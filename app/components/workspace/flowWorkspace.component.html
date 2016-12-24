@@ -12,7 +12,7 @@
   </svg:g>
 
   <svg:g *ngFor="let nodeLayout of layout.nodeLayouts">
-    <svg:g node-rcomponent [layout]="nodeLayout" (portClick)="onPortClicked(nodeLayout.id, $event)" (nodeClick)="onElementClicked($event)"/>
+    <svg:g node-component [layout]="nodeLayout" (portClick)="onPortClicked(nodeLayout.id, $event)" (nodeClick)="onElementClicked($event)"/>
   </svg:g>
 
   <svg:g *ngFor="let portLayout of layout.portLayouts">

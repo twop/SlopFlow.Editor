@@ -17,17 +17,17 @@ import {ContextToolbarService} from './services/contextToolbar.service';
 import {ContextToolbarComponent} from './components/workspace/contextToolbar.component';
 import {IAppState, rootReducer, INITIAL_STATE} from './store/store';
 import {SceneActions} from './actions/scene.actions';
-import {RAssetsComponent} from './components/assets/assets.component';
-import {RWorkspaceComponent} from './components/workspace/workspace.component';
-import {RNodeComponent} from './components/workspace/node.component';
-import {RLayoutService} from './services/layout.service';
-import {RNodeWorkspaceComponent} from './components/workspace/nodeWorkspace.component';
+import {AssetsComponent} from './components/assets/assets.component';
+import {WorkspaceComponent} from './components/workspace/workspace.component';
+import {NodeComponent} from './components/workspace/node.component';
+import {LayoutService} from './services/layout.service';
+import {NodeWorkspaceComponent} from './components/workspace/nodeWorkspace.component';
 import {NodeActions} from './actions/node.actions';
 import {PortDialogComponent} from './dialogs/portDialog.component';
 import {NodeDialogComponent} from './dialogs/nodeDialog.component';
 import {ConfirmatioDialogComponent} from './dialogs/confirmatioDialog.component';
 import {AuthorizationDialogComponent} from './dialogs/authorizationDialog.component'
-import {RFlowWorkspaceComponent} from './components/workspace/flowWorkspace.component';
+import {FlowWorkspaceComponent} from './components/workspace/flowWorkspace.component';
 import { FlowActions } from './actions/flow.actions';
 import { DialogService } from './services/dialog.service';
 
@@ -44,15 +44,15 @@ import { DialogService } from './services/dialog.service';
     LogComponent,
     ToolbarComponent,
     ContextToolbarComponent,
-    RAssetsComponent,
-    RWorkspaceComponent,
-    RNodeComponent,
-    RNodeWorkspaceComponent,
+    AssetsComponent,
+    WorkspaceComponent,
+    NodeComponent,
+    NodeWorkspaceComponent,
     NodeDialogComponent,
     PortDialogComponent,
     ConfirmatioDialogComponent,
     AuthorizationDialogComponent,
-    RFlowWorkspaceComponent
+    FlowWorkspaceComponent
   ],
   entryComponents: [
     NodeDialogComponent,
@@ -65,7 +65,7 @@ import { DialogService } from './services/dialog.service';
     ContextToolbarService,
     Log,
     SceneActions,
-    RLayoutService,
+    LayoutService,
     NodeActions,
     DevToolsExtension,
     FlowActions,

@@ -4,11 +4,11 @@ import {IPort} from '../../store/node.types';
 import {IFlowLayout} from '../../services/layout.service';
 
 @Component({
-    selector: 'g[flow-rworkspace]',
+    selector: 'g[flow-workspace]',
     styleUrls: ['app/components/workspace/workspace.css'],
     templateUrl: 'app/components/workspace/flowWorkspace.component.html'
 })
-export class RFlowWorkspaceComponent
+export class FlowWorkspaceComponent
 {
   constructor(private log:Log)
   {}

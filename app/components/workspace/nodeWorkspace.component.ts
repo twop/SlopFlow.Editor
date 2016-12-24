@@ -9,12 +9,12 @@ import { NodeActions } from '../../actions/node.actions';
 import { IPortModel } from '../../dialogs/portDialog.component';
 
 @Component({
-  selector: 'g[node-rworkspace]',
+  selector: 'g[node-workspace]',
   template: ` 
-    <svg:g *ngIf="layout" node-rcomponent [layout]="layout" [viewState]="nodeViewState"
+    <svg:g *ngIf="layout" node-component [layout]="layout" [viewState]="nodeViewState"
       (portClick)="onPortClicked($event)"/>`
 })
-export class RNodeWorkspaceComponent
+export class NodeWorkspaceComponent
 {
   constructor(
     private toolbarService: ContextToolbarService,

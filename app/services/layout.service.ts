@@ -53,7 +53,7 @@ class Sizes
 }
 
 @Injectable()
-export class RLayoutService
+export class LayoutService
 {
   private readonly nodeSizes = new Sizes();
 

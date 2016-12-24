@@ -12,13 +12,13 @@ import { IFlow } from '../../store/flow.types';
 import { DialogService } from '../../services/dialog.service';
 
 @Component({
-  selector: 'r-assets',
+  selector: 'assets',
   templateUrl: 'app/components/assets/assets.component.html',
   styleUrls: ['app/components/assets/assets.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class RAssetsComponent implements OnInit
+export class AssetsComponent implements OnInit
 {
   constructor(
     private ngRedux: NgRedux<IAppState>,

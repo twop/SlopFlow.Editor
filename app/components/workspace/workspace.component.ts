@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/filter'
 import 'rxjs/add/operator/merge'
 
-import { INodeLayout, RLayoutService, IFlowLayout } from '../../services/layout.service';
+import { INodeLayout, LayoutService, IFlowLayout } from '../../services/layout.service';
 import { Point } from '../../geometry/point';
 import { Toolbar, ToolbarItem, ToolbarIcons } from '../../services/toolbar';
 import { NodeActions } from '../../actions/node.actions';
@@ -19,7 +19,7 @@ import { IPortModel } from '../../dialogs/portDialog.component';
 import { FlowActions } from '../../actions/flow.actions';
 
 @Component({
-  selector: `r-workspace`,
+  selector: `workspace`,
   styleUrls: [`app/components/workspace/workspace.css`],
   template: `
     <div class="card card-block">
@@ -30,20 +30,20 @@ import { FlowActions } from '../../actions/flow.actions';
       <div class="">
         <context-toolbar></context-toolbar>
         <svg xlink="http://www.w3.org/1999/xlink" height="500" width="600" class='img-fluid svg'>
-          <g *ngIf="nodeLayout | async" node-rworkspace [layout]="nodeLayout | async"/>
-          <g *ngIf="flowLayout | async" flow-rworkspace [layout]="flowLayout | async"/>
+          <g *ngIf="nodeLayout | async" node-workspace [layout]="nodeLayout | async"/>
+          <g *ngIf="flowLayout | async" flow-workspace [layout]="flowLayout | async"/>
         </svg>
       </div>
     </div>`
 })
 
-export class RWorkspaceComponent implements OnInit
+export class WorkspaceComponent implements OnInit
 {
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private nodeActions: NodeActions,
     private flowActions: FlowActions,
-    private layoutService: RLayoutService,
+    private layoutService: LayoutService,
     private dialogs: DialogService)
   { } 
 
