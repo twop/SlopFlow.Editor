@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Point } from '../geometry/point';
-import { Rectangle } from '../geometry/rectangle';
-import { INode, IPort, PortType } from '../store/node.types';
-import { IElementLink, IFlow, IFlowElement } from '../store/flow.types';
+import {Injectable} from '@angular/core';
+import {Point} from '../geometry/point';
+import {Rectangle} from '../geometry/rectangle';
+import {INode, IPort, PortType} from '../store/node.types';
+import {IElementLink, IFlow, IFlowElement} from '../store/flow.types';
+import {type} from 'os';
 
 export interface INodeLayout
 {
@@ -49,7 +50,7 @@ class Sizes
   nodeDefaultWidth = 100;
 
   portSize = 15;
-  portsDistance = 20;
+  portsGap = 20;
 }
 
 @Injectable()
@@ -59,22 +60,17 @@ export class LayoutService
 
   public buildNodeLayout = (node: INode, atPosition: Point): INodeLayout =>
   {
-    // TODO make it mem efficient. Avoid allocating another array
-    const inputs: Array<IPort> = node.ports.filter(p => p.type === PortType.Input);
-    const outputs: Array<IPort> = node.ports.filter(p => p.type === PortType.Output);
+    const maxPortsOnSide = Math.max(countType(node.ports, PortType.Input), countType(node.ports, PortType.Output));
+    const nodeHeight = (maxPortsOnSide + 1) * this.nodeSizes.portsGap + maxPortsOnSide * this.nodeSizes.portSize;
 
-    const maxPortsOnSide = Math.max(inputs.length, outputs.length);
-    const nodeHeight = (maxPortsOnSide + 1) * this.nodeSizes.portsDistance + maxPortsOnSide * this.nodeSizes.portSize;
-
-    return this.layoutElement(node.id, node.name, inputs, outputs, atPosition, nodeHeight, this.nodeSizes);
+    return this.layoutElement(node.id, node.name, node.ports, atPosition, nodeHeight, this.nodeSizes);
   };
 
   public buildFlowLayout(flow: IFlow): IFlowLayout
   {
-    const nodeLayouts: Array<INodeLayout> = [];
-    const linkLayouts: Array<ILinkLayout> = [];
+    const nodeLayouts: Array<INodeLayout> = flow.elements.map(node => this.buildNodeLayout(node, node.position));
 
-    flow.elements.forEach(node => nodeLayouts.push(this.buildNodeLayout(node, node.position)));
+    const linkLayouts: Array<ILinkLayout> = [];
 
     for (const link of flow.elementLinks)
     {
@@ -98,11 +94,7 @@ export class LayoutService
     sizes.nodeDefaultWidth = rect.width;
     sizes.nodeNameOffset = 0;
 
-  // TODO make it mem efficient. Avoid allocating another array
-    const inputs: IPort[] = flow.ports.filter(p => p.type === PortType.Input);
-    const outputs: IPort[] = flow.ports.filter(p => p.type === PortType.Output);
-
-    let layout: INodeLayout = this.layoutElement(flow.id, flow.name, inputs, outputs, rect.topLeft, rect.height, sizes);
+    let layout: INodeLayout = this.layoutElement(flow.id, flow.name, flow.ports, rect.topLeft, rect.height, sizes);
 
     return {
       nodeLayouts,
@@ -120,12 +112,10 @@ export class LayoutService
     return portLayout.rect.center;
   }
 
-  private layoutElement(id: number, name:string, inputs: IPort[], outputs: IPort[], offset: Point, height: number, sizes: Sizes): INodeLayout
+  private layoutElement(id: number, name: string, ports: IPort[], offset: Point, height: number, sizes: Sizes): INodeLayout
   {
     const rect = new Rectangle(offset.x, offset.y + sizes.nodeNameOffset, sizes.nodeDefaultWidth, height);
-
-    const portLayouts: Array<IPortLayout> = this.layoutPorts(inputs, rect.y, rect.x, rect.height, sizes);
-    portLayouts.push(...this.layoutPorts(outputs, rect.y, rect.right, rect.height, sizes));
+    const portLayouts: Array<IPortLayout> = this.layoutPorts(ports, rect, sizes);
 
     return {
       id,
@@ -137,20 +127,29 @@ export class LayoutService
     };
   }
 
-  private layoutPorts(ports: Array<IPort>, top: number, x: number, height: number, sizes: Sizes): Array<IPortLayout>
+  private layoutPorts(ports: Array<IPort>, rect: Rectangle, sizes: Sizes): Array<IPortLayout>
   {
     if (ports.length == 0) return [];
 
-    let distance = height / (ports.length + 1);
-    let startY = top + distance - sizes.portSize / 2;
+    const halfPortSize = sizes.portSize / 2;
 
-    const createLayout = (port: IPort): IPortLayout =>
+    const createMapper = (portType: PortType, x: number) =>
     {
-      const rect = new Rectangle(x - sizes.portSize / 2, startY, sizes.portSize, sizes.portSize);
-      startY += sizes.portsDistance + sizes.portSize;
-      return { port: port, rect: rect };
+      const gap = rect.height / (countType(ports, portType) + 1);
+      let startY = rect.y + gap - halfPortSize;
+
+      return (port: IPort): IPortLayout =>
+      {
+        const portRect = new Rectangle(x -  halfPortSize, startY, sizes.portSize, sizes.portSize);
+        startY += gap;
+        return {port, rect: portRect};
+      };
     };
 
-    return ports.map(port => createLayout(port));
+    const inputsMapper = createMapper(PortType.Input, rect.x);
+    const outputsMapper = createMapper(PortType.Output, rect.right);
+    return ports.map(port => port.type == PortType.Input ? inputsMapper(port) : outputsMapper(port));
   }
 }
+
+const countType = (ports:IPort[], portType: PortType) : number => ports.reduce((state, port) => port.type === portType ? ++state : state, 0);
