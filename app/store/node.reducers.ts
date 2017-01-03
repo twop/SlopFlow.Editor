@@ -1,4 +1,4 @@
-import { INode, IPort } from './node.types';
+import {INode, IPort, ElementType} from './node.types';
 import { assign } from './store';
 
 import {
@@ -32,6 +32,7 @@ function editPort(state: INode, action: IEditPortAction): INode
 
 const defaultNode: INode =
         {
+          type: ElementType.Node,
           name: "newNode",
           id: 0,
           ports: [],

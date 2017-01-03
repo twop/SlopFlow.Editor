@@ -1,3 +1,9 @@
+export enum ElementType
+{
+  Node,
+  Flow
+}
+
 export enum PortType
 {
   Input,
@@ -15,6 +21,7 @@ export interface IPort
 
 export interface INode
 {
+  readonly type: ElementType.Node;
   readonly id: number;
 
   name: string;

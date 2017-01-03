@@ -1,4 +1,4 @@
-import {INode, IPort, PortType} from '../../app/store/node.types';
+import {INode, IPort, PortType, ElementType} from '../../app/store/node.types';
 import {assign} from '../../app/store/store';
 import {
   INewNodePortAction,
@@ -12,11 +12,12 @@ import {nodeReducer} from '../../app/store/node.reducers';
 import {suite, test} from "mocha-typescript";
 import {expect} from "chai"
 
-@suite class NodeReducerTests
+@suite
+class NodeReducerTests
 {
   @test command_INewNodePortAction()
   {
-    const initialNode: INode = {id: 1, name: 'name', ports: []};
+    const initialNode: INode = this.createEmptyNode();
 
     const port: IPort = {
       type: PortType.Input,
@@ -40,14 +41,17 @@ import {expect} from "chai"
 
   @test command_IEditPortAction()
   {
-     const port: IPort = {
+    const port: IPort = {
       type: PortType.Input,
       id: 100500,
       dataTypeId: 123,
       name: "awesomePort"
     };
 
-    const initialNode: INode = {id: 1, name: 'name', ports: [port]};
+    const initialNode: INode = this.createEmptyNode();
+    initialNode.ports.push(port);
+
+    Object.freeze(initialNode);
 
     const action: IEditPortAction = {
       nodeId: initialNode.id,
@@ -58,9 +62,7 @@ import {expect} from "chai"
       portType: PortType.Output
     };
 
-    Object.freeze(initialNode);
     const newNode = nodeReducer(initialNode, action);
-
     expect(newNode.ports).to.have.length(1);
 
     const expectedPort = {
@@ -69,7 +71,7 @@ import {expect} from "chai"
       dataTypeId: action.dataTypeId,
       name: action.name
     };
-    expect(newNode.ports[0]).to.deep.equal( expectedPort);
+    expect(newNode.ports[0]).to.deep.equal(expectedPort);
   }
 
   @test command_IDeletePortAction()
@@ -81,7 +83,9 @@ import {expect} from "chai"
       name: "awesomePort"
     };
 
-    const initialNode: INode = {id: 1, name: 'name', ports: [port]};
+    const initialNode: INode = this.createEmptyNode();
+    initialNode.ports.push(port);
+    Object.freeze(initialNode);
 
     const action: IDeletePortAction = {
       nodeId: initialNode.id,
@@ -89,7 +93,6 @@ import {expect} from "chai"
       portId: port.id,
     };
 
-    Object.freeze(initialNode);
     const newNode = nodeReducer(initialNode, action);
 
     expect(newNode.ports).to.have.length(0);
@@ -97,17 +100,26 @@ import {expect} from "chai"
 
   @test command_IRenameNodeAction()
   {
-    const initialNode: INode = {id: 1, name: 'name', ports: []};
+    const initialNode: INode = this.createEmptyNode();
+    Object.freeze(initialNode);
 
-    const action: IRenameNodeAction= {
+    const action: IRenameNodeAction = {
       nodeId: initialNode.id,
       type: NodeActions.RENAME_NODE,
       newName: "new node name"
     };
 
-    Object.freeze(initialNode);
     const newNode = nodeReducer(initialNode, action);
-
     expect(newNode.name).to.be.equal(action.newName);
+  }
+
+  private createEmptyNode(): INode
+  {
+    return {
+      type: ElementType.Node,
+      id: 1,
+      name: 'name',
+      ports: []
+    };
   }
 }

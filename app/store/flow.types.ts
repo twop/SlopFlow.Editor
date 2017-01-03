@@ -1,11 +1,7 @@
-import {IPort} from './node.types';
+import {IPort, ElementType, INode} from './node.types';
 import {Point} from '../geometry/point';
 
-export enum FlowElementType
-{
-  Node,
-  Flow
-}
+export type FlowObject = IFlow | INode;
 
 // TODO do we need to have an id as well?
 export interface IElementPort extends IPort
@@ -15,7 +11,7 @@ export interface IElementPort extends IPort
 
 export interface IElementLink
 {
-  readonly id:number;
+  readonly id: number;
 
   fromElementPortId: number;
   fromElementId: number;
@@ -26,7 +22,7 @@ export interface IElementLink
 
 export interface IElementToPortLink
 {
-  readonly id:number;
+  readonly id: number;
 
   elementPortId: number;
   elementId: number;
@@ -38,18 +34,19 @@ export interface IFlowElement
 {
   readonly id: number;
   readonly originId: number;
-  readonly type: FlowElementType;
+  readonly type: ElementType;
 
-  name:string;
+  name: string;
   position: Point;
   ports: IElementPort[];
 }
 
 export interface IFlow
 {
+  readonly type: ElementType.Flow;
   readonly id: number;
 
-  name:string;
+  name: string;
 
   elements: IFlowElement[];
   elementLinks: IElementLink[];
@@ -57,3 +54,4 @@ export interface IFlow
   ports: IPort[];
   portLinks: IElementToPortLink[];
 }
+

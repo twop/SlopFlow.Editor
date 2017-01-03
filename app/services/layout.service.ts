@@ -58,7 +58,7 @@ export class LayoutService
 {
   private readonly nodeSizes = new Sizes();
 
-  public buildNodeLayout = (node: INode, atPosition: Point): INodeLayout =>
+  public buildNodeLayout = (node: IFlowElement | INode, atPosition: Point): INodeLayout =>
   {
     const maxPortsOnSide = Math.max(countType(node.ports, PortType.Input), countType(node.ports, PortType.Output));
     const nodeHeight = (maxPortsOnSide + 1) * this.nodeSizes.portsGap + maxPortsOnSide * this.nodeSizes.portSize;

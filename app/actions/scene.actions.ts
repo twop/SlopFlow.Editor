@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from 'ng2-redux';
 import { IAppState } from '../store/store';
-import { INode } from '../store/node.types';
+import {INode, ElementType} from '../store/node.types';
 import { newId } from './idgen';
 import { Action } from 'redux';
 import { IFlow } from '../store/flow.types';
@@ -43,6 +43,7 @@ export class SceneActions
   {
     const node: INode =
       {
+        type: ElementType.Node,
         name,
         id: newId(),
         ports: [],
@@ -55,6 +56,7 @@ export class SceneActions
   {
     const flow: IFlow =
             {
+              type: ElementType.Flow,
               name,
               id: newId(),
               ports: [],

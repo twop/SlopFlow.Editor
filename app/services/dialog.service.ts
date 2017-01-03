@@ -29,8 +29,6 @@ export class DialogService
 {
   constructor(
     private modalService: NgbModal,
-    private sceneActions: SceneActions,
-    
     private ngRedux: NgRedux<IAppState>)
   {}
 
