@@ -9,7 +9,6 @@ import { INodeLayout, LayoutService, IFlowLayout } from '../../services/layout.s
 import { Point } from '../../geometry/point';
 import { Toolbar, ToolbarItem, ToolbarIcons } from '../../services/toolbar';
 import { NodeActionCreators, NodeAction } from '../../actions/node.actions';
-import { StateWithHistory } from 'redux-undo';
 import { DialogService } from '../../services/dialog.service';
 import { IAppState } from '../../store/store';
 import { INode } from '../../store/node.types';
@@ -17,6 +16,7 @@ import { IFlow } from '../../store/flow.types';
 import { IPortModel } from '../../dialogs/portDialog.component';
 import { FlowActionCreators, FlowAction } from '../../actions/flow.actions';
 import { Store, Action } from '@ngrx/store';
+import { History } from '../../store/undoable';
 
 @Component({
   selector: `workspace`,
@@ -55,11 +55,11 @@ export class WorkspaceComponent implements OnInit
 
   ngOnInit(): void
   {
-    const node$: Observable<StateWithHistory<INode>> = this.store
+    const node$: Observable<History<INode>> = this.store
       .select((state: IAppState) => state.scene.nodes.find(nh => nh.present.id == state.scene.selected))
       .filter(nh => nh != null);
 
-    const flow$: Observable<StateWithHistory<IFlow>> = this.store
+    const flow$: Observable<History<IFlow>> = this.store
       .select((state: IAppState) => state.scene.flows.find(fh => fh.present.id == state.scene.selected))
       .filter(flow => flow != null);
 
@@ -78,7 +78,7 @@ export class WorkspaceComponent implements OnInit
   }
 
   private buildNodeToolbar(
-    node: StateWithHistory<INode>,
+    node: History<INode>,
     dispatch:(action: NodeAction)=> void,
     actions: NodeActionCreators): Toolbar
   {
@@ -111,7 +111,7 @@ export class WorkspaceComponent implements OnInit
   }
 
   private buildFlowToolbar(
-    flow: StateWithHistory<IFlow>,
+    flow: History<IFlow>,
     dispatch:(action: FlowAction)=> void,
     actions: FlowActionCreators): Toolbar
   {

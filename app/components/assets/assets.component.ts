@@ -5,11 +5,11 @@ import { IAppState } from '../../store/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
-import { StateWithHistory } from 'redux-undo';
 import { INode } from '../../store/node.types';
 import { IFlow } from '../../store/flow.types';
 import { DialogService } from '../../services/dialog.service';
 import { Store } from '@ngrx/store';
+import { History } from '../../store/undoable';
 
 @Component({
   selector: 'assets',
@@ -26,8 +26,8 @@ export class AssetsComponent implements OnInit
     private dialogs: DialogService)
   { }
 
-  nodes: Observable<Array<StateWithHistory<INode>>> = null;
-  flows: Observable<Array<StateWithHistory<IFlow>>> = null;
+  nodes: Observable<Array<History<INode>>> = null;
+  flows: Observable<Array<History<IFlow>>> = null;
   selectedId: Observable<number> = null;
 
   ngOnInit(): void

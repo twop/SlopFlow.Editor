@@ -29,8 +29,6 @@
             '@ngrx/store': 'npm:@ngrx/store/bundles/store.umd.js',
             '@ngrx/core': 'npm:@ngrx/core/bundles/core.umd.js',
             '@ngrx/store-devtools': 'npm:@ngrx/store-devtools/bundles/store-devtools.umd.js',
-            'redux': 'npm:redux/dist/redux.min.js',
-            'redux-undo': 'npm:redux-undo/dist/redux-undo.js',
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {

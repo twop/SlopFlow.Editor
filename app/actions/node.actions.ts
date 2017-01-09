@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { newId } from './idgen';
-import { StateWithHistory } from 'redux-undo';
 import { IPortModel } from '../dialogs/portDialog.component';
 import { IPort, PortType } from '../store/node.types';
 import { IAppState } from '../store/store';

@@ -1,6 +1,6 @@
+import { History } from '../store/undoable';
 import {Injectable} from '@angular/core';
 
-import { StateWithHistory } from 'redux-undo';
 import {IAppState} from '../store/store';
 
 
@@ -15,7 +15,7 @@ import { Store } from '@ngrx/store';
 @Injectable()
 export class StoreObservablesService
 {
-  readonly selectedObjectWithHistory$: Observable<StateWithHistory<FlowObject>>;
+  readonly selectedObjectWithHistory$: Observable<History<FlowObject>>;
   readonly selectedObject$: Observable<FlowObject>;
 
   constructor(private store: Store<IAppState>)

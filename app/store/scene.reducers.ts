@@ -3,8 +3,6 @@ import { NodeActionCreators, nodeActions, isNodeAction } from '../actions/node.a
 import { INewNodeAction, SceneActionCreators, INewFlowAction, isSceneAction, sceneActions } from '../actions/scene.actions';
 import { ISelectItemAction } from '../actions/scene.actions';
 
-import undoable, { StateWithHistory } from 'redux-undo';
-
 import { INode } from './node.types';
 import { nodeReducer } from './node.reducers';
 import { assign } from './store';
@@ -12,28 +10,28 @@ import { IDataType } from './dataType.types';
 import { IFlow } from './flow.types';
 import { flowReducer } from './flow.reducers';
 import { FlowActionCreators, flowActions, isFlowAction } from '../actions/flow.actions';
-import { Reducer } from 'redux';
-import { Action } from '@ngrx/store';
+import { Action, ActionReducer } from '@ngrx/store';
+import { History, undoable } from './undoable';
 
-function newHistory<T>(initialState: T): StateWithHistory<T>
+function newHistory<T>(initialState: T): History<T>
 {
   return { past: [], present: initialState, future: [] }
 }
 
-const undoableNodeReducer: Reducer<StateWithHistory<INode>> = undoable(
+const undoableNodeReducer: ActionReducer<History<INode>> = undoable(
   nodeReducer,
   {
     limit: 10,
-    redoType: nodeActions.REDO,
-    undoType: nodeActions.UNDO
+    redoAction: nodeActions.REDO,
+    undoAction: nodeActions.UNDO
   });
 
-const undoableFlowReducer: Reducer<StateWithHistory<IFlow>> = undoable(
+const undoableFlowReducer: ActionReducer<History<IFlow>> = undoable(
   flowReducer,
   {
     limit: 10,
-    redoType: flowActions.REDO,
-    undoType: flowActions.UNDO
+    redoAction: flowActions.REDO,
+    undoAction: flowActions.UNDO
   });
 
 const intType: IDataType = { id: -1, name: 'int' };
