@@ -1,9 +1,8 @@
 import { IScene } from './scene.types';
-import { NodeActions } from '../actions/node.actions';
-import { INewNodeAction, SceneActions, INewFlowAction } from '../actions/scene.actions';
+import { NodeActionCreators, nodeActions, isNodeAction } from '../actions/node.actions';
+import { INewNodeAction, SceneActionCreators, INewFlowAction, isSceneAction, sceneActions } from '../actions/scene.actions';
 import { ISelectItemAction } from '../actions/scene.actions';
 
-import { Action, Reducer } from 'redux';
 import undoable, { StateWithHistory } from 'redux-undo';
 
 import { INode } from './node.types';
@@ -12,7 +11,9 @@ import { assign } from './store';
 import { IDataType } from './dataType.types';
 import { IFlow } from './flow.types';
 import { flowReducer } from './flow.reducers';
-import { FlowActions } from '../actions/flow.actions';
+import { FlowActionCreators, flowActions, isFlowAction } from '../actions/flow.actions';
+import { Reducer } from 'redux';
+import { Action } from '@ngrx/store';
 
 function newHistory<T>(initialState: T): StateWithHistory<T>
 {
@@ -23,16 +24,16 @@ const undoableNodeReducer: Reducer<StateWithHistory<INode>> = undoable(
   nodeReducer,
   {
     limit: 10,
-    redoType: NodeActions.NODE_REDO,
-    undoType: NodeActions.NODE_UNDO
+    redoType: nodeActions.REDO,
+    undoType: nodeActions.UNDO
   });
 
 const undoableFlowReducer: Reducer<StateWithHistory<IFlow>> = undoable(
   flowReducer,
   {
     limit: 10,
-    redoType: FlowActions.FLOW_REDO,
-    undoType: FlowActions.FLOW_UNDO
+    redoType: flowActions.REDO,
+    undoType: flowActions.UNDO
   });
 
 const intType: IDataType = { id: -1, name: 'int' };
@@ -52,13 +53,13 @@ export function sceneReducer(
   state: IScene = initialScene,
   action: Action): IScene
 {
-  if (SceneActions.isSceneAction(action))
+  if (isSceneAction(action))
   {
     switch (action.type)
     {
-      case SceneActions.NEW_NODE:
+      case sceneActions.NEW_NODE:
         {
-          const node = (<INewNodeAction>action).node;
+          const node = (<INewNodeAction>action).payload;
           return assign(
             { ...state },
             {
@@ -67,9 +68,9 @@ export function sceneReducer(
             });
         }
 
-      case SceneActions.NEW_FLOW:
+      case sceneActions.NEW_FLOW:
         {
-          const flow = (<INewFlowAction>action).flow;
+          const flow = (<INewFlowAction>action).payload;
           return assign(
             { ...state },
             {
@@ -78,9 +79,9 @@ export function sceneReducer(
             });
         }
 
-      case SceneActions.SELECT_ITEM:
+      case sceneActions.SELECT_ITEM:
         {
-          return assign({ ...state }, { selected: (<ISelectItemAction>action).itemId })
+          return assign({ ...state }, { selected: (<ISelectItemAction>action).payload.itemId })
         }
 
       default:
@@ -88,12 +89,12 @@ export function sceneReducer(
     }
   }
 
-  if (NodeActions.isNodeAction(action))
+  if (isNodeAction(action))
   {
     return assign({ ...state }, {
       nodes: state.nodes.map(history => 
       {
-        if (history.present.id != action.nodeId)
+        if (history.present.id != action.payload.nodeId)
           return history;
 
         return undoableNodeReducer(history, action);
@@ -101,12 +102,12 @@ export function sceneReducer(
     });
   }
 
-  if (FlowActions.isFlowAction(action))
+  if (isFlowAction(action))
   {
     return assign({ ...state }, {
       flows: state.flows.map(history => 
       {
-        if (history.present.id != action.flowId)
+        if (history.present.id != action.payload.flowId)
           return history;
 
         return undoableFlowReducer(history, action);

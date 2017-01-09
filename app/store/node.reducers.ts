@@ -1,66 +1,65 @@
-import {INode, IPort, ElementType} from './node.types';
+import { INode, IPort, ElementType } from './node.types';
 import { assign } from './store';
-
-import {
-  INewNodePortAction,
-  NodeActions,
-  INodeAction,
-  IRenameNodeAction,
+import
+{
   IEditPortAction,
-  IDeletePortAction
+  NodeAction,
+  nodeActions,
+  INewNodePortAction,
+  IDeletePortAction,
+  IRenameNodeAction
 } from '../actions/node.actions';
-
 
 function editPort(state: INode, action: IEditPortAction): INode
 {
-  const updatePort = (port: IPort):IPort =>
+  const updatePort = (port: IPort): IPort =>
   {
-    if (port.id != action.portId)
+    if (port.id != action.payload.portId)
       return port;
 
     return assign(
-      {...port},
+      { ...port },
       {
-        name: action.name,
-        dataTypeId: action.dataTypeId,
-        type: action.portType
+        name: action.payload.name,
+        dataTypeId: action.payload.dataTypeId,
+        type: action.payload.portType
       });
   };
 
-  return assign({...state}, {ports: state.ports.map(updatePort)});
+  return assign({ ...state }, { ports: state.ports.map(updatePort) });
 }
 
 const defaultNode: INode =
-        {
-          type: ElementType.Node,
-          name: "newNode",
-          id: 0,
-          ports: [],
-        };
+  {
+    type: ElementType.Node,
+    name: "newNode",
+    id: 0,
+    ports: [],
+  };
 
-export function nodeReducer(state: INode = defaultNode, action: INodeAction): INode
+export function nodeReducer(state: INode = defaultNode, action: NodeAction): INode
 {
   switch (action.type)
   {
-    case NodeActions.NEW_NODE_PORT:
-    {
-      return assign({...state}, {ports: [...state.ports, (<INewNodePortAction>action).port]});
-    }
+    case nodeActions.NEW_PORT:
+      {
+        return assign({ ...state }, { ports: [...state.ports, (<INewNodePortAction>action).payload.port] });
+      }
 
-    case NodeActions.EDIT_PORT:
-    {
-      return editPort(state, <IEditPortAction>action);
-    }
+    case nodeActions.EDIT_PORT:
+      {
+        return editPort(state, <IEditPortAction>action);
+      }
 
-    case NodeActions.DELETE_PORT:
-    {
-      return assign({...state}, {ports: state.ports.filter(p => p.id != (<IDeletePortAction>action).portId)});
-    }
+    case nodeActions.DELETE_PORT:
+      {
+        return assign({ ...state }, { ports: state.ports.filter(p => p.id != (<IDeletePortAction>action).payload.portId) });
+      }
 
-    case NodeActions.RENAME_NODE:
-    {
-      return assign({...state}, {name: (<IRenameNodeAction>action).newName});
-    }
+    case nodeActions.RENAME:
+      {
+        return assign({ ...state }, { name: (<IRenameNodeAction>action).payload.newName });
+      }
 
     default:
       return state;

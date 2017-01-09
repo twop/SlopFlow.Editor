@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { SceneActions } from '../../actions/scene.actions';
-import { NgRedux } from 'ng2-redux';
+import { SceneActionCreators } from '../../actions/scene.actions';
 import { IAppState } from '../../store/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
@@ -10,6 +9,7 @@ import { StateWithHistory } from 'redux-undo';
 import { INode } from '../../store/node.types';
 import { IFlow } from '../../store/flow.types';
 import { DialogService } from '../../services/dialog.service';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'assets',
@@ -21,8 +21,8 @@ import { DialogService } from '../../services/dialog.service';
 export class AssetsComponent implements OnInit
 {
   constructor(
-    private ngRedux: NgRedux<IAppState>,
-    private actions: SceneActions,
+    private store: Store<IAppState>,
+    private actions: SceneActionCreators,
     private dialogs: DialogService)
   { }
 
@@ -32,29 +32,29 @@ export class AssetsComponent implements OnInit
 
   ngOnInit(): void
   {
-    this.nodes = this.ngRedux.select((state: IAppState) => state.scene.nodes);
-    this.flows = this.ngRedux.select((state: IAppState) => state.scene.flows);
+    this.nodes = this.store.select((state: IAppState) => state.scene.nodes);
+    this.flows = this.store.select((state: IAppState) => state.scene.flows);
 
-    this.selectedId = this.ngRedux.select((state: IAppState) => state.scene.selected);
+    this.selectedId = this.store.select((state: IAppState) => state.scene.selected);
   }
 
   selectNode(node: INode)
   {
-    this.actions.selectItem(node.id);
+    this.store.dispatch(this.actions.selectItem(node.id));
   }
 
   selectFlow(flow: IFlow)
   {
-    this.actions.selectItem(flow.id);
+    this.store.dispatch(this.actions.selectItem(flow.id));
   }
 
   requestNewNode(): void
   {
-    this.dialogs.createNode((name: string) => this.actions.newNode(name));
+    this.dialogs.createNode((name: string) => this.store.dispatch(this.actions.newNode(name)));
   }
 
   requestNewFlow(): void
   {
-    this.dialogs.createFlow((name: string) => this.actions.newFlow(name));
+    this.dialogs.createFlow((name: string) => this.store.dispatch(this.actions.newFlow(name)));
   }
 }

@@ -1,76 +1,69 @@
-import {Action} from 'redux';
-import {IFlow} from '../store/flow.types';
-import {newId} from './idgen';
-import {IPort} from '../store/node.types';
-import {IPortModel} from '../dialogs/portDialog.component';
-import {NgRedux} from 'ng2-redux';
-import {IAppState} from '../store/store';
-import {Injectable} from '@angular/core';
+import { IFlow } from '../store/flow.types';
+import { newId } from './idgen';
+import { IPort } from '../store/node.types';
+import { IPortModel } from '../dialogs/portDialog.component';
+import { IAppState } from '../store/store';
+import { Injectable } from '@angular/core';
+import { Action } from '@ngrx/store';
+import { type, createActionTypeChecker } from './utils';
 
-export interface IFlowAction extends Action
+export type FlowAction =
+    INewFlowPortAction
+  | IRenameFlowAction
+  | IFlowUndoRedoAction
+
+export interface INewFlowPortAction extends Action
 {
-  flowId: number;
+  payload: { flowId: number, port: IPort }
 }
 
-export interface INewFlowPortAction extends IFlowAction
+export interface IRenameFlowAction extends Action
 {
-  port: IPort;
+  payload: { flowId: number, newName: string; }
 }
 
-export interface IRenameFlowAction extends IFlowAction
+export interface IFlowUndoRedoAction extends Action
 {
-  newName: string;
+  payload: { flowId: number }
 }
+
+export const flowActions = {
+  NEW_PORT: type('[Flow] New Port'),
+  RENAME: type('[Flow] Rename'),
+  UNDO: type('[Flow] Undo'),
+  REDO: type('[Flow] Redo'),
+};
+
+export const isFlowAction = createActionTypeChecker<FlowAction>(flowActions);
 
 @Injectable()
-export class FlowActions
+export class FlowActionCreators 
 {
-  static readonly NEW_FLOW_PORT = 'NEW_FLOW_PORT';
-  static readonly FLOW_UNDO = 'FLOW_UNDO';
-  static readonly FLOW_REDO = 'FLOW_REDO';
-  static readonly RENAME_FLOW = 'RENAME_FLOW';
-
-  // TODO is there a better solution for that?
-  private static all = [
-    FlowActions.NEW_FLOW_PORT,
-    FlowActions.FLOW_REDO,
-    FlowActions.FLOW_UNDO,
-    FlowActions.RENAME_FLOW,
-  ];
-
-  static isFlowAction(action: {type: string}): action is IFlowAction
-  {
-    return FlowActions.all.findIndex((t) => t === action.type) >= 0;
-  }
-
-  constructor(private ngRedux: NgRedux<IAppState>) {}
-
-  newPort(portModel: IPortModel, flowId: number): void
+  newPort(portModel: IPortModel, flowId: number): INewFlowPortAction
   {
     const port: IPort =
-            {
-              id: newId(),
-              name: portModel.name,
-              dataTypeId: portModel.dataTypeId,
-              type: portModel.portType
-            };
-
-    this.ngRedux.dispatch<INewFlowPortAction>(
       {
-        type: FlowActions.NEW_FLOW_PORT,
-        port,
-        flowId
-      });
+        id: newId(),
+        name: portModel.name,
+        dataTypeId: portModel.dataTypeId,
+        type: portModel.portType
+      };
+
+    return { type: flowActions.NEW_PORT, payload: { port, flowId } };
   }
 
-  rename = (flowId: number, newName: string) => this.ngRedux.dispatch<IRenameFlowAction>(
-    {
-      type: FlowActions.RENAME_FLOW,
-      flowId,
-      newName
-    });
+  rename(flowId: number, newName: string): IRenameFlowAction
+  {
+    return { type: flowActions.RENAME, payload: { newName, flowId } };
+  }
 
-  undo = (flowId: number) => this.ngRedux.dispatch<IFlowAction>({type: FlowActions.FLOW_UNDO, flowId});
+  undo(flowId: number): IFlowUndoRedoAction
+  {
+    return { type: flowActions.UNDO, payload: { flowId } };
+  }
 
-  redo = (flowId: number) => this.ngRedux.dispatch<IFlowAction>({type: FlowActions.FLOW_REDO, flowId});
+  redo(flowId: number): IFlowUndoRedoAction
+  {
+    return { type: flowActions.REDO, payload: { flowId } };
+  }
 }

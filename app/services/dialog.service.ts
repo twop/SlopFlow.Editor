@@ -1,21 +1,24 @@
-import {Injectable} from '@angular/core';
-import {NgbModal, NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {SceneActions} from '../actions/scene.actions';
-import {NodeActions} from '../actions/node.actions';
-import {NgRedux} from 'ng2-redux';
-import {PortDialogComponent, IPortModel} from '../dialogs/portDialog.component';
-import {IDataType} from '../store/dataType.types';
-import {NodeDialogComponent} from '../dialogs/nodeDialog.component';
-import {IAppState} from '../store/store';
-import {INode, IPort} from '../store/node.types';
-import {ModalDialog} from '../dialogs/modalDialog';
-import {ConfirmatioDialogComponent, IConfirmation} from '../dialogs/confirmatioDialog.component';
-import {UiTexts} from '../components/ui.texts';
-import {ToolbarIcons} from './toolbar';
-import { FlowActions } from '../actions/flow.actions';
+import { Injectable } from '@angular/core';
+import { NgbModal, NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { SceneActionCreators } from '../actions/scene.actions';
+import { NodeActionCreators } from '../actions/node.actions';
+import { PortDialogComponent, IPortModel } from '../dialogs/portDialog.component';
+import { IDataType } from '../store/dataType.types';
+import { NodeDialogComponent } from '../dialogs/nodeDialog.component';
+import { IAppState } from '../store/store';
+import { INode, IPort } from '../store/node.types';
+import { ModalDialog } from '../dialogs/modalDialog';
+import { ConfirmatioDialogComponent, IConfirmation } from '../dialogs/confirmatioDialog.component';
+import { UiTexts } from '../components/ui.texts';
+import { ToolbarIcons } from './toolbar';
+import { FlowActionCreators } from '../actions/flow.actions';
 import { IFlow } from '../store/flow.types';
+import { Store } from '@ngrx/store';
 
-type DialogComponent<T extends ModalDialog<TModel>, TModel> = { new(activeModal: NgbActiveModal): T };
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take'
+
+type DialogComponent<T extends ModalDialog<TModel>, TModel> = { new (activeModal: NgbActiveModal): T };
 
 interface IModalSettings<T extends ModalDialog<TResult>, TResult>
 {
@@ -29,8 +32,15 @@ export class DialogService
 {
   constructor(
     private modalService: NgbModal,
-    private ngRedux: NgRedux<IAppState>)
-  {}
+    private store: Store<IAppState>)
+  { }
+
+  private getTypes(): IDataType[]
+  {
+    let state: IAppState;
+    this.store.take(1).subscribe(s => state = s);
+    return state.scene.types;
+  }
 
   private openModal<T extends ModalDialog<TResult>, TResult>(settings: IModalSettings<T, TResult>): void
   {
@@ -69,7 +79,7 @@ export class DialogService
       {
         type: NodeDialogComponent,
         init: (d) =>
-        { 
+        {
           d.title = UiTexts.dialogTitle_RenameNode;
           d.model = 'node';
         },
@@ -84,7 +94,7 @@ export class DialogService
       {
         type: NodeDialogComponent,
         init: (d) =>
-        { 
+        {
           d.title = UiTexts.dialogTitle_RenameNode;
           d.model = nodeName;
         },
@@ -92,13 +102,13 @@ export class DialogService
       });
   }
 
-  public renameFlow(flowName:string, onSuccess: (model: string) => void): void
+  public renameFlow(flowName: string, onSuccess: (model: string) => void): void
   {
     this.openModal(
       {
         type: NodeDialogComponent,
         init: (d) =>
-        { 
+        {
           d.title = UiTexts.dialogTitle_RenameFlow;
           d.model = flowName;
         },
@@ -106,62 +116,55 @@ export class DialogService
       });
   }
 
-  public createFlow(onSuccess: (model: string)=>void): void
+  public createFlow(onSuccess: (model: string) => void): void
   {
     this.openModal(
       {
         type: NodeDialogComponent,
         init: (d) =>
-        { 
+        {
           d.title = UiTexts.dialogTitle_CreateFlow
           d.model = 'flow';
         },
         onSuccess
-        // onSuccess: (model: string) => this.sceneActions.newFlow(model)
       });
   }
 
-  public createPort(onSuccess: (portModel: IPortModel)=>void): void
+  public createPort(onSuccess: (portModel: IPortModel) => void): void
   {
-    const dataTypes: Array<IDataType> = this.ngRedux.getState().scene.types;
-
     this.openModal(
       {
         type: PortDialogComponent,
-        init: (d) => d.createPort("newPort", dataTypes),
-        //onSuccess: (portModel: IPortModel) => this.nodeActions.newPort(portModel, nodeId)
+        init: (d) => d.createPort("newPort", this.getTypes()),
         onSuccess
       });
   }
 
   public editPort(port: IPort, onSuccess: (portModel: IPortModel) => void): void
   {
-    const dataTypes: Array<IDataType> = this.ngRedux.getState().scene.types;
-
     this.openModal(
       {
         type: PortDialogComponent,
-        init: (d) => d.editPort(port, dataTypes),
+        init: (d) => d.editPort(port, this.getTypes()),
         onSuccess
       });
   }
 
-  public deletePort(portName: string, onConfirmed:()=>void): void
+  public deletePort(portName: string, onConfirmed: () => void): void
   {
     const confirmation: IConfirmation =
-            {
-              title: UiTexts.deleteDialogTitle(portName),
-              buttonIcon: ToolbarIcons.delete,
-              buttonText: UiTexts.deleteButtonText,
-              text: UiTexts.deleteDialogText,
-              buttonStyle: 'btn-danger'
-            };
+      {
+        title: UiTexts.deleteDialogTitle(portName),
+        buttonIcon: ToolbarIcons.delete,
+        buttonText: UiTexts.deleteButtonText,
+        text: UiTexts.deleteDialogText,
+        buttonStyle: 'btn-danger'
+      };
 
     this.openModal(
       {
         type: ConfirmatioDialogComponent,
         init: (d) => d.showConfirmation(confirmation),
-        //onSuccess: (result: any) => this.nodeActions.deletePort(port.id, nodeId)
         onSuccess: onConfirmed
       });
   }

@@ -1,45 +1,41 @@
 import { Injectable } from '@angular/core';
-import { NgRedux } from 'ng2-redux';
 import { IAppState } from '../store/store';
-import {INode, ElementType} from '../store/node.types';
+import { INode, ElementType } from '../store/node.types';
 import { newId } from './idgen';
-import { Action } from 'redux';
 import { IFlow } from '../store/flow.types';
+import { Action } from '@ngrx/store';
+import { type, createActionTypeChecker } from './utils';
 
-export type ISceneAction = INewNodeAction | ISelectItemAction | INewFlowAction;
+export type SceneAction = INewNodeAction | ISelectItemAction | INewFlowAction;
 
 export interface INewFlowAction extends Action
 {
-  flow: IFlow;
+  payload: IFlow;
 }
 
 export interface INewNodeAction extends Action
 {
-  node: INode;
+  payload: INode;
 }
 
 export interface ISelectItemAction extends Action
 {
-  itemId: number;
+  payload: { itemId: number }
 }
 
+export const sceneActions = {
+  NEW_NODE: type('[Node] New Node'),
+  NEW_FLOW: type('[Node] New Flow'),
+  SELECT_ITEM: type('[Node] Select Item'),
+};
+
+export const isSceneAction = createActionTypeChecker<SceneAction>(sceneActions);
+
+
 @Injectable()
-export class SceneActions
+export class SceneActionCreators
 {
-  static readonly NEW_NODE = "NEW_NODE";
-  static readonly SELECT_ITEM = "SELECT_ITEM";
-  static readonly NEW_FLOW = 'NEW_FLOW';
-
-  private static all = [SceneActions.NEW_NODE, SceneActions.SELECT_ITEM, SceneActions.NEW_FLOW];
-
-  static isSceneAction(action: { type: string }): action is ISceneAction
-  {
-    return SceneActions.all.findIndex((t) => t === action.type) >= 0;
-  }
-
-  constructor(private ngRedux: NgRedux<IAppState>) { }
-
-  newNode(name: string): void
+  newNode(name: string): INewNodeAction
   {
     const node: INode =
       {
@@ -49,31 +45,27 @@ export class SceneActions
         ports: [],
       };
 
-    this.ngRedux.dispatch<INewNodeAction>({ type: SceneActions.NEW_NODE, node});
+    return { type: sceneActions.NEW_NODE, payload: node };
   }
 
-  newFlow(name: string): void
+  newFlow(name: string): INewFlowAction
   {
     const flow: IFlow =
-            {
-              type: ElementType.Flow,
-              name,
-              id: newId(),
-              ports: [],
-              elementLinks: [],
-              elements: [],
-              portLinks: []
-            };
+      {
+        type: ElementType.Flow,
+        name,
+        id: newId(),
+        ports: [],
+        elementLinks: [],
+        elements: [],
+        portLinks: []
+      };
 
-    this.ngRedux.dispatch<INewFlowAction>({ type: SceneActions.NEW_FLOW, flow});
+    return { type: sceneActions.NEW_FLOW, payload: flow };
   }
 
-  selectItem(itemId: number): void
+  selectItem(itemId: number): ISelectItemAction
   {
-    this.ngRedux.dispatch<ISelectItemAction>(
-      {
-        type: SceneActions.SELECT_ITEM,
-        itemId
-      });
+    return { type: sceneActions.SELECT_ITEM, payload: { itemId } };
   }
 }

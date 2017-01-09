@@ -5,8 +5,11 @@ import {IPort, PortType, ElementType} from '../../app/store/node.types';
 import {assign} from '../../app/store/store';
 
 import {flowReducer} from '../../app/store/flow.reducers';
-import {INewFlowPortAction, FlowActions, IRenameFlowAction} from '../../app/actions/flow.actions';
+import { INewFlowPortAction, FlowActionCreators, IRenameFlowAction } from '../../app/actions/flow.actions';
 import {IFlow} from '../../app/store/flow.types';
+import { IPortModel } from '../../app/dialogs/portDialog.component';
+
+const actions = new FlowActionCreators();
 
 @suite
 class FlowReducerTests
@@ -15,21 +18,17 @@ class FlowReducerTests
   {
     const flow: IFlow = this.createEmptyFlow();
 
-    const port: IPort = {
-      type: PortType.Input,
-      id: 100500,
+    const portModel: IPortModel = {
+      portType: PortType.Input,
+      isEditMode: true,
       dataTypeId: 123,
       name: "awesomePort"
     };
 
-    const action: INewFlowPortAction = {
-      flowId: flow.id,
-      type: FlowActions.NEW_FLOW_PORT,
-      port
-    };
+    const action = actions.newPort(portModel, flow.id);
 
     Object.freeze(flow);
-    const expected = assign({...flow}, {ports: flow.ports.concat(action.port)});
+    const expected = assign({...flow}, {ports: flow.ports.concat(action.payload.port)});
     const actual = flowReducer(flow, action);
 
     expect(actual).to.deep.equal(expected);
@@ -40,13 +39,8 @@ class FlowReducerTests
     const flow: IFlow = this.createEmptyFlow();
     Object.freeze(flow);
 
-    const action: IRenameFlowAction = {
-      flowId: flow.id,
-      type: FlowActions.RENAME_FLOW,
-      newName: "new flow name"
-    };
-
-    const expected = assign({...flow}, {name: action.newName});
+    const action = actions.rename(flow.id, "new name")
+    const expected = assign({...flow}, {name: action.payload.newName});
     const actual = flowReducer(flow, action);
 
     expect(actual).to.deep.equal(expected);

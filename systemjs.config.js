@@ -26,10 +26,11 @@
             // other libraries
             'rxjs': 'npm:rxjs',
             '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
-            'ng2-redux': 'npm:ng2-redux/lib',
+            '@ngrx/store': 'npm:@ngrx/store/bundles/store.umd.js',
+            '@ngrx/core': 'npm:@ngrx/core/bundles/core.umd.js',
+            '@ngrx/store-devtools': 'npm:@ngrx/store-devtools/bundles/store-devtools.umd.js',
             'redux': 'npm:redux/dist/redux.min.js',
             'redux-undo': 'npm:redux-undo/dist/redux-undo.js',
-            'redux-logger': 'npm:redux-logger/dist/index.js',
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -38,10 +39,6 @@
                 defaultExtension: 'js'
             },
             rxjs: {
-                defaultExtension: 'js'
-            },
-            'ng2-redux': {
-                main: './index.js',
                 defaultExtension: 'js'
             },
         }

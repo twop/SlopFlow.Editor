@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { NgRedux } from 'ng2-redux';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
@@ -9,14 +8,15 @@ import 'rxjs/add/operator/merge'
 import { INodeLayout, LayoutService, IFlowLayout } from '../../services/layout.service';
 import { Point } from '../../geometry/point';
 import { Toolbar, ToolbarItem, ToolbarIcons } from '../../services/toolbar';
-import { NodeActions } from '../../actions/node.actions';
+import { NodeActionCreators, NodeAction } from '../../actions/node.actions';
 import { StateWithHistory } from 'redux-undo';
 import { DialogService } from '../../services/dialog.service';
 import { IAppState } from '../../store/store';
 import { INode } from '../../store/node.types';
 import { IFlow } from '../../store/flow.types';
 import { IPortModel } from '../../dialogs/portDialog.component';
-import { FlowActions } from '../../actions/flow.actions';
+import { FlowActionCreators, FlowAction } from '../../actions/flow.actions';
+import { Store, Action } from '@ngrx/store';
 
 @Component({
   selector: `workspace`,
@@ -40,9 +40,9 @@ import { FlowActions } from '../../actions/flow.actions';
 export class WorkspaceComponent implements OnInit
 {
   constructor(
-    private ngRedux: NgRedux<IAppState>,
-    private nodeActions: NodeActions,
-    private flowActions: FlowActions,
+    private store: Store<IAppState>,
+    private nodeActions: NodeActionCreators,
+    private flowActions: FlowActionCreators,
     private layoutService: LayoutService,
     private dialogs: DialogService)
   { } 
@@ -55,11 +55,11 @@ export class WorkspaceComponent implements OnInit
 
   ngOnInit(): void
   {
-    const node$: Observable<StateWithHistory<INode>> = this.ngRedux
+    const node$: Observable<StateWithHistory<INode>> = this.store
       .select((state: IAppState) => state.scene.nodes.find(nh => nh.present.id == state.scene.selected))
       .filter(nh => nh != null);
 
-    const flow$: Observable<StateWithHistory<IFlow>> = this.ngRedux
+    const flow$: Observable<StateWithHistory<IFlow>> = this.store
       .select((state: IAppState) => state.scene.flows.find(fh => fh.present.id == state.scene.selected))
       .filter(flow => flow != null);
 
@@ -70,65 +70,73 @@ export class WorkspaceComponent implements OnInit
       .map(nh => nh.present.name)
       .merge(flow$.map(fh => fh.present.name));
 
+    const dispatch = (action:Action) => this.store.dispatch(action);
+
     this.toolbar = node$
-    .map(node => this.buildNodeToolbar(node))
-    .merge(flow$.map(flow => this.buildFlowToolbar(flow)));
+    .map(node => this.buildNodeToolbar(node, dispatch, this.nodeActions))
+    .merge(flow$.map(flow => this.buildFlowToolbar(flow, dispatch, this.flowActions)));
   }
 
-  private buildNodeToolbar(node: StateWithHistory<INode>): Toolbar
+  private buildNodeToolbar(
+    node: StateWithHistory<INode>,
+    dispatch:(action: NodeAction)=> void,
+    actions: NodeActionCreators): Toolbar
   {
     const nodeId = node.present.id;
     const nodeName = node.present.name;
 
     const newPort = new ToolbarItem(
       'port',
-      () => this.dialogs.createPort((model: IPortModel) => this.nodeActions.newPort(model, nodeId)),
+      () => this.dialogs.createPort((model: IPortModel) => dispatch(actions.newPort(model, nodeId))),
       ToolbarIcons.addNew);
 
     const rename = new ToolbarItem(
       'rename',
-      () => this.dialogs.renameNode(nodeName, (newName: string) => this.nodeActions.rename(nodeId, newName)),
+      () => this.dialogs.renameNode(nodeName, (newName: string) => dispatch(actions.rename(nodeId, newName))),
       ToolbarIcons.edit);
 
     const undo = new ToolbarItem(
       'undo',
-      () => this.nodeActions.undo(nodeId),
+      () => dispatch(actions.undo(nodeId)),
       ToolbarIcons.undo,
       () => node.past.length > 0);
 
       const redo = new ToolbarItem(
       'redo',
-      () => this.nodeActions.redo(nodeId),
+      () => dispatch(actions.redo(nodeId)),
       ToolbarIcons.redo,
       () => node.future.length > 0);
 
     return new Toolbar(node.present.name, newPort, rename, undo, redo);
   }
 
-  private buildFlowToolbar(flow: StateWithHistory<IFlow>): Toolbar
+  private buildFlowToolbar(
+    flow: StateWithHistory<IFlow>,
+    dispatch:(action: FlowAction)=> void,
+    actions: FlowActionCreators): Toolbar
   {
     const flowId = flow.present.id;
     const flowName = flow.present.name;
 
     const newPort = new ToolbarItem(
       'port',
-      () => this.dialogs.createPort((model: IPortModel) => this.flowActions.newPort(model, flowId)),
+      () => this.dialogs.createPort((model: IPortModel) => dispatch(actions.newPort(model, flowId))),
       ToolbarIcons.addNew);
 
     const rename = new ToolbarItem(
       'rename',
-      () => this.dialogs.renameNode(flowName, (newName: string) => this.flowActions.rename(flowId, newName)),
+      () => this.dialogs.renameNode(flowName, (newName: string) => dispatch(actions.rename(flowId, newName))),
       ToolbarIcons.edit);
 
     const undo = new ToolbarItem(
       'undo',
-      () => this.flowActions.undo(flowId),
+      () => dispatch(actions.undo(flowId)),
       ToolbarIcons.undo,
       () => flow.past.length > 0);
 
     const redo = new ToolbarItem(
       'redo',
-      () => this.flowActions.redo(flowId),
+      () => dispatch(actions.redo(flowId)),
       ToolbarIcons.redo,
       () => flow.future.length > 0);
 

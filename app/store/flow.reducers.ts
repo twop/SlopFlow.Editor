@@ -1,19 +1,19 @@
 import { IFlow } from './flow.types';
-import { IFlowAction, FlowActions, INewFlowPortAction, IRenameFlowAction } from '../actions/flow.actions';
 import { assign } from './store';
+import { FlowAction, flowActions, INewFlowPortAction, IRenameFlowAction } from '../actions/flow.actions';
 
-export function flowReducer(state: IFlow , action: IFlowAction): IFlow
+export function flowReducer(state: IFlow , action: FlowAction): IFlow
 {
   switch (action.type)
   {
-    case FlowActions.NEW_FLOW_PORT:
+    case flowActions.NEW_PORT:
     {
-      return assign({...state}, {ports: [...state.ports, (<INewFlowPortAction>action).port]});
+      return assign({...state}, {ports: [...state.ports, (<INewFlowPortAction>action).payload.port]});
     }
 
-    case FlowActions.RENAME_FLOW:
+    case flowActions.RENAME:
     {
-      return assign({...state}, {name: (<IRenameFlowAction>action).newName});
+      return assign({...state}, {name: (<IRenameFlowAction>action).payload.newName});
     }
 
     default:

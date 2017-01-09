@@ -5,7 +5,7 @@ import { INodeLayout } from '../../services/layout.service';
 import { IPort } from '../../store/node.types';
 import { DialogService } from '../../services/dialog.service';
 import { Toolbar, ToolbarItem, ToolbarIcons } from '../../services/toolbar';
-import { NodeActions } from '../../actions/node.actions';
+import { NodeActionCreators } from '../../actions/node.actions';
 import { IPortModel } from '../../dialogs/portDialog.component';
 
 @Component({
@@ -18,7 +18,7 @@ export class NodeWorkspaceComponent
 {
   constructor(
     private toolbarService: ContextToolbarService,
-    private actions: NodeActions,
+    private actions: NodeActionCreators,
     private dialogs: DialogService
   )
   { }

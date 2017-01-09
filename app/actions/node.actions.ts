@@ -1,133 +1,108 @@
-import {Injectable} from '@angular/core';
-import {NgRedux} from 'ng2-redux';
-import {newId} from './idgen';
-import {Action} from 'redux';
-import {StateWithHistory} from 'redux-undo';
-import {IPortModel} from '../dialogs/portDialog.component';
-import {IPort, PortType} from '../store/node.types';
-import {IAppState} from '../store/store';
+import { Injectable } from '@angular/core';
+import { newId } from './idgen';
+import { StateWithHistory } from 'redux-undo';
+import { IPortModel } from '../dialogs/portDialog.component';
+import { IPort, PortType } from '../store/node.types';
+import { IAppState } from '../store/store';
+import { Action, Store } from '@ngrx/store';
+import { type, createActionTypeChecker } from './utils';
 
-export interface INodeAction extends Action
+export type NodeAction =
+  INewNodePortAction
+  | IEditPortAction
+  | IDeletePortAction
+  | INodeUndoRedoAction;
+
+export const nodeActions = {
+  NEW_PORT: type('[Node] New Port'),
+  EDIT_PORT: type('[Node] Edit Port'),
+  DELETE_PORT: type('[Node] Delete Port'),
+  RENAME: type('[Node] Rename'),
+  UNDO: type('[Node] Undo'),
+  REDO: type('[Node] Redo'),
+};
+
+export const isNodeAction = createActionTypeChecker<NodeAction>(nodeActions);
+
+export interface INewNodePortAction extends Action
 {
-  nodeId: number;
+  payload: { nodeId: number, port: IPort }
 }
 
-export interface INewNodePortAction extends INodeAction
+export interface IEditPortAction extends Action
 {
-  port: IPort;
+  payload:
+  {
+    nodeId: number,
+    portId: number,
+    name: string,
+    dataTypeId: number,
+    portType: PortType
+  }
 }
 
-export interface IEditPortAction extends INodeAction
+export interface IDeletePortAction extends Action
 {
-  portId: number;
-  name: string;
-  dataTypeId: number;
-  portType: PortType;
+  payload: { nodeId: number, portId: number }
 }
 
-export interface IDeletePortAction extends INodeAction
+export interface IRenameNodeAction extends Action
 {
-  portId: number;
+  payload: { nodeId: number, newName: string }
 }
 
-export interface IRenameNodeAction extends INodeAction
+export interface INodeUndoRedoAction extends Action
 {
-  newName: string;
+  payload: { nodeId: number }
 }
-
-export interface INodeUndoAction extends INodeAction
-{
-}
-
-export interface INodeRedoAction extends INodeAction
-{
-}
-
 
 @Injectable()
-export class NodeActions
+export class NodeActionCreators
 {
-  static readonly NEW_NODE_PORT = 'NEW_NODE_PORT';
-  static readonly EDIT_PORT = 'EDIT_PORT';
-  static readonly DELETE_PORT = 'DELETE_PORT ';
-  static readonly RENAME_NODE = 'RENAME_NODE';
-  static readonly NODE_UNDO = 'NODE_UNDO';
-  static readonly NODE_REDO = 'NODE_REDO';
-
-  // TODO is there a better solution for that?
-  private static all = [
-    NodeActions.NEW_NODE_PORT,
-    NodeActions.RENAME_NODE,
-    NodeActions.NODE_REDO,
-    NodeActions.NODE_UNDO,
-    NodeActions.EDIT_PORT,
-    NodeActions.DELETE_PORT,
-  ];
-
-  static isNodeAction(action: {type: string}): action is INodeAction
-  {
-    return NodeActions.all.findIndex((t) => t === action.type) >= 0;
-  }
-
-  constructor(private ngRedux: NgRedux<IAppState>) {}
-
-  newPort(portModel: IPortModel, nodeId: number): void
+  newPort(portModel: IPortModel, nodeId: number): INewNodePortAction
   {
     const port: IPort =
-            {
-              id: newId(),
-              name: portModel.name,
-              dataTypeId: portModel.dataTypeId,
-              type: portModel.portType
-            };
-
-    this.ngRedux.dispatch<INewNodePortAction>(
       {
-        type: NodeActions.NEW_NODE_PORT,
-        port,
-        nodeId
-      });
+        id: newId(),
+        name: portModel.name,
+        dataTypeId: portModel.dataTypeId,
+        type: portModel.portType
+      };
+
+    return { type: nodeActions.NEW_PORT, payload: { nodeId, port } };
   }
 
-  editPort(portModel: IPortModel, portId: number, nodeId: number): void
+  editPort(portModel: IPortModel, portId: number, nodeId: number): IEditPortAction
   {
-    this.ngRedux.dispatch<IEditPortAction>(
-      {
-        type: NodeActions.EDIT_PORT,
+    return {
+      type: nodeActions.NEW_PORT,
+      payload: {
         name: portModel.name,
         dataTypeId: portModel.dataTypeId,
         portType: portModel.portType,
         portId,
         nodeId
-      });
+      }
+    };
   }
 
-  deletePort(portId: number, nodeId: number): void
+  deletePort(portId: number, nodeId: number): IDeletePortAction
   {
-    this.ngRedux.dispatch<IDeletePortAction>(
-      {
-        type: NodeActions.DELETE_PORT,
-        portId,
-        nodeId
-      });
+    return { type: nodeActions.NEW_PORT, payload: { nodeId, portId } };
   }
 
-  rename = (nodeId: number, newName: string) => this.ngRedux.dispatch<IRenameNodeAction>(
-    {
-      type: NodeActions.RENAME_NODE,
-      nodeId,
-      newName
-    });
+  rename(nodeId: number, newName: string): IRenameNodeAction
+  {
+    return { type: nodeActions.RENAME, payload: { nodeId, newName } }
+  };
 
-  undo = (nodeId: number) => this.ngRedux.dispatch<INodeUndoAction>(
-    {
-      type: NodeActions.NODE_UNDO,
-      nodeId
-    });
+  undo(nodeId: number): INodeUndoRedoAction 
+  {
+    return { type: nodeActions.UNDO, payload: { nodeId } }
+  };
 
-  redo = (nodeId: number) => this.ngRedux.dispatch<INodeRedoAction>(
-    {
-      type: NodeActions.NODE_REDO,
-      nodeId
-    });
+  redo(nodeId: number): INodeUndoRedoAction
+  {
+    return { type: nodeActions.REDO, payload: { nodeId } }
+  };
 }
