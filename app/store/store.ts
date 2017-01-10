@@ -13,7 +13,7 @@ export interface IAppState
   scene: IScene
 }
 
-export const INITIAL_STATE: IAppState = { scene: sceneReducer(undefined, { type: "some type" }) };
+//export const INITIAL_STATE: IAppState = { scene: sceneReducer(undefined, { type: "some type" }) };
 
-export const rootReducer = combineReducers({ scene: sceneReducer });
+//export const rootReducer = combineReducers({ scene: sceneReducer });
 

@@ -26,8 +26,12 @@
             // other libraries
             'rxjs': 'npm:rxjs',
             '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
+
+            'ngrx-store-logger': 'npm:ngrx-store-logger/dist/index.js',
+            '@ngrx/router-store': 'npm:@ngrx/router-store/bundles/router-store.umd.js',
             '@ngrx/store': 'npm:@ngrx/store/bundles/store.umd.js',
             '@ngrx/core': 'npm:@ngrx/core/bundles/core.umd.js',
+            '@ngrx/core/compose': 'npm:@ngrx/core/bundles/core.umd.js',
             '@ngrx/store-devtools': 'npm:@ngrx/store-devtools/bundles/store-devtools.umd.js',
         },
         // packages tells the System loader how to load when no filename and/or no extension

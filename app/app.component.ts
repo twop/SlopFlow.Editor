@@ -1,5 +1,4 @@
 import { IAppState } from './store/store';
-import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
 import { AuthorizationDialogComponent, IAuthModel } from './dialogs/authorizationDialog.component';
 import {NgbModal, NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
@@ -14,9 +13,8 @@ export class AppComponent
 {
   title = 'SlopFlow editor';
 
-  constructor(private modalService: NgbModal, private store: Store<IAppState>)
+  constructor(private modalService: NgbModal)
   {
-    store.subscribe(state => console.log(state));
   }
 
   public onAuth()

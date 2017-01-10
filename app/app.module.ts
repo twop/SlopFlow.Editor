@@ -1,10 +1,14 @@
+import { RouterModule } from '@angular/router';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { storeLogger } from "ngrx-store-logger";
 import { StoreModule } from '@ngrx/store';
+import { combineReducers } from "@ngrx/store";
+import { routerReducer, RouterStoreModule } from '@ngrx/router-store';
 
 import { AppComponent } from './app.component';
 
@@ -14,7 +18,7 @@ import { Log } from './services/log'
 import { ToolbarComponent } from './components/workspace/toolbar.component';
 import { ContextToolbarService } from './services/contextToolbar.service';
 import { ContextToolbarComponent } from './components/workspace/contextToolbar.component';
-import {rootReducer, INITIAL_STATE} from './store/store';
+//import { rootReducer, INITIAL_STATE } from './store/store';
 import { SceneActionCreators } from './actions/scene.actions';
 import { AssetsComponent } from './components/assets/assets.component';
 import { WorkspaceComponent } from './components/workspace/workspace.component';
@@ -29,14 +33,20 @@ import { AuthorizationDialogComponent } from './dialogs/authorizationDialog.comp
 import { FlowWorkspaceComponent } from './components/workspace/flowWorkspace.component';
 import { FlowActionCreators } from './actions/flow.actions';
 import { DialogService } from './services/dialog.service';
+import { routes } from './routes';
+import { compose } from '@ngrx/core/compose';
+import { NotFoundPageComponent } from './components/pageNotFound.component';
+import { sceneReducer } from './store/scene.reducers';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     NgbModule.forRoot(),
-    StoreModule.provideStore(rootReducer, INITIAL_STATE),
+    StoreModule.provideStore(compose(storeLogger(), combineReducers)({scene: sceneReducer, router: routerReducer})),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    RouterModule.forRoot(routes),
+    RouterStoreModule.connectRouter()
   ],
   declarations: [
     AppComponent,
@@ -51,7 +61,8 @@ import { DialogService } from './services/dialog.service';
     PortDialogComponent,
     ConfirmatioDialogComponent,
     AuthorizationDialogComponent,
-    FlowWorkspaceComponent
+    FlowWorkspaceComponent,
+    NotFoundPageComponent
   ],
   entryComponents: [
     NodeDialogComponent,
@@ -70,4 +81,4 @@ import { DialogService } from './services/dialog.service';
     DialogService
   ],
 })
-export class AppModule {}
+export class AppModule { }
