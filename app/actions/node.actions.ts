@@ -74,7 +74,7 @@ export class NodeActionCreators
   editPort(portModel: IPortModel, portId: number, nodeId: number): IEditPortAction
   {
     return {
-      type: nodeActions.NEW_PORT,
+      type: nodeActions.EDIT_PORT,
       payload: {
         name: portModel.name,
         dataTypeId: portModel.dataTypeId,
@@ -87,7 +87,7 @@ export class NodeActionCreators
 
   deletePort(portId: number, nodeId: number): IDeletePortAction
   {
-    return { type: nodeActions.NEW_PORT, payload: { nodeId, portId } };
+    return { type: nodeActions.DELETE_PORT, payload: { nodeId, portId } };
   }
 
   rename(nodeId: number, newName: string): IRenameNodeAction

@@ -1,3 +1,5 @@
+import { StoreObservablesService } from './services/storeObservables.service';
+import { NodeContainer } from './components/workspace/node.container';
 import { RouterModule } from '@angular/router';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgModule } from '@angular/core';
@@ -37,6 +39,7 @@ import { routes } from './routes';
 import { compose } from '@ngrx/core/compose';
 import { NotFoundPageComponent } from './components/pageNotFound.component';
 import { sceneReducer } from './store/scene.reducers';
+import { FlowContainer } from './components/workspace/flow.container';
 
 @NgModule({
   imports: [
@@ -62,6 +65,8 @@ import { sceneReducer } from './store/scene.reducers';
     ConfirmatioDialogComponent,
     AuthorizationDialogComponent,
     FlowWorkspaceComponent,
+    FlowContainer,
+    NodeContainer,
     NotFoundPageComponent
   ],
   entryComponents: [
@@ -73,6 +78,7 @@ import { sceneReducer } from './store/scene.reducers';
   bootstrap: [AppComponent],
   providers: [
     ContextToolbarService,
+    StoreObservablesService,
     Log,
     SceneActionCreators,
     LayoutService,

@@ -1,3 +1,5 @@
+import { ActivatedRoute } from '@angular/router';
+import { go } from '@ngrx/router-store';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { SceneActionCreators } from '../../actions/scene.actions';
@@ -23,7 +25,8 @@ export class AssetsComponent implements OnInit
   constructor(
     private store: Store<IAppState>,
     private actions: SceneActionCreators,
-    private dialogs: DialogService)
+    private dialogs: DialogService,
+    private route: ActivatedRoute)
   { }
 
   nodes: Observable<Array<History<INode>>> = null;
@@ -40,21 +43,33 @@ export class AssetsComponent implements OnInit
 
   selectNode(node: INode)
   {
-    this.store.dispatch(this.actions.selectItem(node.id));
+    this.store.dispatch(go(["workspace/node", node.id]))
+    //this.store.dispatch(this.actions.selectItem(node.id));
   }
 
   selectFlow(flow: IFlow)
   {
-    this.store.dispatch(this.actions.selectItem(flow.id));
+    this.store.dispatch(go(["workspace/flow", flow.id]))
+    //this.store.dispatch(this.actions.selectItem(flow.id));
   }
 
   requestNewNode(): void
   {
-    this.dialogs.createNode((name: string) => this.store.dispatch(this.actions.newNode(name)));
+    this.dialogs.createNode((name: string) => 
+    {
+      const action = this.actions.newNode(name);
+      this.store.dispatch(action);
+      this.store.dispatch(go(["workspace/node", action.payload.id]))
+    });
   }
 
   requestNewFlow(): void
   {
-    this.dialogs.createFlow((name: string) => this.store.dispatch(this.actions.newFlow(name)));
+    this.dialogs.createFlow((name: string) => 
+    {
+      const action = this.actions.newFlow(name);
+      this.store.dispatch(action);
+      this.store.dispatch(go(["workspace/flow", action.payload.id]))
+    });
   }
 }

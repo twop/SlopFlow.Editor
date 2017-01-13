@@ -19,24 +19,15 @@ import { Store, Action } from '@ngrx/store';
 import { History } from '../../store/undoable';
 
 @Component({
-  selector: `workspace`,
+  // selector: `workspace`,
   styleUrls: [`app/components/workspace/workspace.css`],
   template: `
     <div class="card card-block">
-      <div class="">
-        <span class="my-panel-header">{{name | async}}</span>
-        <toolbar *ngIf="toolbar | async" [toolbar]="toolbar | async"></toolbar>
-      </div>
-      <div class="">
-        <context-toolbar></context-toolbar>
-        <svg xlink="http://www.w3.org/1999/xlink" height="500" width="600" class='img-fluid svg'>
-          <g *ngIf="nodeLayout | async" node-workspace [layout]="nodeLayout | async"/>
-          <g *ngIf="flowLayout | async" flow-workspace [layout]="flowLayout | async"/>
-        </svg>
-      </div>
+      <router-outlet></router-outlet>
     </div>`
 })
-
+//<g *ngIf="nodeLayout | async" node-workspace [layout]="nodeLayout | async"/>
+//<g *ngIf="flowLayout | async" flow-workspace [layout]="flowLayout | async"/>
 export class WorkspaceComponent implements OnInit
 {
   constructor(

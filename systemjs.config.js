@@ -30,7 +30,8 @@
             'ngrx-store-logger': 'npm:ngrx-store-logger/dist/index.js',
             '@ngrx/router-store': 'npm:@ngrx/router-store/bundles/router-store.umd.js',
             '@ngrx/store': 'npm:@ngrx/store/bundles/store.umd.js',
-            '@ngrx/core': 'npm:@ngrx/core/bundles/core.umd.js',
+            '@ngrx/core': 'npm:@ngrx/core',
+
             '@ngrx/core/compose': 'npm:@ngrx/core/bundles/core.umd.js',
             '@ngrx/store-devtools': 'npm:@ngrx/store-devtools/bundles/store-devtools.umd.js',
         },
@@ -43,6 +44,11 @@
             rxjs: {
                 defaultExtension: 'js'
             },
+            '@ngrx/core':
+            {
+                main: './bundles/core.umd.js',
+                defaultExtension: 'js'
+            }
         }
     });
 })(this);
