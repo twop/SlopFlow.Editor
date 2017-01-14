@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
 import { NgbModal, NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SceneActionCreators } from '../actions/scene.actions';
-import { NodeActionCreators } from '../actions/node.actions';
 import { PortDialogComponent, IPortModel } from '../dialogs/portDialog.component';
 import { IDataType } from '../store/dataType.types';
-import { NodeDialogComponent } from '../dialogs/nodeDialog.component';
 import { IAppState } from '../store/store';
-import { INode, IPort } from '../store/node.types';
 import { ModalDialog } from '../dialogs/modalDialog';
 import { ConfirmatioDialogComponent, IConfirmation } from '../dialogs/confirmatioDialog.component';
 import { UiTexts } from '../components/ui.texts';
 import { ToolbarIcons } from './toolbar';
 import { FlowActionCreators } from '../actions/flow.actions';
-import { IFlow } from '../store/flow.types';
+import { IFlow, IPort } from '../store/flow.types';
 import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take'
+import { NodeDialogComponent } from '../dialogs/nodeDialog.component';
 
 type DialogComponent<T extends ModalDialog<TModel>, TModel> = { new (activeModal: NgbActiveModal): T };
 
@@ -73,34 +71,7 @@ export class DialogService
       .catch(reportFailure);
   }
 
-  public createNode(onSuccess: (model: string) => void): void
-  {
-    this.openModal(
-      {
-        type: NodeDialogComponent,
-        init: (d) =>
-        {
-          d.title = UiTexts.dialogTitle_RenameNode;
-          d.model = 'node';
-        },
-        //onSuccess: (model: string) => this.sceneActions.newNode(model)
-        onSuccess
-      });
-  }
-
-  public renameNode(nodeName: string, onSuccess: (model: string) => void): void
-  {
-    this.openModal(
-      {
-        type: NodeDialogComponent,
-        init: (d) =>
-        {
-          d.title = UiTexts.dialogTitle_RenameNode;
-          d.model = nodeName;
-        },
-        onSuccess
-      });
-  }
+ 
 
   public renameFlow(flowName: string, onSuccess: (model: string) => void): void
   {

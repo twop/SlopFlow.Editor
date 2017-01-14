@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {IDataType} from '../store/dataType.types';
-import {PortType, IPort} from '../store/node.types';
 import {ModalDialog} from './modalDialog';
+import { PortType, IPort } from '../store/flow.types';
 
 export interface IPortModel
 {

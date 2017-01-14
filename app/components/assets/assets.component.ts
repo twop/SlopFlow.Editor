@@ -7,7 +7,6 @@ import { IAppState } from '../../store/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
-import { INode } from '../../store/node.types';
 import { IFlow } from '../../store/flow.types';
 import { DialogService } from '../../services/dialog.service';
 import { Store } from '@ngrx/store';
@@ -29,22 +28,14 @@ export class AssetsComponent implements OnInit
     private route: ActivatedRoute)
   { }
 
-  nodes: Observable<Array<History<INode>>> = null;
   flows: Observable<Array<History<IFlow>>> = null;
   selectedId: Observable<number> = null;
 
   ngOnInit(): void
   {
-    this.nodes = this.store.select((state: IAppState) => state.scene.nodes);
     this.flows = this.store.select((state: IAppState) => state.scene.flows);
 
     this.selectedId = this.store.select((state: IAppState) => state.scene.selected);
-  }
-
-  selectNode(node: INode)
-  {
-    this.store.dispatch(go(["workspace/node", node.id]))
-    //this.store.dispatch(this.actions.selectItem(node.id));
   }
 
   selectFlow(flow: IFlow)
@@ -52,17 +43,6 @@ export class AssetsComponent implements OnInit
     this.store.dispatch(go(["workspace/flow", flow.id]))
     //this.store.dispatch(this.actions.selectItem(flow.id));
   }
-
-  requestNewNode(): void
-  {
-    this.dialogs.createNode((name: string) => 
-    {
-      const action = this.actions.newNode(name);
-      this.store.dispatch(action);
-      this.store.dispatch(go(["workspace/node", action.payload.id]))
-    });
-  }
-
   requestNewFlow(): void
   {
     this.dialogs.createFlow((name: string) => 

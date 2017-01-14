@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {INodeViewState} from './nodeViewState';
-import {IPort, INode} from '../../store/node.types';
 import {INodeLayout} from '../../services/layout.service';
+import { IPort } from '../../store/flow.types';
 
 @Component({
   selector: 'g[node-component]',
@@ -16,7 +16,7 @@ export class NodeComponent
   }
 
   @Output() portClick = new EventEmitter<IPort>();
-  @Output() nodeClick = new EventEmitter<INode>();
+  @Output() elementClick = new EventEmitter<number>();
 
   @Input()
   public layout: INodeLayout = null;

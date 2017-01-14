@@ -1,5 +1,5 @@
+import { NodeDialogComponent } from './dialogs/nodeDialog.component';
 import { StoreObservablesService } from './services/storeObservables.service';
-import { NodeContainer } from './components/workspace/node.container';
 import { RouterModule } from '@angular/router';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgModule } from '@angular/core';
@@ -26,10 +26,7 @@ import { AssetsComponent } from './components/assets/assets.component';
 import { WorkspaceComponent } from './components/workspace/workspace.component';
 import { NodeComponent } from './components/workspace/node.component';
 import { LayoutService } from './services/layout.service';
-import { NodeWorkspaceComponent } from './components/workspace/nodeWorkspace.component';
-import { NodeActionCreators } from './actions/node.actions';
 import { PortDialogComponent } from './dialogs/portDialog.component';
-import { NodeDialogComponent } from './dialogs/nodeDialog.component';
 import { ConfirmatioDialogComponent } from './dialogs/confirmatioDialog.component';
 import { AuthorizationDialogComponent } from './dialogs/authorizationDialog.component'
 import { FlowWorkspaceComponent } from './components/workspace/flowWorkspace.component';
@@ -59,19 +56,17 @@ import { FlowContainer } from './components/workspace/flow.container';
     AssetsComponent,
     WorkspaceComponent,
     NodeComponent,
-    NodeWorkspaceComponent,
-    NodeDialogComponent,
     PortDialogComponent,
+    NodeDialogComponent,
     ConfirmatioDialogComponent,
     AuthorizationDialogComponent,
     FlowWorkspaceComponent,
     FlowContainer,
-    NodeContainer,
     NotFoundPageComponent
   ],
   entryComponents: [
-    NodeDialogComponent,
     PortDialogComponent,
+    NodeDialogComponent,
     ConfirmatioDialogComponent,
     AuthorizationDialogComponent],
 
@@ -82,7 +77,6 @@ import { FlowContainer } from './components/workspace/flow.container';
     Log,
     SceneActionCreators,
     LayoutService,
-    NodeActionCreators,
     FlowActionCreators,
     DialogService
   ],

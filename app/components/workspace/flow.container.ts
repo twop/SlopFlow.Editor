@@ -6,7 +6,6 @@ import '@ngrx/core/add/operator/select';
 
 import { Action, Store } from '@ngrx/store';
 import { IAppState } from '../../store/store';
-import { NodeActionCreators, nodeActions } from '../../actions/node.actions';
 import { FlowActionCreators, flowActions } from '../../actions/flow.actions';
 import { LayoutService, IFlowLayout } from '../../services/layout.service';
 import { DialogService } from '../../services/dialog.service';

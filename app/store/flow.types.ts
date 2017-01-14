@@ -1,9 +1,26 @@
-import {IPort, ElementType, INode} from './node.types';
 import {Point} from '../geometry/point';
 
-export type FlowObject = IFlow | INode;
+export enum ElementType
+{
+  Node,
+  Flow
+}
 
-// TODO do we need to have an id as well?
+export enum PortType
+{
+  Input,
+  Output
+}
+
+export interface IPort
+{
+  readonly id: number;
+
+  name: string;
+  type: PortType;
+  dataTypeId: number;
+}
+
 export interface IElementPort extends IPort
 {
   readonly originPortId: number;

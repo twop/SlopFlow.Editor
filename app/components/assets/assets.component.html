@@ -1,20 +1,5 @@
 <div class="card">
   <div class="card-block">
-    <span class="my-panel-header">Nodes</span>
-    <!--<a routerLink="/crisis-center" routerLinkActive="active">Crisis Center</a>-->
-    <button role="button" type="button" class="btn btn-secondary btn-sm" (click)="requestNewNode()">
-      <i class="fa fa-plus-circle" aria-hidden="true"></i>
-      Add
-    </button>
-    <ul class="nodeList">
-      <li *ngFor="let node of nodes | async" [class.selected]=" node.present.id === (selectedId | async) "
-          (click)="selectNode(node.present)">
-        <span class="type-marker node-marker">&lt;N&gt;</span><span class="vertical-middle">{{node.present.name}}</span>
-      </li>
-    </ul>
-  </div>
-
-  <div class="card-block">
     <span class="my-panel-header">Flows</span>
     <button role="button" type="button" class="btn btn-secondary btn-sm" (click)="requestNewFlow()">
       <i class="fa fa-plus-circle" aria-hidden="true"></i>

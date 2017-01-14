@@ -1,9 +1,11 @@
-import {Injectable} from '@angular/core';
+import { port } from '_debugger';
+import { link } from 'fs';
+import { from } from 'rxjs/observable/from';
+import * as path from 'path';
+import { Injectable, state } from '@angular/core';
 import {Point} from '../geometry/point';
 import {Rectangle} from '../geometry/rectangle';
-import {INode, IPort, PortType} from '../store/node.types';
-import {IElementLink, IFlow, IFlowElement} from '../store/flow.types';
-import {type} from 'os';
+import { IElementLink, IFlow, IFlowElement, IPort, PortType } from '../store/flow.types';
 
 export interface INodeLayout
 {
@@ -25,6 +27,7 @@ export interface IPortLayout
 
 export interface IFlowLayout
 {
+  readonly flowId: number
   readonly rect: Rectangle;
 
   readonly nodeLayouts: INodeLayout[];
@@ -58,7 +61,7 @@ export class LayoutService
 {
   private readonly nodeSizes = new Sizes();
 
-  public buildNodeLayout = (node: IFlowElement | INode, atPosition: Point): INodeLayout =>
+  public buildNodeLayout = (node: IFlowElement, atPosition: Point): INodeLayout =>
   {
     const maxPortsOnSide = Math.max(countType(node.ports, PortType.Input), countType(node.ports, PortType.Output));
     const nodeHeight = (maxPortsOnSide + 1) * this.nodeSizes.portsGap + maxPortsOnSide * this.nodeSizes.portSize;
@@ -97,6 +100,7 @@ export class LayoutService
     let layout: INodeLayout = this.layoutElement(flow.id, flow.name, flow.ports, rect.topLeft, rect.height, sizes);
 
     return {
+      flowId: flow.id,
       nodeLayouts,
       linkLayouts,
       rect,

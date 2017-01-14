@@ -1,10 +1,7 @@
 import { IScene } from './scene.types';
-import { NodeActionCreators, nodeActions, isNodeAction } from '../actions/node.actions';
-import { INewNodeAction, SceneActionCreators, INewFlowAction, isSceneAction, sceneActions } from '../actions/scene.actions';
+import { SceneActionCreators, INewFlowAction, isSceneAction, sceneActions } from '../actions/scene.actions';
 import { ISelectItemAction } from '../actions/scene.actions';
 
-import { INode } from './node.types';
-import { nodeReducer } from './node.reducers';
 import { assign } from './store';
 import { IDataType } from './dataType.types';
 import { IFlow } from './flow.types';
@@ -17,14 +14,6 @@ function newHistory<T>(initialState: T): History<T>
 {
   return { past: [], present: initialState, future: [] }
 }
-
-const undoableNodeReducer: ActionReducer<History<INode>> = undoable(
-  nodeReducer,
-  {
-    limit: 10,
-    redoAction: nodeActions.REDO,
-    undoAction: nodeActions.UNDO
-  });
 
 const undoableFlowReducer: ActionReducer<History<IFlow>> = undoable(
   flowReducer,
@@ -42,7 +31,6 @@ const floatType: IDataType = { id: -4, name: 'float' };
 const initialScene: IScene =
   {
     selected: -1,
-    nodes: [],
     flows: [],
     types: [intType, stringType, floatType, boolType]
   };
@@ -55,17 +43,6 @@ export function sceneReducer(
   {
     switch (action.type)
     {
-      case sceneActions.NEW_NODE:
-        {
-          const node = (<INewNodeAction>action).payload;
-          return assign(
-            { ...state },
-            {
-              nodes: [...state.nodes, newHistory(node)],
-              selected: node.id
-            });
-        }
-
       case sceneActions.NEW_FLOW:
         {
           const flow = (<INewFlowAction>action).payload;
@@ -85,19 +62,6 @@ export function sceneReducer(
       default:
         return state;
     }
-  }
-
-  if (isNodeAction(action))
-  {
-    return assign({ ...state }, {
-      nodes: state.nodes.map(history => 
-      {
-        if (history.present.id != action.payload.nodeId)
-          return history;
-
-        return undoableNodeReducer(history, action);
-      })
-    });
   }
 
   if (isFlowAction(action))

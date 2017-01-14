@@ -1,6 +1,5 @@
-import { IFlow } from '../store/flow.types';
+import { IFlow, IPort, PortType } from '../store/flow.types';
 import { newId } from './idgen';
-import { IPort } from '../store/node.types';
 import { IPortModel } from '../dialogs/portDialog.component';
 import { IAppState } from '../store/store';
 import { Injectable } from '@angular/core';
@@ -8,13 +7,31 @@ import { Action } from '@ngrx/store';
 import { type, createActionTypeChecker } from './utils';
 
 export type FlowAction =
-    INewFlowPortAction
+  INewFlowPortAction
   | IRenameFlowAction
   | IFlowUndoRedoAction
+  | IDeletePortAction
+  | IEditPortAction
 
 export interface INewFlowPortAction extends Action
 {
   payload: { flowId: number, port: IPort }
+}
+export interface IEditPortAction extends Action
+{
+  payload:
+  {
+    flowId: number,
+    portId: number,
+    name: string,
+    dataTypeId: number,
+    portType: PortType
+  }
+}
+
+export interface IDeletePortAction extends Action
+{
+  payload: { flowId: number, portId: number }
 }
 
 export interface IRenameFlowAction extends Action
@@ -30,6 +47,8 @@ export interface IFlowUndoRedoAction extends Action
 export const flowActions = {
   NEW_PORT: type('[Flow] New Port'),
   RENAME: type('[Flow] Rename'),
+  EDIT_PORT: type('[Flow] Edit Port'),
+  DELETE_PORT: type('[Flow] Delete Port'),
   UNDO: type('[Flow] Undo'),
   REDO: type('[Flow] Redo'),
 };
@@ -65,5 +84,24 @@ export class FlowActionCreators
   redo(flowId: number): IFlowUndoRedoAction
   {
     return { type: flowActions.REDO, payload: { flowId } };
+  }
+
+   editPort(portModel: IPortModel, portId: number, flowId: number): IEditPortAction
+  {
+    return {
+      type: flowActions.EDIT_PORT,
+      payload: {
+        name: portModel.name,
+        dataTypeId: portModel.dataTypeId,
+        portType: portModel.portType,
+        portId,
+        flowId
+      }
+    };
+  }
+
+  deletePort(portId: number, flowId: number): IDeletePortAction
+  {
+    return { type: flowActions.DELETE_PORT, payload: { flowId, portId } };
   }
 }
