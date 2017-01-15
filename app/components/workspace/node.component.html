@@ -1,6 +1,6 @@
 <svg:g xmlns:svg="http://www.w3.org/1999/XSL/Transform">
   <svg:text class="nodeHeader svgNonInteractive" text-anchor="middle"
-            [attr.y]="layout.rect.y - layout.nodeNameOffset"
+            [attr.y]="layout.rect.y - layout.elemNameOffset"
             [attr.x]="layout.rect.x + layout.rect.width/2">{{layout.name}}
   </svg:text>
   <svg:rect class="node" [class.svgNonInteractive]="!(viewState&&viewState.nodeIsSelectable)" ry="5"

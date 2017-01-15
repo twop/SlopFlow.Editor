@@ -1,6 +1,6 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {INodeViewState} from './nodeViewState';
-import {INodeLayout} from '../../services/layout.service';
+import { IElementLayout } from '../../services/layout.service';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { INodeViewState } from './nodeViewState';
 import { IPort } from '../../store/flow.types';
 
 @Component({
@@ -19,8 +19,8 @@ export class NodeComponent
   @Output() elementClick = new EventEmitter<number>();
 
   @Input()
-  public layout: INodeLayout = null;
+  public layout: IElementLayout = null;
 
   @Input()
-  public viewState:INodeViewState<any> = null;
+  public viewState: INodeViewState<any> = null;
 }

@@ -18,10 +18,7 @@ import { LogComponent } from './components/log/log.component'
 import { Log } from './services/log'
 
 import { ToolbarComponent } from './components/workspace/toolbar.component';
-import { ContextToolbarService } from './services/contextToolbar.service';
 import { ContextToolbarComponent } from './components/workspace/contextToolbar.component';
-//import { rootReducer, INITIAL_STATE } from './store/store';
-import { SceneActionCreators } from './actions/scene.actions';
 import { AssetsComponent } from './components/assets/assets.component';
 import { WorkspaceComponent } from './components/workspace/workspace.component';
 import { NodeComponent } from './components/workspace/node.component';
@@ -30,7 +27,6 @@ import { PortDialogComponent } from './dialogs/portDialog.component';
 import { ConfirmatioDialogComponent } from './dialogs/confirmatioDialog.component';
 import { AuthorizationDialogComponent } from './dialogs/authorizationDialog.component'
 import { FlowWorkspaceComponent } from './components/workspace/flowWorkspace.component';
-import { FlowActionCreators } from './actions/flow.actions';
 import { DialogService } from './services/dialog.service';
 import { routes } from './routes';
 import { compose } from '@ngrx/core/compose';
@@ -72,12 +68,9 @@ import { FlowContainer } from './components/workspace/flow.container';
 
   bootstrap: [AppComponent],
   providers: [
-    ContextToolbarService,
     StoreObservablesService,
     Log,
-    SceneActionCreators,
     LayoutService,
-    FlowActionCreators,
     DialogService
   ],
 })

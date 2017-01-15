@@ -1,12 +1,12 @@
 import { IScene } from './scene.types';
-import { SceneActionCreators, INewFlowAction, isSceneAction, sceneActions } from '../actions/scene.actions';
+import { sceneActionCreators, INewFlowAction, isSceneAction, sceneActions } from '../actions/scene.actions';
 import { ISelectItemAction } from '../actions/scene.actions';
 
 import { assign } from './store';
 import { IDataType } from './dataType.types';
 import { IFlow } from './flow.types';
 import { flowReducer } from './flow.reducers';
-import { FlowActionCreators, flowActions, isFlowAction } from '../actions/flow.actions';
+import { flowActionCreators, flowActions, isFlowAction } from '../actions/flow.actions';
 import { Action, ActionReducer } from '@ngrx/store';
 import { History, undoable } from './undoable';
 

@@ -4,11 +4,11 @@ import {expect} from "chai"
 import {assign} from '../../app/store/store';
 
 import { flowReducer } from '../../app/store/flow.reducers';
-import { INewFlowPortAction, FlowActionCreators, IRenameFlowAction } from '../../app/actions/flow.actions';
+import { INewFlowPortAction, flowActionCreators, IRenameFlowAction } from '../../app/actions/flow.actions';
 import { IFlow, PortType, IPort, ElementType } from '../../app/store/flow.types';
 import { IPortModel } from '../../app/dialogs/portDialog.component';
 
-const actions = new FlowActionCreators();
+const actions = flowActionCreators;
 
 @suite
 class FlowReducerTests
@@ -89,7 +89,7 @@ class FlowReducerTests
     const flow: IFlow = this.createEmptyFlow();
     Object.freeze(flow);
 
-    const action = actions.rename(flow.id, "new name")
+    const action: IRenameFlowAction = actions.rename(flow.id, "new name")
     const expected = assign({...flow}, {name: action.payload.newName});
     const actual = flowReducer(flow, action);
 

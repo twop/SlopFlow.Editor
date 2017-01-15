@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbModal, NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { SceneActionCreators } from '../actions/scene.actions';
+import { sceneActionCreators } from '../actions/scene.actions';
 import { PortDialogComponent, IPortModel } from '../dialogs/portDialog.component';
 import { IDataType } from '../store/dataType.types';
 import { IAppState } from '../store/store';
@@ -8,7 +8,7 @@ import { ModalDialog } from '../dialogs/modalDialog';
 import { ConfirmatioDialogComponent, IConfirmation } from '../dialogs/confirmatioDialog.component';
 import { UiTexts } from '../components/ui.texts';
 import { ToolbarIcons } from './toolbar';
-import { FlowActionCreators } from '../actions/flow.actions';
+import { flowActionCreators } from '../actions/flow.actions';
 import { IFlow, IPort } from '../store/flow.types';
 import { Store } from '@ngrx/store';
 

@@ -5,10 +5,10 @@ import {Toolbar, ToolbarItem} from '../../services/toolbar';
   selector: 'toolbar',
   template: `
   <div class="btn-group">
-    <button *ngFor="let item of toolbar.items" (click)="item.action()" [disabled]="!item.isEnabled()" 
+    <button *ngFor="let item of toolbar.items" (click)="item.action()" [disabled]="item.disabled" 
     [ngClass]="'btn-' + toolbarSize" class="btn btn-default">
       <span *ngIf="item.icon" [ngClass]="'fa-'+item.icon" class="fa" aria-hidden="true"></span>
-      {{item.actionName}}
+      {{item.name}}
     </button>
   </div>`
 })

@@ -11,10 +11,9 @@
         [attr.d]="linkLayout.path"/>          
   </svg:g>
 
-  <svg:g *ngFor="let nodeLayout of layout.nodeLayouts">
-    <svg:g node-component [layout]="nodeLayout" (portClick)="onPortClicked(nodeLayout.id, $event)" (nodeClick)="onElementClicked($event)"/>
+  <svg:g *ngFor="let elementLayout of layout.elementLayouts">
+    <svg:g node-component [layout]="elementLayout" (portClick)="onElementPortClicked(elementLayout.id, $event)" (nodeClick)="onElementClicked($event)"/>
   </svg:g>
-
   <svg:g *ngFor="let portLayout of layout.portLayouts">
 
      <svg:text class="svgNonInteractive"
@@ -25,6 +24,7 @@
     </svg:text>
 
     <svg:circle class="port"
+              (click)="onFlowPortClicked(portLayout.port)"
               [attr.r]="portLayout.rect.width/2"
               [attr.cx]="portLayout.rect.center.x"
               [attr.cy]="portLayout.rect.center.y">

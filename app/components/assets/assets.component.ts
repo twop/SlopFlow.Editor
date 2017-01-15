@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { go } from '@ngrx/router-store';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { SceneActionCreators } from '../../actions/scene.actions';
+import { sceneActionCreators } from '../../actions/scene.actions';
 import { IAppState } from '../../store/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
@@ -23,7 +23,6 @@ export class AssetsComponent implements OnInit
 {
   constructor(
     private store: Store<IAppState>,
-    private actions: SceneActionCreators,
     private dialogs: DialogService,
     private route: ActivatedRoute)
   { }
@@ -47,7 +46,7 @@ export class AssetsComponent implements OnInit
   {
     this.dialogs.createFlow((name: string) => 
     {
-      const action = this.actions.newFlow(name);
+      const action = sceneActionCreators.newFlow(name);
       this.store.dispatch(action);
       this.store.dispatch(go(["workspace/flow", action.payload.id]))
     });

@@ -1,27 +1,21 @@
 import { IFlow } from '../store/flow.types';
-import { FlowAction, FlowActionCreators } from '../actions/flow.actions';
+import { FlowAction, flowActionCreators } from '../actions/flow.actions';
 import { IPortModel } from '../dialogs/portDialog.component';
-import { rename } from 'fs';
 import { History } from '../store/undoable';
 import { DialogService } from './dialog.service';
-export class ToolbarItem
+
+export interface ToolbarItem
 {
-  constructor(
-    public actionName: string,
-    public action: Function,
-    public icon: string = null,
-    public isEnabled: ()=>boolean = ()=> true)
-    {}
+  readonly name: string,
+  readonly action: () => void,
+  readonly icon?: string,
+  readonly disabled?: boolean
 }
 
 export class Toolbar
 {
-  constructor(public name:string = null, ...toolbarItems: ToolbarItem[])
-  {
-    this.items.push(...toolbarItems);
-  }
-
-  public readonly items: Array<ToolbarItem> = [];
+  constructor(readonly name: string, readonly items: ToolbarItem[])
+  {}
 }
 
 export class ToolbarIcons
@@ -34,35 +28,41 @@ export class ToolbarIcons
 }
 
 export function buildFlowToolbar(
-    flow: History<IFlow>,
-    dialogs: DialogService,
-    dispatch:(action: FlowAction)=> void,
-    actions: FlowActionCreators): Toolbar
-  {
-    const flowId = flow.present.id;
-    const flowName = flow.present.name;
+  flow: History<IFlow>,
+  dialogs: DialogService,
+  dispatch: (action: FlowAction) => void): Toolbar
+{
 
-    const newPort = new ToolbarItem(
-      'port',
-      () => dialogs.createPort((model: IPortModel) => dispatch(actions.newPort(model, flowId))),
-      ToolbarIcons.addNew);
+  const actions = flowActionCreators;
 
-    const rename = new ToolbarItem(
-      'rename',
-      () => dialogs.renameFlow(flowName, (newName: string) => dispatch(actions.rename(flowId, newName))),
-      ToolbarIcons.edit);
+  const flowId = flow.present.id;
+  const flowName = flow.present.name;
 
-    const undo = new ToolbarItem(
-      'undo',
-      () => dispatch(actions.undo(flowId)),
-      ToolbarIcons.undo,
-      () => flow.past.length > 0);
-
-    const redo = new ToolbarItem(
-      'redo',
-      () => dispatch(actions.redo(flowId)),
-      ToolbarIcons.redo,
-      () => flow.future.length > 0);
-
-    return new Toolbar(flowName, newPort, rename, undo, redo);
+  const newPort: ToolbarItem = {
+    name: 'port',
+    action: () => dialogs.createPort((model: IPortModel) => dispatch(actions.newPort(model, flowId))),
+    icon: ToolbarIcons.addNew
   }
+
+  const rename: ToolbarItem = {
+    name: 'rename',
+    action: () => dialogs.renameFlow(flowName, (newName: string) => dispatch(actions.rename(flowId, newName))),
+    icon: ToolbarIcons.edit
+  };
+
+  const undo: ToolbarItem = {
+    name: 'undo',
+    action: () => dispatch(actions.undo(flowId)),
+    icon: ToolbarIcons.undo,
+    disabled: flow.past.length === 0
+  };
+
+  const redo: ToolbarItem = {
+    name: 'redo',
+    action: () => dispatch(actions.redo(flowId)),
+    icon: ToolbarIcons.redo,
+    disabled: flow.future.length === 0
+  };
+
+  return new Toolbar(flowName, [newPort, rename, undo, redo]);
+}

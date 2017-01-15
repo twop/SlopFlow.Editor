@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { IAppState } from '../store/store';
 import { newId } from './idgen';
 import { IFlow, ElementType } from '../store/flow.types';
@@ -25,8 +24,7 @@ export const sceneActions = {
 export const isSceneAction = createActionTypeChecker<SceneAction>(sceneActions);
 
 
-@Injectable()
-export class SceneActionCreators
+export const sceneActionCreators =
 {
   newFlow(name: string): INewFlowAction
   {
@@ -42,7 +40,7 @@ export class SceneActionCreators
       };
 
     return { type: sceneActions.NEW_FLOW, payload: flow };
-  }
+  },
 
   selectItem(itemId: number): ISelectItemAction
   {
