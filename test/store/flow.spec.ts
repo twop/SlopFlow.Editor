@@ -1,12 +1,19 @@
-import {suite, test} from "mocha-typescript";
-import {expect} from "chai"
+import { suite, test } from "mocha-typescript";
+import { expect, assert } from "chai"
 
-import {assign} from '../../app/store/store';
+import { assign } from '../../app/store/store';
 
 import { flowReducer } from '../../app/store/flow.reducers';
-import { INewFlowPortAction, flowActionCreators, IRenameFlowAction } from '../../app/actions/flow.actions';
-import { IFlow, PortType, IPort, ElementType } from '../../app/store/flow.types';
+import {
+  flowActionCreators,
+  INewElementAction,
+  INewFlowPortAction,
+  IRenameFlowAction
+} from '../../app/actions/flow.actions';
+import { IFlow, PortType, IPort, ElementType, IFlowElement } from '../../app/store/flow.types';
 import { IPortModel } from '../../app/dialogs/portDialog.component';
+import { createFlow } from '../utils';
+import { Point } from '../../app/geometry/point';
 
 const actions = flowActionCreators;
 
@@ -15,7 +22,7 @@ class FlowReducerTests
 {
   @test command_INewFlowPortAction()
   {
-    const flow: IFlow = this.createEmptyFlow();
+    const flow: IFlow = createFlow();
 
     const portModel: IPortModel = {
       portType: PortType.Input,
@@ -27,7 +34,7 @@ class FlowReducerTests
     const action = actions.newPort(portModel, flow.id);
 
     Object.freeze(flow);
-    const expected = assign({...flow}, {ports: flow.ports.concat(action.payload.port)});
+    const expected = assign({ ...flow }, { ports: flow.ports.concat(action.payload.port) });
     const actual = flowReducer(flow, action);
 
     expect(actual).to.deep.equal(expected);
@@ -42,7 +49,7 @@ class FlowReducerTests
       name: "awesomePort"
     };
 
-    const flow: IFlow = this.createEmptyFlow();
+    const flow: IFlow = createFlow();
     flow.ports.push(port);
 
     Object.freeze(flow);
@@ -75,7 +82,7 @@ class FlowReducerTests
       name: "awesomePort"
     };
 
-    const flow: IFlow = this.createEmptyFlow();
+    const flow: IFlow = createFlow();
     flow.ports.push(port);
     Object.freeze(flow);
 
@@ -86,26 +93,31 @@ class FlowReducerTests
 
   @test command_IRenameFlowAction()
   {
-    const flow: IFlow = this.createEmptyFlow();
+    const flow: IFlow = createFlow();
     Object.freeze(flow);
 
     const action: IRenameFlowAction = actions.rename(flow.id, "new name")
-    const expected = assign({...flow}, {name: action.payload.newName});
+    const expected = assign({ ...flow }, { name: action.payload.newName });
     const actual = flowReducer(flow, action);
 
     expect(actual).to.deep.equal(expected);
   }
 
-  private createEmptyFlow(): IFlow
+  @test command_INewElementAction()
   {
-    return {
-      type: ElementType.Flow,
-      id: 1,
-      name: 'name',
-      ports: [],
-      elementLinks: [],
-      elements: [],
-      portLinks: []
-    };
+    const flowId = 333;
+    const flow: IFlow = createFlow({ id: flowId });
+    Object.freeze(flow);
+
+    const originId = 100500;
+    const origin: IFlow = createFlow({ id: originId });
+    Object.freeze(origin);
+
+    const action: INewElementAction = actions.addElement(flow.id, "new elem", origin, new Point(0,9))
+    const element: IFlowElement = action.payload.element;
+    const expected = assign({ ...flow }, { elements: [element] });
+    const actual = flowReducer(flow, action);
+
+    assert.deepEqual(actual, expected);
   }
 }

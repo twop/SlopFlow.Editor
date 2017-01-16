@@ -6,7 +6,6 @@ import { IAppState } from '../store/store';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/filter'
 import 'rxjs/add/operator/merge'
 import { IFlow } from '../store/flow.types';
 import { Store } from '@ngrx/store';

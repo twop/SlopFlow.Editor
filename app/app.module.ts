@@ -1,3 +1,4 @@
+import { HttpModule } from '@angular/http';
 import { NodeDialogComponent } from './dialogs/nodeDialog.component';
 import { StoreObservablesService } from './services/storeObservables.service';
 import { RouterModule } from '@angular/router';
@@ -34,15 +35,20 @@ import { NotFoundPageComponent } from './components/pageNotFound.component';
 import { sceneReducer } from './store/scene.reducers';
 import { FlowContainer } from './components/workspace/flow.container';
 
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { ElementPickerComponent } from './components/workspace/elementPicker';
+
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
     NgbModule.forRoot(),
     StoreModule.provideStore(compose(storeLogger(), combineReducers)({scene: sceneReducer, router: routerReducer})),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     RouterModule.forRoot(routes),
-    RouterStoreModule.connectRouter()
+    RouterStoreModule.connectRouter(),
+    Ng2AutoCompleteModule,
   ],
   declarations: [
     AppComponent,
@@ -58,7 +64,8 @@ import { FlowContainer } from './components/workspace/flow.container';
     AuthorizationDialogComponent,
     FlowWorkspaceComponent,
     FlowContainer,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    ElementPickerComponent
   ],
   entryComponents: [
     PortDialogComponent,

@@ -1,6 +1,8 @@
-import { IFlow, IPort } from './flow.types';
+import { IFlow, IPort, IFlowElement } from './flow.types';
 import { assign } from './store';
-import {
+import { INewElementAction } from '../actions/flow.actions';
+import
+{
   FlowAction,
   flowActions,
   IDeletePortAction,
@@ -28,24 +30,30 @@ function editPort(state: IFlow, action: IEditPortAction): IFlow
   return assign({ ...state }, { ports: state.ports.map(updatePort) });
 }
 
-export function flowReducer(state: IFlow , action: FlowAction): IFlow
+export function flowReducer(state: IFlow, action: FlowAction): IFlow
 {
   switch (action.type)
   {
     case flowActions.NEW_PORT:
-    {
-      return assign({...state}, {ports: [...state.ports, (<INewFlowPortAction>action).payload.port]});
-    }
+      {
+        return assign({ ...state }, { ports: [...state.ports, (<INewFlowPortAction>action).payload.port] });
+      }
 
     case flowActions.EDIT_PORT:
       {
         return editPort(state, <IEditPortAction>action);
       }
 
+    case flowActions.ADD_ELEMENT:
+      {
+        const element:IFlowElement = (<INewElementAction>action).payload.element;
+        return assign({...state}, {elements: state.elements.concat(element)});
+      }
+
     case flowActions.RENAME:
-    {
-      return assign({...state}, {name: (<IRenameFlowAction>action).payload.newName});
-    }
+      {
+        return assign({ ...state }, { name: (<IRenameFlowAction>action).payload.newName });
+      }
 
     case flowActions.DELETE_PORT:
       {
