@@ -15,6 +15,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take'
 import { NodeDialogComponent } from '../dialogs/nodeDialog.component';
+import { CreateElementDialog, IElementModel } from '../dialogs/createElement.dialog';
 
 type DialogComponent<T extends ModalDialog<TModel>, TModel> = { new (activeModal: NgbActiveModal): T };
 
@@ -39,6 +40,20 @@ export class DialogService
     this.store.take(1).subscribe(s => state = s);
     return state.scene.types;
   }
+
+  private getFlows(exceptFlowId: number): IFlow[]
+  {
+    let state: IAppState;
+    this.store.take(1).subscribe(s => state = s);
+
+    const flows: IFlow[] = state.scene.flows
+      .filter((fh, index) => fh.present.id !== exceptFlowId)
+      .map(fh => fh.present);
+
+    return flows;
+  }
+
+
 
   private openModal<T extends ModalDialog<TResult>, TResult>(settings: IModalSettings<T, TResult>): void
   {
@@ -71,7 +86,7 @@ export class DialogService
       .catch(reportFailure);
   }
 
- 
+
 
   public renameFlow(flowName: string, onSuccess: (model: string) => void): void
   {
@@ -107,6 +122,19 @@ export class DialogService
       {
         type: PortDialogComponent,
         init: (d) => d.createPort("newPort", this.getTypes()),
+        onSuccess
+      });
+  }
+
+  public createElement(flowId: number, onSuccess: (portModel: IElementModel) => void)
+  {
+    this.openModal(
+      {
+        type: CreateElementDialog,
+        init: (d) => 
+        {
+          d.items = this.getFlows(flowId);
+        },
         onSuccess
       });
   }

@@ -36,7 +36,7 @@ import { sceneReducer } from './store/scene.reducers';
 import { FlowContainer } from './components/workspace/flow.container';
 
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
-import { ElementPickerComponent } from './components/workspace/elementPicker';
+import { CreateElementDialog } from './dialogs/createElement.dialog';
 
 @NgModule({
   imports: [
@@ -65,12 +65,13 @@ import { ElementPickerComponent } from './components/workspace/elementPicker';
     FlowWorkspaceComponent,
     FlowContainer,
     NotFoundPageComponent,
-    ElementPickerComponent
+    CreateElementDialog
   ],
   entryComponents: [
     PortDialogComponent,
     NodeDialogComponent,
     ConfirmatioDialogComponent,
+    CreateElementDialog,
     AuthorizationDialogComponent],
 
   bootstrap: [AppComponent],

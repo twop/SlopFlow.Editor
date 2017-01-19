@@ -3,6 +3,8 @@ import { FlowAction, flowActionCreators } from '../actions/flow.actions';
 import { IPortModel } from '../dialogs/portDialog.component';
 import { History } from '../store/undoable';
 import { DialogService } from './dialog.service';
+import { IElementModel } from '../dialogs/createElement.dialog';
+import { Point } from '../geometry/point';
 
 export interface ToolbarItem
 {
@@ -15,7 +17,7 @@ export interface ToolbarItem
 export class Toolbar
 {
   constructor(readonly name: string, readonly items: ToolbarItem[])
-  {}
+  { }
 }
 
 export class ToolbarIcons
@@ -40,7 +42,16 @@ export function buildFlowToolbar(
 
   const newPort: ToolbarItem = {
     name: 'port',
-    action: () => dialogs.createPort((model: IPortModel) => dispatch(actions.newPort(model, flowId))),
+    action: () => dialogs.createPort((model: IPortModel) => dispatch(actions.addPort(model, flowId))),
+    icon: ToolbarIcons.addNew
+  }
+
+  const startingPoint = new Point(100, 100);
+  const newElem: ToolbarItem = {
+    name: 'element',
+    action: () => dialogs.createElement(flowId, (model: IElementModel) =>
+      dispatch(actions.addElement(flowId, model.name, model.origin, startingPoint)))
+    ,
     icon: ToolbarIcons.addNew
   }
 
@@ -64,5 +75,6 @@ export function buildFlowToolbar(
     disabled: flow.future.length === 0
   };
 
-  return new Toolbar(flowName, [newPort, rename, undo, redo]);
+
+  return new Toolbar(flowName, [newPort, newElem, rename, undo, redo]);
 }

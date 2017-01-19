@@ -70,7 +70,7 @@ export const flowActionCreators =
       return { type: flowActions.RENAME, payload: { newName, flowId } };
     },
 
-    newPort(portModel: IPortModel, flowId: number): INewFlowPortAction
+    addPort(portModel: IPortModel, flowId: number): INewFlowPortAction
     {
       const port: IPort =
         {

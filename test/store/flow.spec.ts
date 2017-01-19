@@ -31,7 +31,7 @@ class FlowReducerTests
       name: "awesomePort"
     };
 
-    const action = actions.newPort(portModel, flow.id);
+    const action = actions.addPort(portModel, flow.id);
 
     Object.freeze(flow);
     const expected = assign({ ...flow }, { ports: flow.ports.concat(action.payload.port) });
