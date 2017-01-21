@@ -1,6 +1,6 @@
 import { IFlow, IPort, IFlowElement } from './flow.types';
 import { assign } from './store';
-import { INewElementAction } from '../actions/flow.actions';
+import { IDragElemAction, INewElementAction } from '../actions/flow.actions';
 import
 {
   FlowAction,
@@ -46,8 +46,8 @@ export function flowReducer(state: IFlow, action: FlowAction): IFlow
 
     case flowActions.ADD_ELEMENT:
       {
-        const element:IFlowElement = (<INewElementAction>action).payload.element;
-        return assign({...state}, {elements: state.elements.concat(element)});
+        const element: IFlowElement = (<INewElementAction>action).payload.element;
+        return assign({ ...state }, { elements: state.elements.concat(element) });
       }
 
     case flowActions.RENAME:
@@ -58,6 +58,20 @@ export function flowReducer(state: IFlow, action: FlowAction): IFlow
     case flowActions.DELETE_PORT:
       {
         return assign({ ...state }, { ports: state.ports.filter(p => p.id != (<IDeletePortAction>action).payload.portId) });
+      }
+
+    case flowActions.DRAG_ELEMENT:
+      {
+        const {elemId, newPosition} = (<IDragElemAction>action).payload;
+        return assign({ ...state }, {
+          elements: state.elements.map(e => 
+          {
+            if (e.id != elemId)
+              return e;
+
+            return {...e, position: newPosition};
+          }) 
+        });
       }
 
     default:

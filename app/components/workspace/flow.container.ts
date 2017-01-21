@@ -18,8 +18,6 @@ import { ActivatedRoute } from '@angular/router';
 import { IFlow } from '../../store/flow.types';
 import { Point } from '../../geometry/point';
 
-
-
 @Component({
   styleUrls: [`app/components/workspace/workspace.css`],
   template: `
@@ -27,7 +25,7 @@ import { Point } from '../../geometry/point';
     <toolbar *ngIf="toolbar$ | async" [toolbar]="toolbar$ | async"></toolbar>
     <context-toolbar [toolbar]="contextToolbar$ | async"></context-toolbar>    
     <svg xlink="http://www.w3.org/1999/xlink" height="500" width="600" class='img-fluid svg'>
-      <g *ngIf="layout$ | async" flow-workspace [contextToolbar]="contextToolbar$" [layout]="layout$ | async"/>
+      <g *ngIf="layout$ | async" flow-canvas [contextToolbar]="contextToolbar$" [layout]="layout$ | async"/>
     </svg>
   `
 })

@@ -51,6 +51,18 @@ const sizes = {
   portsGap: 20,
 };
 
+export function moveLayout(layout: IElementLayout, newPosition:Point)
+{
+  const delta:Point = newPosition.copy().subtract(layout.rect.topLeft);
+
+  layout.rect.moveBy(delta);
+
+  for (const port of layout.portLayouts)
+  {
+    port.rect.moveBy(delta);
+  }
+}
+
 @Injectable()
 export class LayoutService
 {
@@ -58,10 +70,6 @@ export class LayoutService
   {
     const elementLayouts: IElementLayout[] = flow.elements.map(elem => layoutElement(elem, elem.position));
     const linkLayouts: ILinkLayout[] = flow.elementLinks.map(link => layoutLink(link, elementLayouts));
-
-    // const rect = elementLayouts.length ? elementLayouts[0].rect.clone() : new Rectangle(0, 0, 0, 0);
-    // elementLayouts.forEach(nl => rect.unionInPlace(nl.rect));
-    // rect.inflate(20, 20);
 
     const rect = new Rectangle( 40, 40, sizes.elemWidth, getElemHeight(flow.ports));
 

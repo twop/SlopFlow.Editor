@@ -28,10 +28,10 @@ export class Rectangle
     this.height += dy + dy;
   }
 
-  public moveBy(deltaX: number, deltaY: number):void
+  public moveBy(delta:Point):void
   {
-     this.x += deltaX;
-     this.y += deltaY;
+     this.x += delta.x;
+     this.y += delta.y;
   }
 
   public union(rectangle: Rectangle):Rectangle

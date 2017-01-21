@@ -1,3 +1,4 @@
+import { DraggableDirective } from './directives/draggable';
 import { HttpModule } from '@angular/http';
 import { NodeDialogComponent } from './dialogs/nodeDialog.component';
 import { StoreObservablesService } from './services/storeObservables.service';
@@ -27,7 +28,7 @@ import { LayoutService } from './services/layout.service';
 import { PortDialogComponent } from './dialogs/portDialog.component';
 import { ConfirmatioDialogComponent } from './dialogs/confirmatioDialog.component';
 import { AuthorizationDialogComponent } from './dialogs/authorizationDialog.component'
-import { FlowWorkspaceComponent } from './components/workspace/flowWorkspace.component';
+import { FlowCanvasComponent } from './components/workspace/flowCanvas';
 import { DialogService } from './services/dialog.service';
 import { routes } from './routes';
 import { compose } from '@ngrx/core/compose';
@@ -62,10 +63,11 @@ import { CreateElementDialog } from './dialogs/createElement.dialog';
     NodeDialogComponent,
     ConfirmatioDialogComponent,
     AuthorizationDialogComponent,
-    FlowWorkspaceComponent,
+    FlowCanvasComponent,
     FlowContainer,
     NotFoundPageComponent,
-    CreateElementDialog
+    CreateElementDialog,
+    DraggableDirective
   ],
   entryComponents: [
     PortDialogComponent,
