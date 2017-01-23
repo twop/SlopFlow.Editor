@@ -7,7 +7,7 @@
 
     "tasks": [
         {
-        "taskName": "Build Type Script",
+        "taskName": "Build",
         "suppressTaskName": true,
         "isBuildCommand": true,
         "args": ["tsc -p ."]
@@ -17,6 +17,12 @@
         "suppressTaskName": true,
         "isBuildCommand": true,
         "args": ["npm start"]
+        },
+        {
+        "taskName": "Test:w",
+        "suppressTaskName": true,
+        "isBuildCommand": true,
+        "args": ["npm run test:w"]
         }
     ]
 }

@@ -12,7 +12,7 @@ export type FlowAction =
   | IFlowUndoRedoAction
   | IDeletePortAction
   | IEditPortAction
-  | IDragElemAction
+  | IMoveElemAction
 
 export const flowActions =
   {
@@ -23,7 +23,7 @@ export const flowActions =
     UNDO: type('[Flow] Undo'),
     REDO: type('[Flow] Redo'),
     ADD_ELEMENT: type('[Flow] Add Element'),
-    DRAG_ELEMENT: type('[Flow] Drag Element'),
+    MOVE_ELEMENT: type('[Flow] Move Element'),
   };
 
 export const isFlowAction = createActionTypeChecker<FlowAction>(flowActions);
@@ -65,7 +65,7 @@ export interface IFlowUndoRedoAction extends Action
   payload: { flowId: number }
 }
 
-export interface IDragElemAction extends Action
+export interface IMoveElemAction extends Action
 {
   payload: { flowId: number, elemId: number, newPosition: Point }
 }
@@ -129,9 +129,9 @@ export const flowActionCreators =
       return { type: flowActions.ADD_ELEMENT, payload: { flowId, element } };
     },
 
-    dragElement(flowId: number, elemId: number, newPosition: Point): IDragElemAction
+    moveElement(flowId: number, elemId: number, newPosition: Point): IMoveElemAction
     {
-      return { type: flowActions.DRAG_ELEMENT, payload: { flowId, elemId, newPosition } }
+      return { type: flowActions.MOVE_ELEMENT, payload: { flowId, elemId, newPosition } }
     },
 
     undo(flowId: number): IFlowUndoRedoAction

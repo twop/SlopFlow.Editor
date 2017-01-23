@@ -14,11 +14,12 @@ import { Point } from '../../geometry/point';
 @Component({
   selector: 'g[flow-canvas]',
   styleUrls: ['app/components/workspace/workspace.css'],
-  template: 
+  template:
   `
   <svg:g xmlns:svg="http://www.w3.org/1999/XSL/Transform">
 
   <svg:rect class="flowRect" ry="5"
+            draggable="true"
             [attr.width]="layout.rect.width"
             [attr.height]="layout.rect.height"
             [attr.x]="layout.rect.x"
@@ -35,6 +36,9 @@ import { Point } from '../../geometry/point';
         [layout]="elementLayout" 
         [viewState]="viewState"
         (elementDrag)="onDrag($event, elementLayout)"
+        (elementStartDrag)="onStartDrag($event, elementLayout)"
+        (elementDrop)="onElementDropped(elementLayout)"
+
         (portClick)="onElementPortClicked(elementLayout.id, $event)" 
         (nodeClick)="onElementClicked($event)"/>
   </svg:g>
@@ -66,18 +70,24 @@ export class FlowCanvasComponent
   )
   { }
 
-  viewState: INodeViewState<IFlow> = {nodeIsSelectable:true, selectedObject : null};
+  viewState: INodeViewState<IFlow> = { nodeIsSelectable: true, selectedObject: null };
 
   @Input() layout: IFlowLayout = null;
   @Input() contextToolbar: EventEmitter<Toolbar> = null;
 
-  onDrag(point:Point, layout: IElementLayout)
+  onDrag(point: Point, layout: IElementLayout)
   {
-    //this.store.dispatch(actions.dragElement(this.layout.flowId, layout.id, point));
-    //console.log(`dragging ${layout.name} `, point );
     moveLayout(layout, point);
-    //layout.rect.x = point.x;
-    //layout.rect.y = point.y;
+  }
+
+  onStartDrag(point: Point, layout: IElementLayout)
+  {
+    console.log("start dragging elem ", layout, point);
+  }
+
+  onElementDropped(layout: IElementLayout)
+  { 
+    this.store.dispatch(actions.moveElement(this.layout.flowId, layout.id, layout.rect.topLeft));
   }
 
   public onElementPortClicked(elementId: number, port: IPort)
@@ -99,8 +109,8 @@ export class FlowCanvasComponent
     this.log.debug(`clicked on element: Id{${elementId}}`);
     //this.eventService.requestEditNode.emit( this.nodeWorkspace);
   }
- 
-  public buildPortToolbar(port: IPort, flowId:number): Toolbar
+
+  public buildPortToolbar(port: IPort, flowId: number): Toolbar
   {
     const dispatch = (action: FlowAction) => this.store.dispatch(action);
 

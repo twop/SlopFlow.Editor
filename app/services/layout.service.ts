@@ -95,7 +95,7 @@ function layoutElement({id, name, ports}: IFlowElement, offset: Point): IElement
 {
   const {elemNameOffset, portNameOffset, elemWidth, portSize} = sizes;
 
-  const rect = new Rectangle(offset.x, offset.y + elemNameOffset, elemWidth, getElemHeight(ports));
+  const rect = new Rectangle(offset.x, offset.y, elemWidth, getElemHeight(ports));
 
   return {
     id,

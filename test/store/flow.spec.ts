@@ -4,8 +4,10 @@ import { expect, assert } from "chai"
 import { assign } from '../../app/store/store';
 
 import { flowReducer } from '../../app/store/flow.reducers';
-import {
+import
+{
   flowActionCreators,
+  IMoveElemAction,
   INewElementAction,
   INewFlowPortAction,
   IRenameFlowAction
@@ -113,9 +115,33 @@ class FlowReducerTests
     const origin: IFlow = createFlow({ id: originId });
     Object.freeze(origin);
 
-    const action: INewElementAction = actions.addElement(flow.id, "new elem", origin, new Point(0,9))
+    const action: INewElementAction = actions.addElement(flow.id, "new elem", origin, new Point(0, 9))
     const element: IFlowElement = action.payload.element;
     const expected = assign({ ...flow }, { elements: [element] });
+    const actual = flowReducer(flow, action);
+
+    assert.deepEqual(actual, expected);
+  }
+
+  @test command_IMoveElemAction()
+  {
+    const element: IFlowElement = {
+      id: 111,
+      name: "elem",
+      originId: 444,
+      ports: [],
+      position: new Point(1, 2, ),
+      type: ElementType.Flow
+    }
+    Object.freeze(element);
+
+    const flowId = 333;
+    const flow: IFlow = createFlow({ id: flowId, elements: [element] });
+    Object.freeze(flow);
+
+    const newPosition = new Point(3, 4);
+    const action: IMoveElemAction = actions.moveElement(flow.id, element.id, newPosition);
+    const expected = assign({ ...flow }, { elements: [{...element, position: newPosition}] });
     const actual = flowReducer(flow, action);
 
     assert.deepEqual(actual, expected);

@@ -7,7 +7,7 @@
     "tsc:w": "tsc -w",
     "prestart": "tsc",
     "start": "concurrently \"tsc -w\" \"node server\" \"start http://localhost:3000\"",
-    "test-watch": "mocha-typescript-watch  -p tsconfig.json"
+    "test:w": "mocha-typescript-watch  -p tsconfig.json"
   },
   "dependencies": {
     "@angular/common": "2.3.1",

@@ -15,8 +15,11 @@ import { Point } from '../../geometry/point';
     </svg:text>
     <svg:rect 
               my-draggable 
-              (mousedrag)="elementDrag.emit($event)"
-              [start]="getTopLeft"
+              (drag)="elementDrag.emit($event)"
+              (start)="elementStartDrag.emit($event)"
+              (drop)="elementDrop.emit()"
+              [startPoint]="getTopLeft"
+
               class="node" [class.svgNonInteractive]="!(viewState&&viewState.nodeIsSelectable)" ry="5"
               (click)="elementClick.emit(layout.flowId)"
               [attr.width]="layout.rect.width"
@@ -54,7 +57,10 @@ export class NodeComponent
 
   @Output() portClick = new EventEmitter<IPort>();
   @Output() elementClick = new EventEmitter<number>();
+
   @Output() elementDrag = new EventEmitter<Point>();
+  @Output() elementDrop = new EventEmitter();
+  @Output() elementStartDrag = new EventEmitter<Point>();
 
   @Input()
   public layout: IElementLayout = null;

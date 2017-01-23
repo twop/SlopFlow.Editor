@@ -1,6 +1,6 @@
 import { IFlow, IPort, IFlowElement } from './flow.types';
 import { assign } from './store';
-import { IDragElemAction, INewElementAction } from '../actions/flow.actions';
+import { IMoveElemAction, INewElementAction } from '../actions/flow.actions';
 import
 {
   FlowAction,
@@ -60,9 +60,9 @@ export function flowReducer(state: IFlow, action: FlowAction): IFlow
         return assign({ ...state }, { ports: state.ports.filter(p => p.id != (<IDeletePortAction>action).payload.portId) });
       }
 
-    case flowActions.DRAG_ELEMENT:
+    case flowActions.MOVE_ELEMENT:
       {
-        const {elemId, newPosition} = (<IDragElemAction>action).payload;
+        const {elemId, newPosition} = (<IMoveElemAction>action).payload;
         return assign({ ...state }, {
           elements: state.elements.map(e => 
           {
