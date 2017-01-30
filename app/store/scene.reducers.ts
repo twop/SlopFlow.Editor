@@ -1,27 +1,15 @@
+import { createHandlers, createReducer, flattenNode, HandlerNode, Handlers, StatePipe } from './structuredReducer';
 import { IScene } from './scene.types';
-import { sceneActionCreators, INewFlowAction, isSceneAction, sceneActions } from '../actions/scene.actions';
+import { sceneActionCreators, INewFlowAction, sceneActions } from '../actions/scene.actions';
 import { ISelectItemAction } from '../actions/scene.actions';
 
 import { assign } from './store';
 import { IDataType } from './dataType.types';
 import { IFlow } from './flow.types';
-import { flowReducer } from './flow.reducers';
-import { flowActionCreators, flowActions, isFlowAction } from '../actions/flow.actions';
+import { flowHandlers } from './flow.reducers';
+import { FlowAction, flowActionCreators, flowActions } from '../actions/flow.actions';
 import { Action, ActionReducer } from '@ngrx/store';
 import { History, undoable } from './undoable';
-
-function newHistory<T>(initialState: T): History<T>
-{
-  return { past: [], present: initialState, future: [] }
-}
-
-const undoableFlowReducer: ActionReducer<History<IFlow>> = undoable(
-  flowReducer,
-  {
-    limit: 10,
-    redoAction: flowActions.REDO,
-    undoAction: flowActions.UNDO
-  });
 
 const intType: IDataType = { id: -1, name: 'int' };
 const stringType: IDataType = { id: -2, name: 'string' };
@@ -35,47 +23,59 @@ const initialScene: IScene =
     types: [intType, stringType, floatType, boolType]
   };
 
-export function sceneReducer(
-  state: IScene = initialScene,
-  action: Action): IScene
-{
-  if (isSceneAction(action))
+
+const undoableFlowReducer: ActionReducer<History<IFlow>> = undoable(
+  createReducer(flowHandlers),
   {
-    switch (action.type)
+    limit: 10,
+    redoAction: flowActions.REDO,
+    undoAction: flowActions.UNDO
+  });
+
+const flowActionTypes: string[] = Object.keys(flowActions).map(key => flowActions[key]);
+const flowHistoryHandlers: Handlers<History<IFlow>> = createHandlers(undoableFlowReducer, flowActionTypes);
+
+const flowStatePipe: StatePipe<History<IFlow>, IScene> =
+  {
+    diveIn: (scene: IScene, {payload}: FlowAction) => scene.flows.find(f => f.present.id === payload.flowId),
+    bubbleUp: (scene: IScene, newHistory: History<IFlow>) =>
     {
-      case sceneActions.NEW_FLOW:
+      return assign(
+        { ...scene },
         {
-          const flow = (<INewFlowAction>action).payload;
-          return assign(
-            { ...state },
-            {
-              flows: [...state.flows, newHistory(flow)],
-              selected: flow.id
-            });
-        }
+          flows: scene.flows.map(history => 
+          {
+            if (history.present.id != newHistory.present.id)
+              return history;
 
-      case sceneActions.SELECT_ITEM:
-        {
-          return assign({ ...state }, { selected: (<ISelectItemAction>action).payload.itemId })
-        }
-
-      default:
-        return state;
+            return newHistory;
+          })
+        });
     }
-  }
+  };
 
-  if (isFlowAction(action))
+const sceneHandlers: Handlers<IScene> =
   {
-    return assign({ ...state }, {
-      flows: state.flows.map(history => 
+    [sceneActions.NEW_FLOW]: (scene, {payload: flow}: INewFlowAction) => assign(
+      { ...scene },
       {
-        if (history.present.id != action.payload.flowId)
-          return history;
+        flows: [...scene.flows, { past: [], present: flow, future: [] }],
+        selected: flow.id
+      }),
 
-        return undoableFlowReducer(history, action);
-      })
-    });
+    [sceneActions.SELECT_ITEM]: (scene, {payload}: ISelectItemAction) => assign({ ...scene }, { selected: payload.itemId })
+  };
+
+const sceneNode: HandlerNode<IScene> =
+  {
+    handlers: sceneHandlers,
+    children: [
+      {
+        handlers: flowHistoryHandlers,
+        pipe: flowStatePipe,
+      }]
   }
 
-  return state;
-}
+const flattenHandlers = flattenNode(sceneNode);
+//console.log("scene handlers:", flattenHandlers);
+export const sceneReducer = createReducer(flattenHandlers, initialScene);

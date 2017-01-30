@@ -3,7 +3,7 @@ import { newId } from './idgen';
 import { IPortModel } from '../dialogs/portDialog.component';
 import { IAppState } from '../store/store';
 import { Action } from '@ngrx/store';
-import { type, createActionTypeChecker } from './utils';
+import { type } from './utils';
 import { Point } from '../geometry/point';
 
 export type FlowAction =
@@ -25,8 +25,6 @@ export const flowActions =
     ADD_ELEMENT: type('[Flow] Add Element'),
     MOVE_ELEMENT: type('[Flow] Move Element'),
   };
-
-export const isFlowAction = createActionTypeChecker<FlowAction>(flowActions);
 
 export interface INewFlowPortAction extends Action
 {

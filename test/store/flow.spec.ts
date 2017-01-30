@@ -1,9 +1,11 @@
+import { createReducer } from '../../app/store/structuredReducer';
+import { ActionReducer } from '@ngrx/store';
 import { suite, test } from "mocha-typescript";
 import { expect, assert } from "chai"
 
 import { assign } from '../../app/store/store';
 
-import { flowReducer } from '../../app/store/flow.reducers';
+import { flowHandlers } from '../../app/store/flow.reducers';
 import
 {
   flowActionCreators,
@@ -18,6 +20,7 @@ import { createFlow } from '../utils';
 import { Point } from '../../app/geometry/point';
 
 const actions = flowActionCreators;
+const flowReducer: ActionReducer<IFlow> = createReducer(flowHandlers);
 
 @suite
 class FlowReducerTests

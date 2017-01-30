@@ -2,7 +2,7 @@ import { IAppState } from '../store/store';
 import { newId } from './idgen';
 import { IFlow, ElementType } from '../store/flow.types';
 import { Action } from '@ngrx/store';
-import { type, createActionTypeChecker } from './utils';
+import { type } from './utils';
 
 export type SceneAction = ISelectItemAction | INewFlowAction;
 
@@ -20,9 +20,6 @@ export const sceneActions = {
   NEW_FLOW: type('[Node] New Flow'),
   SELECT_ITEM: type('[Node] Select Item'),
 };
-
-export const isSceneAction = createActionTypeChecker<SceneAction>(sceneActions);
-
 
 export const sceneActionCreators =
 {

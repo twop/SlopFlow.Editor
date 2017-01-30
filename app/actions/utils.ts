@@ -10,11 +10,3 @@ export function type<T>(label: T | ''): T
 
   return <T>label;
 }
-
-export function createActionTypeChecker<T extends { type: string }>(actions: { [key: string]: string })
-{
-  return (action: { type: string }): action is T =>
-  {
-    return Object.keys(actions).some(key => actions[key] === action.type);
-  }
-}

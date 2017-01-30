@@ -1,80 +1,79 @@
+import { Handlers } from './structuredReducer';
 import { IFlow, IPort, IFlowElement } from './flow.types';
 import { assign } from './store';
-import { IMoveElemAction, INewElementAction } from '../actions/flow.actions';
 import
 {
   FlowAction,
   flowActions,
   IDeletePortAction,
   IEditPortAction,
+  IMoveElemAction,
+  INewElementAction,
   INewFlowPortAction,
   IRenameFlowAction
 } from '../actions/flow.actions';
 
-function editPort(state: IFlow, action: IEditPortAction): IFlow
+function editPort(flow: IFlow, {payload}: IEditPortAction): IFlow
 {
   const updatePort = (port: IPort): IPort =>
   {
-    if (port.id != action.payload.portId)
+    if (port.id != payload.portId)
       return port;
 
     return assign(
       { ...port },
       {
-        name: action.payload.name,
-        dataTypeId: action.payload.dataTypeId,
-        type: action.payload.portType
+        name: payload.name,
+        dataTypeId: payload.dataTypeId,
+        type: payload.portType
       });
   };
 
-  return assign({ ...state }, { ports: state.ports.map(updatePort) });
+  return assign({ ...flow }, { ports: flow.ports.map(updatePort) });
 }
 
-export function flowReducer(state: IFlow, action: FlowAction): IFlow
-{
-  switch (action.type)
+const {
+  NEW_PORT,
+  ADD_ELEMENT,
+  DELETE_PORT,
+  EDIT_PORT,
+  MOVE_ELEMENT,
+  RENAME
+} = flowActions;
+
+export const flowHandlers: Handlers<IFlow> =
   {
-    case flowActions.NEW_PORT:
-      {
-        return assign({ ...state }, { ports: [...state.ports, (<INewFlowPortAction>action).payload.port] });
-      }
+    [NEW_PORT]: (flow, {payload}: INewFlowPortAction) => assign(
+      { ...flow },
+      { ports: flow.ports.concat(payload.port) }),
 
-    case flowActions.EDIT_PORT:
-      {
-        return editPort(state, <IEditPortAction>action);
-      }
+    [EDIT_PORT]: (flow, action: IEditPortAction) => editPort(flow, action),
 
-    case flowActions.ADD_ELEMENT:
-      {
-        const element: IFlowElement = (<INewElementAction>action).payload.element;
-        return assign({ ...state }, { elements: state.elements.concat(element) });
-      }
+    [ADD_ELEMENT]: (flow, {payload }: INewElementAction) => assign(
+      { ...flow },
+      { elements: flow.elements.concat(payload.element) }),
 
-    case flowActions.RENAME:
-      {
-        return assign({ ...state }, { name: (<IRenameFlowAction>action).payload.newName });
-      }
+    [RENAME]: (flow, {payload }: IRenameFlowAction) => assign(
+      { ...flow },
+      { name: payload.newName }),
 
-    case flowActions.DELETE_PORT:
-      {
-        return assign({ ...state }, { ports: state.ports.filter(p => p.id != (<IDeletePortAction>action).payload.portId) });
-      }
+    [DELETE_PORT]: (flow, {payload }: IDeletePortAction) => assign(
+      { ...flow },
+      { ports: flow.ports.filter(p => p.id != payload.portId) }),
 
-    case flowActions.MOVE_ELEMENT:
-      {
-        const {elemId, newPosition} = (<IMoveElemAction>action).payload;
-        return assign({ ...state }, {
-          elements: state.elements.map(e => 
+    [MOVE_ELEMENT]: (flow, {payload}: IMoveElemAction) =>
+    {
+      const {elemId, newPosition} = payload;
+      return assign(
+        { ...flow },
+        {
+          elements: flow.elements.map(e => 
           {
             if (e.id != elemId)
               return e;
 
-            return {...e, position: newPosition};
-          }) 
+            return { ...e, position: newPosition };
+          })
         });
-      }
-
-    default:
-      return state;
-  }
-}
+    }
+  };
